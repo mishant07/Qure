@@ -64,7 +64,7 @@ def predict(req: PredictRequest):
         vals = [ float(req.features[k]) for k in order ]
     except KeyError as e:
         raise HTTPException(422, f"Missing feature {e}. Required: {order}")
-    if any(v<0 for v in vals):
+    if any(v<0 for v in vals) and dataset != "parkinsons":
         raise HTTPException(422, "Invalid: negative values not allowed")
 
     X = np.array(vals).reshape(1,-1)

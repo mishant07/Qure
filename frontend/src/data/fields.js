@@ -42,6 +42,7 @@ export const FIELD_META = {
     { k: 'texture_se', label: 'TEXTURE SE', unit: 'σ', min: 0.36, max: 4.885, ex: 1.22, help: 'std err' },
     { k: 'perimeter_se', label: 'PERIM SE', unit: 'μm', min: 0.757, max: 21.98, ex: 2.87, help: 'std err' },
     { k: 'area_se', label: 'AREA SE', unit: 'μm²', min: 6.802, max: 542.2, ex: 43.8, help: 'std err' },
+    { k: 'smoothness_se', label: 'SMOOTH SE', unit: '—', min: 0.0017, max: 0.031, ex: 0.008, help: 'local var se' },
     { k: 'compactness_se', label: 'COMPACT SE', unit: '—', min: 0.0023, max: 0.135, ex: 0.025, help: 'std err' },
     { k: 'concavity_se', label: 'CONCAV SE', unit: '—', min: 0, max: 0.396, ex: 0.032, help: 'std err' },
     { k: 'concave_points_se', label: 'CPOINTS SE', unit: '—', min: 0, max: 0.053, ex: 0.012, help: 'std err' },
