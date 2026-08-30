@@ -28,16 +28,48 @@ def load_diabetes(p):
     X[cols_zero_nan] = X[cols_zero_nan].replace(0, np.nan)
     return X, y
 
+def load_breast_cancer(p):
+    # UCI WDBC: 30 numeric features + 'diagnosis' (0=benign, 1=malignant)
+    df = pd.read_csv(p)
+    X = df.drop(columns=["diagnosis"])
+    y = df["diagnosis"].astype(int)
+    return X, y
+
+def load_liver(p):
+    # UCI ILPD: 10 features (Age, Gender, 8 lab values) + Selector (1=patient -> 1, 2=healthy -> 0)
+    df = pd.read_csv(p)
+    # Defensive: if Selector still 1/2 (uncleaned), re-map
+    if df["Selector"].max() == 2:
+        df["Selector"] = (df["Selector"] == 1).astype(int)
+    X = df.drop(columns=["Selector"])
+    y = df["Selector"].astype(int)
+    return X, y
+
+def load_parkinsons(p):
+    # UCI Oxford Parkinsons: 22 acoustic features + status (0=healthy, 1=PD)
+    df = pd.read_csv(p)
+    X = df.drop(columns=["status"])
+    y = df["status"].astype(int)
+    return X, y
+
+LOADERS = {
+    "heart": load_heart,
+    "diabetes": load_diabetes,
+    "breast_cancer": load_breast_cancer,
+    "liver": load_liver,
+    "parkinsons": load_parkinsons,
+}
+
 parser = argparse.ArgumentParser()
-parser.add_argument("--dataset", choices=["heart","diabetes"], required=True)
+parser.add_argument("--dataset", choices=list(LOADERS.keys()), required=True)
 parser.add_argument("--pca", type=int, default=8)
 args = parser.parse_args()
 
 raw = DATA_RAW / f"{args.dataset}.csv"
 if not raw.exists():
-    raise SystemExit(f"Missing {raw}. Run: python src/data/dataset.py")
+    raise SystemExit(f"Missing {raw}. Run: python src/data/dataset.py for heart/diabetes, or place {args.dataset}.csv in data/raw/")
 
-X, y = load_heart(raw) if args.dataset=="heart" else load_diabetes(raw)
+X, y = LOADERS[args.dataset](raw)
 
 # Split BEFORE fit
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, stratify=y, random_state=RANDOM_STATE)

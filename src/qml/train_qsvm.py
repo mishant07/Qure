@@ -15,8 +15,8 @@ parser.add_argument("--qubits", type=int, default=8)
 parser.add_argument("--reps", type=int, default=2)
 args = parser.parse_args()
 
-ROOT = pathlib.Path(__file__).parent.parent
-data = np.load(ROOT/f"data/processed/split_{args.dataset}.npz")
+from src.utils.config import DATA_PROCESSED
+data = np.load(DATA_PROCESSED/f"split_{args.dataset}.npz")
 X_train, X_test, y_train, y_test = data["X_train_p"], data["X_test_p"], data["y_train"], data["y_test"]
 print(f"Loaded {args.dataset}: {X_train.shape}")
 

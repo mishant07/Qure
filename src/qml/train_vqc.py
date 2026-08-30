@@ -11,7 +11,7 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 from src.utils.config import DATA_PROCESSED, MODELS_QUANTUM, RESULTS_METRICS
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--dataset", choices=["heart","diabetes"], required=True)
+parser.add_argument("--dataset", choices=["heart","diabetes","breast_cancer","liver","parkinsons"], required=True)
 parser.add_argument("--qubits", type=int, default=8)
 parser.add_argument("--shots", type=int, default=512)
 parser.add_argument("--iter", type=int, default=100)
@@ -46,9 +46,9 @@ params = pnp.random.uniform(0, np.pi, size=weight_shapes["params"], requires_gra
 opt = qml.AdamOptimizer(stepsize=0.1)
 
 def cost(params, X, y):
-    preds = np.array([(qnode(params, x)+1)/2 for x in X])
+    preds = pnp.array([(qnode(params, x)+1)/2 for x in X])
     eps=1e-7
-    return -np.mean(y*np.log(preds+eps) + (1-y)*np.log(1-preds+eps))
+    return -pnp.mean(y*pnp.log(preds+eps) + (1-y)*pnp.log(1-preds+eps))
 
 # Subsample for speed if large
 if len(X_train) > 200:

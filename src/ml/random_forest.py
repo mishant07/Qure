@@ -7,7 +7,7 @@ from imblearn.over_sampling import SMOTE
 from src.utils.config import DATA_PROCESSED, MODELS_CLASSICAL, RESULTS_METRICS
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--dataset", required=True, choices=["heart","diabetes"])
+parser.add_argument("--dataset", required=True, choices=["heart","diabetes","breast_cancer","liver","parkinsons"])
 parser.add_argument("--smote", action="store_true", default=True)
 args = parser.parse_args()
 

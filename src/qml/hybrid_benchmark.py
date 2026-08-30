@@ -4,7 +4,7 @@ python qml/hybrid_benchmark.py --out docs/benchmark_report.md
 """
 import pathlib, json, glob
 
-ROOT = pathlib.Path(__file__).parent.parent
+ROOT = pathlib.Path(__file__).parent.parent.parent
 out_md = ROOT/"docs/benchmark_report.md"
 out_json = ROOT/"frontend/src/data/benchmark.json"
 out_json.parent.mkdir(parents=True, exist_ok=True)
@@ -47,13 +47,19 @@ def load_metrics(dataset):
             res["qsvm"] = json.loads(pq.read_text()); break
     return res
 
-heart = load_metrics("heart")
-diab = load_metrics("diabetes")
+DATASETS = [
+    ("heart",          "Heart Disease (UCI Cleveland)"),
+    ("diabetes",       "Diabetes (Pima)"),
+    ("breast_cancer",  "Breast Cancer (UCI WDBC)"),
+    ("liver",          "Liver Disease (UCI ILPD)"),
+    ("parkinsons",     "Parkinsons (UCI Oxford)"),
+]
 
 # Markdown
-lines = ["# Benchmark Report — Heart + Diabetes Dual Demo", "", f"Generated: hybrid_benchmark.py", ""]
-for name, data in [("Heart Disease (UCI Cleveland)", heart), ("Diabetes (Pima)", diab)]:
-    lines.append(f"## {name}")
+lines = ["# Benchmark Report — 5-Disease Hybrid Quantum ML Demo", "", f"Generated: hybrid_benchmark.py", ""]
+for ds_key, ds_name in DATASETS:
+    data = load_metrics(ds_key)
+    lines.append(f"## {ds_name}")
     if not data:
         lines.append("_No metrics yet — run train scripts first_\n")
         continue
@@ -67,14 +73,19 @@ for name, data in [("Heart Disease (UCI Cleveland)", heart), ("Diabetes (Pima)",
     # honesty note
     if "vqc" in data and "classical_best" in data:
         diff = data["vqc"]["f1"] - data["classical_best"]["f1"]
-        note = "VQC slightly outperforms classical — valid quantum assist" if diff>0 else "Classical outperforms VQC on this split — honest result, report as is (do not force win)"
+        if diff > 0.01:
+            note = "VQC outperforms classical — valid quantum assist"
+        elif diff < -0.01:
+            note = "Classical outperforms VQC on this split — honest result, report as is (do not force win)"
+        else:
+            note = "Tie within margin — both reconstructions agree"
         lines.append(f"> **Interpretation:** {note} (ΔF1={diff:+.3f})\n")
 
 out_md.write_text("\n".join(lines))
 print(f"Wrote {out_md}")
 
 # JSON for frontend
-combo = {"heart": heart, "diabetes": diab}
+combo = {ds_key: load_metrics(ds_key) for ds_key, _ in DATASETS}
 out_json.write_text(json.dumps(combo, indent=2))
 print(f"Wrote {out_json}")
-print("\n".join(lines[:60]))
+print("\n".join(lines[:80]))
