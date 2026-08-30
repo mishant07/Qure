@@ -15,7 +15,7 @@ app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True, 
 
 @app.get("/health")
 def health():
-    return {"status":"ok", "datasets":["heart","diabetes"]}
+    return {"status":"ok", "datasets":["heart","diabetes","breast_cancer","liver","parkinsons"]}
 
 @app.get("/benchmark")
 def benchmark():
@@ -28,17 +28,38 @@ def benchmark():
         return {"report": p2.read_text()[:5000]}
     return {"report": "Run src/qml/hybrid_benchmark.py first"}
 
+FEATURE_ORDER = {
+    "heart": ["age","sex","cp","trestbps","chol","fbs","restecg","thalach","exang","oldpeak","slope","ca","thal"],
+    "diabetes": ["Pregnancies","Glucose","BloodPressure","SkinThickness","Insulin","BMI","DiabetesPedigreeFunction","Age"],
+    "breast_cancer": [
+        "radius_mean","texture_mean","perimeter_mean","area_mean","smoothness_mean",
+        "compactness_mean","concavity_mean","concave_points_mean","symmetry_mean","fractal_dimension_mean",
+        "radius_se","texture_se","perimeter_se","area_se","smoothness_se",
+        "compactness_se","concavity_se","concave_points_se","symmetry_se","fractal_dimension_se",
+        "radius_worst","texture_worst","perimeter_worst","area_worst","smoothness_worst",
+        "compactness_worst","concavity_worst","concave_points_worst","symmetry_worst","fractal_dimension_worst",
+    ],
+    "liver": ["Age","Gender","Total_Bilirubin","Direct_Bilirubin","Alkaline_Phosphotase",
+              "Alamine_Aminotransferase","Aspartate_Aminotransferase","Total_Protiens","Albumin","Albumin_and_Globulin_Ratio"],
+    "parkinsons": [
+        "MDVP:Fo(Hz)","MDVP:Fhi(Hz)","MDVP:Flo(Hz)","MDVP:Jitter(%)","MDVP:Jitter(Abs)",
+        "MDVP:RAP","MDVP:PPQ","Jitter:DDP","MDVP:Shimmer","MDVP:Shimmer(dB)",
+        "Shimmer:APQ3","Shimmer:APQ5","MDVP:APQ","Shimmer:DDA","NHR","HNR",
+        "RPDE","DFA","spread1","spread2","D2","PPE",
+    ],
+}
+
 @app.post("/predict")
 def predict(req: PredictRequest):
     dataset = req.dataset
-    if dataset not in ["heart","diabetes"]:
-        raise HTTPException(400, "dataset must be heart or diabetes")
+    if dataset not in FEATURE_ORDER:
+        raise HTTPException(400, f"dataset must be one of {list(FEATURE_ORDER.keys())}")
     try:
         imputer, scaler, pca, clf, best_name, qsvm = load_pipeline(dataset)
     except Exception as e:
         raise HTTPException(500, f"Models not trained for {dataset}: {e}. Run preprocessing + classical training first.")
 
-    order = ["age","sex","cp","trestbps","chol","fbs","restecg","thalach","exang","oldpeak","slope","ca","thal"] if dataset=="heart" else ["Pregnancies","Glucose","BloodPressure","SkinThickness","Insulin","BMI","DiabetesPedigreeFunction","Age"]
+    order = FEATURE_ORDER[dataset]
     try:
         vals = [ float(req.features[k]) for k in order ]
     except KeyError as e:
