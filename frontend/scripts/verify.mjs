@@ -18,14 +18,27 @@ page.on('pageerror', (e) => errors.push(String(e)))
 await page.goto(BASE, { waitUntil: 'networkidle' })
 await page.screenshot({ path: `${OUT}/01-hero.png` })
 
-await page.locator('#story').scrollIntoViewIfNeeded()
 await page.evaluate(() => {
   const el = document.querySelector('#story')
   const total = el.offsetHeight - innerHeight
-  window.scrollTo(0, el.offsetTop + total * 0.5) // mid-story
+  window.scrollTo(0, el.offsetTop + total * 0.05) // story pinned, act 1 fully in
+})
+await page.waitForTimeout(400)
+await page.screenshot({ path: `${OUT}/02a-story-start.png` })
+await page.evaluate(() => {
+  const el = document.querySelector('#story')
+  const total = el.offsetHeight - innerHeight
+  window.scrollTo(0, el.offsetTop + total * 0.35) // mid-story — act text over faded image bed
 })
 await page.waitForTimeout(600)
 await page.screenshot({ path: `${OUT}/02-story-mid.png` })
+await page.evaluate(() => {
+  const el = document.querySelector('#story')
+  const total = el.offsetHeight - innerHeight
+  window.scrollTo(0, el.offsetTop + total * 0.97) // story end — images faded to void
+})
+await page.waitForTimeout(600)
+await page.screenshot({ path: `${OUT}/02b-story-end.png` })
 
 await page.locator('#how').scrollIntoViewIfNeeded()
 await page.waitForTimeout(400)
