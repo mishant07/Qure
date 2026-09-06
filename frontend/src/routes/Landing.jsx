@@ -30,6 +30,19 @@ function ProjectStats() {
   )
 }
 
+/* interference-in ends at transform:none, but fill-mode:forwards can leave the
+   element in a retained transform/filter state — an isolating stacking context
+   that severs mix-blend-mode from the fixed background video (adaptive text
+   would blend against nothing and stay white). Strip the animation once it
+   finishes so the element returns to a clean, blend-through state. */
+const clearReveal = (e) => {
+  const el = e.currentTarget
+  el.style.animation = 'none'
+  el.style.opacity = '1'
+  el.style.transform = 'none'
+  el.style.filter = 'none'
+}
+
 /* Hero — Split headline: Classical / Quantum, with two clear entry actions */
 function VideoHero() {
   return (
@@ -40,13 +53,14 @@ function VideoHero() {
       <div style={{ height: 'clamp(44px, 5.2vw, 48px)' }} />
 
       <div className="flex w-full max-w-[900px] flex-col items-center gap-6 py-8 text-center sm:gap-8"
-        style={{ animation: 'interference-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards' }}>
+        style={{ animation: 'interference-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards' }}
+        onAnimationEnd={clearReveal}>
         
         <h1 className="text-hero-display leading-[1.02] text-center" style={{ maxWidth: '900px' }}>
-          <span className="block adaptive-text" style={{ animation: 'interference-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards' }}>
+          <span className="block adaptive-text" style={{ animation: 'interference-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards' }} onAnimationEnd={clearReveal}>
             Hybrid Quantum
           </span>
-          <span className="block mt-2 adaptive-text" style={{ animation: 'interference-in-reverse 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards', opacity: 0 }}>
+          <span className="block mt-2 adaptive-text" style={{ animation: 'interference-in-reverse 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards', opacity: 0 }} onAnimationEnd={clearReveal}>
             Disease Detection
           </span>
         </h1>
