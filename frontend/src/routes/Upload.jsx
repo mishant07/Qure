@@ -379,11 +379,11 @@ export default function UploadPage() {
                 </h2>
                 <div className="mt-6 grid gap-4 sm:grid-cols-2">
                   <div className="rounded-lg border border-classical/30 bg-classical/10 p-4">
-                    <p className="text-caption-strong track-classical">Classical ML</p>
-                    <p className="text-display-md tabular-display mt-1 text-classical">
+                    <p className="text-caption-strong adaptive-text">Classical ML</p>
+                    <p className="text-display-md tabular-display mt-1 adaptive-text">
                       {((result.ml_probability ?? 0) * 100).toFixed(1)}%
                     </p>
-                    <p className="text-fine-print text-muted mt-0.5">{result.ml_model}</p>
+                    <p className="text-fine-print adaptive-muted mt-0.5">{result.ml_model}</p>
                   </div>
                   <div className="rounded-lg border border-quantum/30 bg-quantum/10 p-4">
                     <p className="text-caption-strong track-quantum">Quantum ML</p>

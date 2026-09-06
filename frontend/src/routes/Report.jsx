@@ -127,12 +127,12 @@ export default function Report() {
           <h3 className="text-body-strong text-ink mb-4">Model scores</h3>
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="rounded-lg border border-classical/30 bg-classical/10 p-5">
-              <p className="text-caption-strong track-classical">Classical ML</p>
-              <p className="text-display-md tabular-display text-classical mt-1">
+              <p className="text-caption-strong adaptive-text">Classical ML</p>
+              <p className="text-display-md tabular-display adaptive-text mt-1">
                 {ms.classical_ml.score != null ? (ms.classical_ml.score * 100).toFixed(1) + '%' : '—'}
               </p>
-              <p className="text-fine-print text-muted mt-1">{ms.classical_ml.prediction}</p>
-              <p className="text-fine-print text-muted mt-0.5">{ms.classical_ml.model_name}</p>
+              <p className="text-fine-print adaptive-muted mt-1">{ms.classical_ml.prediction}</p>
+              <p className="text-fine-print adaptive-muted mt-0.5">{ms.classical_ml.model_name}</p>
             </div>
             <div className="rounded-lg border border-quantum/30 bg-quantum/10 p-5">
               <p className="text-caption-strong track-quantum">Quantum ML</p>

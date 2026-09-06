@@ -63,15 +63,15 @@ export default function Benchmark() {
       <div className="mb-8 grid gap-4 sm:grid-cols-3">
         <div className="glass-panel p-5 text-center">
           <p className="text-display-md font-medium tabular-display track-quantum">{quantumWins}/3</p>
-          <p className="text-caption mt-1 text-muted">modules where the VQC leads on F1</p>
+          <p className="text-caption mt-1 adaptive-muted">modules where the VQC leads on F1</p>
         </div>
         <div className="glass-panel p-5 text-center">
-          <p className="text-display-md font-medium tabular-display text-ink">{(worstGap * 100).toFixed(0)} pts</p>
-          <p className="text-caption mt-1 text-muted">largest F1 gap favouring the classical model</p>
+          <p className="text-display-md font-medium tabular-display adaptive-text">{(worstGap * 100).toFixed(0)} pts</p>
+          <p className="text-caption mt-1 adaptive-muted">largest F1 gap favouring the classical model</p>
         </div>
         <div className="glass-panel p-5 text-center">
           <p className="text-display-md font-medium tabular-display track-quantum">4</p>
-          <p className="text-caption mt-1 text-muted">qubits per VQC — exact simulation, no sampling noise</p>
+          <p className="text-caption mt-1 adaptive-muted">qubits per VQC — exact simulation, no sampling noise</p>
         </div>
       </div>
 
@@ -93,13 +93,13 @@ export default function Benchmark() {
                     tickFormatter={(v) => `${(v * 100).toFixed(0)}%`}
                   />
                   <Tooltip content={<TooltipBox />} cursor={{ fill: 'rgba(0,212,170,0.08)' }} />
-                  <Legend iconType="circle" iconSize={8} wrapperClassName="text-caption text-muted" />
+                  <Legend iconType="circle" iconSize={8} wrapperClassName="text-caption adaptive-muted" />
                   <Bar dataKey="classical" name="Classical" fill="#1D1D1F" radius={[4, 4, 0, 0]} maxBarSize={28} />
                   <Bar dataKey="quantum" name="4-qubit VQC" fill="#00D4AA" radius={[4, 4, 0, 0]} maxBarSize={28} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
-            <figcaption className="text-caption mt-3 text-muted">
+            <figcaption className="text-caption mt-3 adaptive-muted">
               {metric === 'f1' ? 'F1 score (positive class)' : 'ROC-AUC'} — higher is better.
             </figcaption>
           </figure>
@@ -111,18 +111,18 @@ export default function Benchmark() {
         <table className="w-full text-left">
           <caption className="sr-only">Winner per dataset, computed from benchmark data</caption>
           <thead>
-            <tr className="bg-glass text-caption-strong text-muted">
-              <th scope="col" className="px-4 py-3 font-medium tabular" style={{ fontFamily: 'var(--font-display)' }}>Dataset</th>
-              <th scope="col" className="px-4 py-3 font-medium tabular">Classical F1</th>
+            <tr className="bg-glass text-caption-strong">
+              <th scope="col" className="px-4 py-3 font-medium adaptive-muted tabular" style={{ fontFamily: 'var(--font-display)' }}>Dataset</th>
+              <th scope="col" className="px-4 py-3 font-medium adaptive-muted tabular">Classical F1</th>
               <th scope="col" className="px-4 py-3 font-medium tabular text-quantum">VQC F1</th>
-              <th scope="col" className="px-4 py-3 font-medium tabular">Honest Verdict</th>
+              <th scope="col" className="px-4 py-3 font-medium adaptive-muted tabular">Honest Verdict</th>
             </tr>
           </thead>
           <tbody className="text-caption">
             {rows.map((r, i) => (
               <tr key={r.name} className={cn('border-t border-hairline', i % 2 ? 'bg-glass' : 'bg-transparent')}>
-                <th scope="row" className="px-4 py-3 font-medium text-ink tabular" style={{ fontFamily: 'var(--font-display)' }}>{r.name}</th>
-                <td className="px-4 py-3 text-classical tabular">{(r.classical * 100).toFixed(1)}%</td>
+                <th scope="row" className="px-4 py-3 font-medium adaptive-text tabular" style={{ fontFamily: 'var(--font-display)' }}>{r.name}</th>
+                <td className="px-4 py-3 adaptive-text tabular">{(r.classical * 100).toFixed(1)}%</td>
                 <td className="px-4 py-3 text-quantum tabular">{(r.quantum * 100).toFixed(1)}%</td>
                 <td className="px-4 py-3">
                   <span className={cn(

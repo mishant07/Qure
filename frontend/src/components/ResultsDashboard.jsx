@@ -66,13 +66,13 @@ export default function ResultsDashboard({ result, disease, datasetLabel }) {
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
           <div className="rounded-lg border border-classical/30 bg-classical/10 p-5">
             <div className="flex items-center gap-2 mb-1">
-              <Sparkles className="size-4 text-classical" aria-hidden="true" />
-              <p className="text-caption-strong track-classical">Classical ML</p>
+              <Sparkles className="size-4 adaptive-text" aria-hidden="true" />
+              <p className="text-caption-strong adaptive-text">Classical ML</p>
             </div>
-            <p className="text-display-md tabular-display text-classical">
+            <p className="text-display-md tabular-display adaptive-text">
               {((result.ml_probability ?? 0) * 100).toFixed(1)}%
             </p>
-            <p className="text-fine-print text-muted mt-1">
+            <p className="text-fine-print adaptive-muted mt-1">
               {result.ml_model ?? 'best classical'} · score
             </p>
           </div>
@@ -84,7 +84,7 @@ export default function ResultsDashboard({ result, disease, datasetLabel }) {
             <p className="text-display-md tabular-display text-quantum">
               {((result.qml_probability ?? 0) * 100).toFixed(1)}%
             </p>
-            <p className="text-fine-print text-muted mt-1">
+            <p className="text-fine-print adaptive-muted mt-1">
               {result.qml_model ?? 'vqc_4qubit'} · score
             </p>
           </div>
@@ -109,20 +109,20 @@ export default function ResultsDashboard({ result, disease, datasetLabel }) {
         {/* Key contributors */}
         {result.explain?.top_features?.length > 0 && (
           <div className="mt-6">
-            <h3 className="text-body-strong text-ink mb-3">Key contributors</h3>
+            <h3 className="text-body-strong adaptive-text mb-3">Key contributors</h3>
             <div className="flex flex-wrap gap-2">
               {result.explain.top_features.map((f, i) => (
                 <span
                   key={f}
                   className="rounded-pill bg-classical/10 border border-classical/30 px-3 py-1.5 text-caption text-ink"
                 >
-                  <span className="text-fine-print text-classical mr-1.5 tabular">#{i + 1}</span>
+                  <span className="text-fine-print adaptive-text mr-1.5 tabular">#{i + 1}</span>
                   {f}
                 </span>
               ))}
             </div>
             {explanation?.contributor_text && (
-              <p className="text-caption text-muted mt-3">
+              <p className="text-caption adaptive-muted mt-3">
                 {explanation.contributor_text.slice(0, result.explain.top_features.length).join(' · ')}
               </p>
             )}

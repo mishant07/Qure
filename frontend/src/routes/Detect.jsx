@@ -87,11 +87,11 @@ export default function Detect() {
           <div className="flex items-center gap-4 flex-wrap">
             <h1 className="text-display-lg">Run a vector.</h1>
             <span className="flex size-6 items-center justify-center rounded-full bg-classical text-quantum text-fine-print tabular" aria-hidden="true" style={{ fontFamily: 'var(--font-display)' }}>01</span>
-            <h2 className="text-tagline track-classical">Classical Track</h2>
+            <h2 className="text-tagline adaptive-text">Classical Track</h2>
             <span className="flex size-6 items-center justify-center rounded-full bg-quantum text-void text-fine-print tabular" aria-hidden="true" style={{ fontFamily: 'var(--font-display)' }}>02</span>
             <h2 className="text-tagline track-quantum">Quantum Track</h2>
           </div>
-          <p className="text-body mt-2 text-muted max-w-[600px]">
+          <p className="text-body mt-2 adaptive-muted max-w-[600px]">
             Enter clinical measurements. Get two verdicts — classical and quantum — side by side, honestly labeled.
           </p>
         </header>
@@ -103,9 +103,9 @@ export default function Detect() {
             <div className="glass-panel p-6">
               <div className="mb-6 flex items-center gap-3">
                 <span className="flex size-8 items-center justify-center rounded-full bg-classical text-quantum text-caption-strong tabular" aria-hidden="true" style={{ fontFamily: 'var(--font-display)' }}>01</span>
-                <h3 className="text-tagline track-classical">Classical Track — Input</h3>
+                <h3 className="text-tagline adaptive-text">Classical Track — Input</h3>
               </div>
-              <p className="text-caption text-muted mb-6 max-w-[400px]">
+              <p className="text-caption adaptive-muted mb-6 max-w-[400px]">
                 11–13 clinical features validated against audited dataset ranges. Values stay in your browser until you run.
               </p>
               {FIELD_META ? (

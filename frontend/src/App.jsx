@@ -1,6 +1,7 @@
 // Router shell — Landing, Triage, Route, Upload, Detect, Report
 import { Toaster } from 'sonner'
 import { useRoute } from './router'
+import Background from './components/Background'
 import Detect from './routes/Detect'
 import Landing from './routes/Landing'
 import Triage from './routes/Triage'
@@ -20,6 +21,7 @@ export default function App() {
 
   return (
     <>
+      <Background />
       {page}
       <Toaster position="bottom-right" toastOptions={{ style: { borderRadius: '11px' } }} />
     </>

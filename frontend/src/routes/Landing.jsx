@@ -20,10 +20,10 @@ function ProjectStats() {
           <div className="grid size-9 place-items-center rounded-full bg-glass border border-hairline">
             <Icon className="size-4 text-quantum" aria-hidden="true" />
           </div>
-          <p className="m-0 tabular-display text-ink" style={{ fontSize: 'clamp(1.5rem, 2.5vw, 2rem)' }}>
+          <p className="m-0 tabular-display adaptive-text" style={{ fontSize: 'clamp(1.5rem, 2.5vw, 2rem)' }}>
             {val}
           </p>
-          <p className="m-0 text-center text-caption text-muted">{label}</p>
+          <p className="m-0 text-center text-caption adaptive-muted">{label}</p>
         </div>
       ))}
     </div>
@@ -43,7 +43,7 @@ function VideoHero() {
         style={{ animation: 'interference-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards' }}>
         
         <h1 className="text-hero-display leading-[1.02] text-center" style={{ maxWidth: '900px' }}>
-          <span className="block track-classical" style={{ animation: 'interference-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards' }}>
+          <span className="block adaptive-text" style={{ animation: 'interference-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards' }}>
             Hybrid Quantum
           </span>
           <span className="block mt-2 track-quantum" style={{ animation: 'interference-in-reverse 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards', opacity: 0 }}>
@@ -52,7 +52,7 @@ function VideoHero() {
         </h1>
 
         <p
-          className="mx-auto max-w-[min(600px,92%)] text-body text-muted"
+          className="mx-auto max-w-[min(600px,92%)] text-body adaptive-muted"
           style={{ fontSize: 'clamp(1rem, 1.4vw, 1.125rem)' }}
         >
           Classical ML meets 4-qubit variational quantum circuits on three clinical
@@ -139,7 +139,7 @@ function HowItWorks() {
           <div className="glass-panel p-6">
             <div className="mb-6 flex items-center gap-2">
               <span className="flex size-8 items-center justify-center rounded-full bg-classical text-quantum text-caption-strong tabular" aria-hidden="true">01</span>
-              <h3 className="text-tagline track-classical">Classical Track</h3>
+              <h3 className="text-tagline adaptive-text">Classical Track</h3>
             </div>
             <ol className="space-y-5">
               {[
@@ -149,10 +149,10 @@ function HowItWorks() {
               ].map(([t, d], i) => (
                 <li key={t} className="border-t border-hairline py-4 first:border-t-0 first:pt-0">
                   <div className="flex items-baseline gap-4">
-                    <span className="text-caption-strong tabular track-classical" style={{ fontFamily: 'var(--font-display)' }}>{String(i + 1).padStart(2, '0')}</span>
+                    <span className="text-caption-strong tabular adaptive-text" style={{ fontFamily: 'var(--font-display)' }}>{String(i + 1).padStart(2, '0')}</span>
                     <div>
-                      <p className="text-body-strong text-ink">{t}</p>
-                      <p className="text-caption mt-1 text-muted">{d}</p>
+                      <p className="text-body-strong adaptive-text">{t}</p>
+                      <p className="text-caption mt-1 adaptive-muted">{d}</p>
                     </div>
                   </div>
                 </li>
@@ -176,8 +176,8 @@ function HowItWorks() {
                   <div className="flex items-baseline gap-4">
                     <span className="text-caption-strong tabular track-quantum" style={{ fontFamily: 'var(--font-display)' }}>{String(i + 1).padStart(2, '0')}</span>
                     <div>
-                      <p className="text-body-strong text-ink">{t}</p>
-                      <p className="text-caption mt-1 text-muted">{d}</p>
+                      <p className="text-body-strong adaptive-text">{t}</p>
+                      <p className="text-caption mt-1 adaptive-muted">{d}</p>
                     </div>
                   </div>
                 </li>
@@ -198,8 +198,8 @@ function BenchmarkSection() {
         <p className="text-caption-strong text-quantum tracking-[0.05em]" style={{ fontFamily: 'var(--font-display)' }}>
           Benchmarks
         </p>
-        <h2 className="text-display-lg mt-3 max-w-[26ch]">Quantum wins sometimes. We say when it doesn't.</h2>
-        <p className="text-caption mt-4 max-w-[56ch] text-muted">
+        <h2 className="text-display-lg adaptive-text mt-3 max-w-[26ch]">Quantum wins sometimes. We say when it doesn't.</h2>
+        <p className="text-caption mt-4 max-w-[56ch] adaptive-muted">
           F1 and ROC-AUC on held-out test splits across the three active modules. The winner badge
           under each row is computed from the numbers — never asserted in copy.
         </p>

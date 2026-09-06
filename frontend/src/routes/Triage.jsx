@@ -158,7 +158,7 @@ export default function Triage() {
               onClick={() => setAnswer(current.id, 'no')}
               className={`min-h-[60px] rounded-lg border px-4 py-3 text-body-strong transition-colors ${
                 answers[current.id] === 'no'
-                  ? 'bg-classical/20 border-classical text-classical'
+                  ? 'bg-classical/20 border-classical/60 adaptive-text'
                   : 'border-hairline text-ink hover:bg-glass'
               }`}
             >

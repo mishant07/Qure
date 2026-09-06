@@ -220,11 +220,15 @@
   .text-muted { color: var(--color-muted); }
   .text-ink { color: var(--color-ink); }
 
+  /* Adaptive text — inverts the live background video beneath it (see tokens.css) */
+  .adaptive-text { color: #ffffff; mix-blend-mode: difference; }
+  .adaptive-muted { color: #dddddd; mix-blend-mode: difference; }
+
   .risk-high { background: rgba(255,107,53,0.15); color: #FF6B35; border: 1px solid rgba(255,107,53,0.3); }
   .risk-moderate { background: rgba(255,184,0,0.15); color: #FFB800; border: 1px solid rgba(255,184,0,0.3); }
   .risk-low { background: rgba(30,215,96,0.15); color: #1ED760; border: 1px solid rgba(30,215,96,0.3); }
 
-  .winner-classical { background: rgba(29,29,31,0.15); color: #1D1D1F; border: 1px solid rgba(29,29,31,0.3); }
+  .winner-classical { background: rgba(255,255,255,0.14); color: #fff; mix-blend-mode: difference; border: 1px solid rgba(255,255,255,0.3); }
   .winner-quantum { background: rgba(0,212,170,0.15); color: #00D4AA; border: 1px solid rgba(0,212,170,0.3); }
 
   .glass-panel {
