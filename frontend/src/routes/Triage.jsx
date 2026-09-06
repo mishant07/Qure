@@ -71,10 +71,6 @@ export default function Triage() {
     else finish()
   }
 
-  function prev() {
-    if (step > 0) setStep(step - 1)
-  }
-
   async function finish() {
     setSubmitting(true)
     setError(null)
@@ -185,8 +181,7 @@ export default function Triage() {
         <div className="mt-6 flex items-center justify-between gap-3">
           <Button
             variant="ghost"
-            onClick={prev}
-            disabled={step === 0}
+            onClick={() => navigate('/')}
             className="text-muted hover:text-ink"
           >
             <ArrowLeft className="size-4" /> Back
