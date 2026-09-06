@@ -21,8 +21,8 @@ function FieldRow({ f, value, onChange, invalid }) {
   return (
     <div>
       <Label htmlFor={id} className="mb-1.5 flex items-baseline justify-between">
-        <span className="text-caption-strong text-ink">{f.label}</span>
-        <span className="text-fine-print font-normal text-muted">{f.unit}</span>
+        <span className="text-caption-strong adaptive-text">{f.label}</span>
+        <span className="text-fine-print font-normal adaptive-muted">{f.unit}</span>
       </Label>
       {f.opts ? (
         <select
@@ -50,7 +50,7 @@ function FieldRow({ f, value, onChange, invalid }) {
           placeholder={String(f.ex)}
         />
       )}
-      <p className="text-fine-print mt-1 text-muted">
+      <p className="text-fine-print mt-1 adaptive-muted">
         {f.help === `${f.min}–${f.max}` ? f.help : `${f.help} · ${f.min}–${f.max}`}
       </p>
     </div>
@@ -129,7 +129,7 @@ function PredictForm({ datasets, meta, values, setValues, onReset, onSubmit, ini
               'min-h-[40px] cursor-pointer rounded-md px-4 py-2 text-caption-strong tabular transition-colors outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quantum',
               dataset === d.id
                 ? 'bg-classical text-quantum shadow-sm'
-                : 'text-muted hover:text-ink hover:bg-white/5'
+                : 'adaptive-muted hover:adaptive-text hover:bg-white/5'
             )}
           >
             {d.label}
@@ -138,7 +138,7 @@ function PredictForm({ datasets, meta, values, setValues, onReset, onSubmit, ini
       </div>
 
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-        <p className="text-caption text-muted">
+        <p className="text-caption adaptive-muted">
           {fields.length} clinical features · values stay in your browser until you run
         </p>
         <div className="flex gap-2">
@@ -147,11 +147,11 @@ function PredictForm({ datasets, meta, values, setValues, onReset, onSubmit, ini
             variant="outline"
             size="sm"
             onClick={() => setValues((prev) => ({ ...prev, [dataset]: defaultsFor(dataset, meta) }))}
-            className="border-hairline text-muted hover:text-ink hover:bg-glass"
+            className="border-hairline adaptive-muted hover:adaptive-text hover:bg-glass"
           >
             <Wand2 className="size-3.5" aria-hidden="true" /> Fill typical values
           </Button>
-          <Button type="button" variant="outline" size="sm" onClick={onReset} className="border-hairline text-muted hover:text-ink hover:bg-glass">
+          <Button type="button" variant="outline" size="sm" onClick={onReset} className="border-hairline adaptive-muted hover:adaptive-text hover:bg-glass">
             <RotateCcw className="size-3.5" aria-hidden="true" /> Reset
           </Button>
         </div>
@@ -168,9 +168,9 @@ function PredictForm({ datasets, meta, values, setValues, onReset, onSubmit, ini
           {groups.map((g) => (
             <AccordionItem key={g.id} value={g.id} className="border border-hairline rounded-lg overflow-hidden">
               <AccordionTrigger className="flex items-center justify-between px-4 py-3 bg-glass hover:bg-glass-strong transition-colors">
-                <span className="text-caption-strong text-ink">
+                <span className="text-caption-strong adaptive-text">
                   {g.label}
-                  <span className="ml-2 text-caption font-normal text-muted">({g.keys.length} features)</span>
+                  <span className="ml-2 text-caption font-normal adaptive-muted">({g.keys.length} features)</span>
                 </span>
               </AccordionTrigger>
               <AccordionContent className="p-4">
@@ -191,7 +191,7 @@ function PredictForm({ datasets, meta, values, setValues, onReset, onSubmit, ini
           Run a vector
         </Button>
         {!complete && (
-          <span className="text-caption mt-2 inline-block text-muted sm:mt-0">
+          <span className="text-caption mt-2 inline-block adaptive-muted sm:mt-0">
             {missingCount} value{missingCount > 1 ? 's' : ''} still needed
           </span>
         )}

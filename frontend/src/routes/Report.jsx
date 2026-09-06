@@ -63,7 +63,7 @@ export default function Report() {
   if (loading) {
     return (
       <div className="min-h-screen grid place-items-center">
-        <p className="text-caption text-muted">Generating screening report…</p>
+        <p className="text-caption adaptive-muted">Generating screening report…</p>
       </div>
     )
   }
@@ -73,7 +73,7 @@ export default function Report() {
       <div className="min-h-screen grid place-items-center px-5">
         <div className="glass-panel p-6 text-center max-w-md">
           <p className="text-body-strong text-warn">Could not generate report</p>
-          <p className="text-caption text-muted mt-2">{error}</p>
+          <p className="text-caption adaptive-muted mt-2">{error}</p>
           <Button onClick={() => navigate('/detect')} className="mt-4 bg-quantum text-void hover:bg-quantum-dim">
             Back to Detect
           </Button>
@@ -94,13 +94,13 @@ export default function Report() {
         <header className="mb-8 flex items-start justify-between gap-4 flex-wrap">
           <div>
             <div className="flex items-center gap-2 mb-3">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-glass px-3 py-1 text-fine-print text-quantum">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-glass px-3 py-1 text-fine-print adaptive-muted">
                 <FileText className="size-3" aria-hidden="true" />
                 Screening Report
               </span>
             </div>
-            <h1 className="text-display-lg text-ink">{report.title}</h1>
-            <p className="text-caption text-muted mt-2">
+            <h1 className="text-display-lg adaptive-text">{report.title}</h1>
+            <p className="text-caption adaptive-muted mt-2">
               {DISEASE_TITLES[report.disease] || report.disease} · {new Date(report.generated_at).toLocaleString()}
             </p>
           </div>
@@ -116,15 +116,15 @@ export default function Report() {
 
         {/* Outcome */}
         <section className="glass-panel p-6 mb-6">
-          <p className="text-caption-strong text-quantum tracking-[0.05em] mb-2" style={{ fontFamily: 'var(--font-display)' }}>
+          <p className="text-caption-strong adaptive-muted tracking-[0.05em] mb-2" style={{ fontFamily: 'var(--font-display)' }}>
             Screening outcome
           </p>
-          <h2 className="text-display-lg text-ink">{report.screening_outcome}</h2>
+          <h2 className="text-display-lg adaptive-text">{report.screening_outcome}</h2>
         </section>
 
         {/* Model scores */}
         <section className="glass-panel p-6 mb-6">
-          <h3 className="text-body-strong text-ink mb-4">Model scores</h3>
+          <h3 className="text-body-strong adaptive-text mb-4">Model scores</h3>
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="rounded-lg border border-classical/30 bg-classical/10 p-5">
               <p className="text-caption-strong adaptive-text">Classical ML</p>
@@ -135,45 +135,45 @@ export default function Report() {
               <p className="text-fine-print adaptive-muted mt-0.5">{ms.classical_ml.model_name}</p>
             </div>
             <div className="rounded-lg border border-quantum/30 bg-quantum/10 p-5">
-              <p className="text-caption-strong track-quantum">Quantum ML</p>
-              <p className="text-display-md tabular-display text-quantum mt-1">
+              <p className="text-caption-strong adaptive-text">Quantum ML</p>
+              <p className="text-display-md tabular-display adaptive-text mt-1">
                 {ms.quantum_ml.score != null ? (ms.quantum_ml.score * 100).toFixed(1) + '%' : '—'}
               </p>
-              <p className="text-fine-print text-muted mt-1">{ms.quantum_ml.prediction}</p>
-              <p className="text-fine-print text-muted mt-0.5">{ms.quantum_ml.model_name}</p>
+              <p className="text-fine-print adaptive-muted mt-1">{ms.quantum_ml.prediction}</p>
+              <p className="text-fine-print adaptive-muted mt-0.5">{ms.quantum_ml.model_name}</p>
             </div>
           </div>
-          <p className="text-caption text-muted mt-4">
+          <p className="text-caption adaptive-muted mt-4">
             {agr.explanation}
           </p>
         </section>
 
         {/* Key contributors */}
         <section className="glass-panel p-6 mb-6">
-          <h3 className="text-body-strong text-ink mb-4">Key contributors</h3>
+          <h3 className="text-body-strong adaptive-text mb-4">Key contributors</h3>
           {report.key_contributors.length > 0 ? (
             <ul className="space-y-2">
               {report.key_contributors.map((c, i) => (
                 <li key={c.feature} className="flex items-baseline gap-3 text-caption">
-                  <span className="text-fine-print text-quantum tabular w-6">#{i + 1}</span>
-                  <span className="text-ink font-medium">{c.feature}</span>
-                  <span className="text-muted">— {c.description}</span>
+                  <span className="text-fine-print adaptive-text tabular w-6">#{i + 1}</span>
+                  <span className="adaptive-text font-medium">{c.feature}</span>
+                  <span className="adaptive-muted">— {c.description}</span>
                 </li>
               ))}
             </ul>
           ) : (
-            <p className="text-caption text-muted">No top contributors were highlighted for this input.</p>
+            <p className="text-caption adaptive-muted">No top contributors were highlighted for this input.</p>
           )}
         </section>
 
         {/* Inputs used */}
         <section className="glass-panel p-6 mb-6">
-          <h3 className="text-body-strong text-ink mb-4">Inputs used</h3>
+          <h3 className="text-body-strong adaptive-text mb-4">Inputs used</h3>
           <dl className="grid gap-2 sm:grid-cols-2">
             {Object.entries(report.inputs_used || {}).map(([k, v]) => (
               <div key={k} className="flex justify-between text-caption border-b border-hairline pb-2">
-                <dt className="text-muted tabular">{k}</dt>
-                <dd className="text-ink tabular">{v}</dd>
+                <dt className="adaptive-muted tabular">{k}</dt>
+                <dd className="adaptive-text tabular">{v}</dd>
               </div>
             ))}
           </dl>
@@ -182,17 +182,17 @@ export default function Report() {
         {/* Explanation */}
         {report.explanation?.summary && (
           <section className="glass-panel p-6 mb-6">
-            <h3 className="text-body-strong text-ink mb-4">What this means</h3>
-            <p className="text-body text-muted">{report.explanation.summary}</p>
+            <h3 className="text-body-strong adaptive-text mb-4">What this means</h3>
+            <p className="text-body adaptive-muted">{report.explanation.summary}</p>
             {report.explanation.evidence?.length > 0 && (
               <div className="mt-4">
-                <h4 className="text-caption-strong text-quantum mb-2">Trusted evidence</h4>
+                <h4 className="text-caption-strong adaptive-muted mb-2">Trusted evidence</h4>
                 <ul className="space-y-3">
                   {report.explanation.evidence.map((e, i) => (
                     <li key={i} className="rounded-lg border border-hairline p-3">
-                      <p className="text-caption-strong text-ink">{e.title}</p>
-                      <p className="text-caption text-muted mt-1">{e.summary}</p>
-                      <p className="text-fine-print text-muted mt-1">Source: {e.source}</p>
+                      <p className="text-caption-strong adaptive-text">{e.title}</p>
+                      <p className="text-caption adaptive-muted mt-1">{e.summary}</p>
+                      <p className="text-fine-print adaptive-muted mt-1">Source: {e.source}</p>
                     </li>
                   ))}
                 </ul>
@@ -200,10 +200,10 @@ export default function Report() {
             )}
             {report.explanation.next_steps?.length > 0 && (
               <div className="mt-4">
-                <h4 className="text-caption-strong text-quantum mb-2">Next steps</h4>
+                <h4 className="text-caption-strong adaptive-muted mb-2">Next steps</h4>
                 <ul className="space-y-1">
                   {report.explanation.next_steps.map((s, i) => (
-                    <li key={i} className="text-caption text-muted">→ {s}</li>
+                    <li key={i} className="text-caption adaptive-muted">→ {s}</li>
                   ))}
                 </ul>
               </div>
@@ -213,8 +213,8 @@ export default function Report() {
 
         {/* Disclaimer */}
         <section className="rounded-lg border border-quantum/30 bg-quantum/5 p-5 mb-8">
-          <p className="text-caption-strong text-quantum mb-2">Disclaimer</p>
-          <p className="text-caption text-muted">{report.disclaimer}</p>
+          <p className="text-caption-strong adaptive-muted mb-2">Disclaimer</p>
+          <p className="text-caption adaptive-muted">{report.disclaimer}</p>
         </section>
 
         {/* Back */}
@@ -222,7 +222,7 @@ export default function Report() {
           <Button variant="ghost" onClick={() => navigate('/detect')} className="text-muted hover:text-ink">
             <ArrowLeft className="size-4" /> Back to Detect
           </Button>
-          <p className="text-fine-print text-muted">
+          <p className="text-fine-print adaptive-muted">
             Model version: {report.explanation?.model_version || 'vqc_4qubit'}
           </p>
         </div>

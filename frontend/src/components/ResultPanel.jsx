@@ -13,7 +13,7 @@ function ProbabilityBar({ label, sublabel, value, paradigm, leads }) {
   const pct = Math.round((value ?? 0) * 1000) / 10
   const isQuantum = paradigm === 'quantum'
   const barColor = isQuantum ? 'bg-quantum' : 'bg-classical'
-  const trackColor = isQuantum ? 'text-quantum' : 'adaptive-text'
+  const trackColor = 'adaptive-text'
   const bgColor = isQuantum ? 'bg-quantum/10' : 'bg-classical/10'
   const borderColor = isQuantum ? 'border-quantum/30' : 'border-classical/30'
 
@@ -22,10 +22,10 @@ function ProbabilityBar({ label, sublabel, value, paradigm, leads }) {
       <div className="flex items-baseline justify-between gap-2">
         <div>
           <p className={cn('text-caption-strong', trackColor)}>{label}</p>
-          <p className={cn('text-fine-print mt-0.5', isQuantum ? 'text-quantum/70' : 'adaptive-muted')}>{sublabel}</p>
+          <p className={cn('text-fine-print mt-0.5', 'adaptive-muted')}>{sublabel}</p>
         </div>
         {leads && (
-          <span className={cn('rounded-pill px-2 py-0.5 text-fine-print tabular', isQuantum ? 'bg-quantum/20 text-quantum' : 'bg-classical/20 adaptive-text')}>
+          <span className={cn('rounded-pill px-2 py-0.5 text-fine-print tabular', isQuantum ? 'bg-quantum/20 adaptive-text' : 'bg-classical/20 adaptive-text')}>
             leads
           </span>
         )}

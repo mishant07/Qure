@@ -46,7 +46,7 @@ function VideoHero() {
           <span className="block adaptive-text" style={{ animation: 'interference-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards' }}>
             Hybrid Quantum
           </span>
-          <span className="block mt-2 track-quantum" style={{ animation: 'interference-in-reverse 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards', opacity: 0 }}>
+          <span className="block mt-2 adaptive-text" style={{ animation: 'interference-in-reverse 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards', opacity: 0 }}>
             Disease Detection
           </span>
         </h1>
@@ -66,7 +66,7 @@ function VideoHero() {
               <ClipboardList className="size-4" /> Start Questionnaire
             </Link>
           </Button>
-          <Button asChild variant="outline" size="lg" className="border-hairline text-ink hover:bg-glass">
+          <Button asChild variant="outline" size="lg" className="border-hairline adaptive-text hover:bg-glass">
             <Link to="/upload" className="gap-2">
               <FileText className="size-4" /> Upload Lab Report
             </Link>
@@ -76,7 +76,7 @@ function VideoHero() {
         {/* Secondary action — direct detect (advanced users / judges) */}
         <Link
           to="/detect"
-          className="text-fine-print text-muted hover:text-ink transition-colors"
+          className="text-fine-print adaptive-muted hover:text-ink transition-colors"
         >
           or jump to manual entry →
         </Link>
@@ -95,10 +95,10 @@ function SihHero() {
       className="mx-auto max-w-[800px] glass-strong px-6 py-[80px] text-center sm:py-[100px]"
       style={{ borderRadius: '18px 18px 0 0', marginTop: '-18px' }}
     >
-      <h2 className="text-display-lg">
-        The same patient. <span className="track-quantum">Two verdicts.</span>
+      <h2 className="text-display-lg adaptive-text">
+        The same patient. <span>Two verdicts.</span>
       </h2>
-      <p className="text-lead-airy mx-auto mt-4 max-w-[52ch]" style={{ color: 'var(--color-muted)' }}>
+      <p className="text-lead-airy adaptive-muted mx-auto mt-4 max-w-[52ch]">
         A hybrid quantum pipeline runs alongside the best classical model on three clinical
         screening modules — and tells you honestly which one to believe.
       </p>
@@ -106,15 +106,15 @@ function SihHero() {
         <Button asChild size="lg" className="bg-quantum text-void hover:bg-quantum-dim">
           <Link to="/triage">Start questionnaire</Link>
         </Button>
-        <Button asChild variant="outline" size="lg" className="border-hairline text-ink hover:bg-glass">
+        <Button asChild variant="outline" size="lg" className="border-hairline adaptive-text hover:bg-glass">
           <a href="#how">See how it thinks</a>
         </Button>
-        <span className="flex items-center gap-1.5 rounded-full border border-hairline bg-glass px-3.5 py-1.5 text-caption text-muted">
+        <span className="flex items-center gap-1.5 rounded-full border border-hairline bg-glass px-3.5 py-1.5 text-caption adaptive-muted">
           <Atom className="size-3.5 text-quantum" aria-hidden="true" />
           4 qubits · exact simulation · ~2s
         </span>
       </div>
-      <p className="text-fine-print mx-auto mt-6 max-w-[48ch] text-quantum">
+      <p className="text-fine-print adaptive-muted mx-auto mt-6 max-w-[48ch]">
         Research demonstration on public UCI datasets. Not a medical device.
       </p>
     </section>
@@ -126,11 +126,11 @@ function HowItWorks() {
   return (
     <section id="how" className="py-[80px] scroll-mt-[96px]">
       <div className="mx-auto max-w-[980px] px-5">
-        <p className="text-caption-strong text-quantum tracking-[0.05em]" style={{ fontFamily: 'var(--font-display)' }}>
+        <p className="text-caption-strong adaptive-muted tracking-[0.05em]" style={{ fontFamily: 'var(--font-display)' }}>
           How it works
         </p>
-        <h2 className="text-display-lg mt-3 max-w-[24ch]">One vector in. Two thinking styles out.</h2>
-        <p className="text-lead-airy mt-4 max-w-[46ch]" style={{ color: 'var(--color-muted)' }}>
+        <h2 className="text-display-lg adaptive-text mt-3 max-w-[24ch]">One vector in. Two thinking styles out.</h2>
+        <p className="text-lead-airy adaptive-muted mt-4 max-w-[46ch]">
           Every patient vector passes through both tracks — the scoreboard decides which verdict earns your trust.
         </p>
 
@@ -164,7 +164,7 @@ function HowItWorks() {
           <div className="glass-panel p-6">
             <div className="mb-6 flex items-center gap-2">
               <span className="flex size-8 items-center justify-center rounded-full bg-quantum text-void text-caption-strong tabular" aria-hidden="true" style={{ fontFamily: 'var(--font-display)' }}>02</span>
-              <h3 className="text-tagline track-quantum">Quantum Track</h3>
+              <h3 className="text-tagline adaptive-text">Quantum Track</h3>
             </div>
             <ol className="space-y-5">
               {[
@@ -174,7 +174,7 @@ function HowItWorks() {
               ].map(([t, d], i) => (
                 <li key={t} className="border-t border-hairline py-4 first:border-t-0 first:pt-0">
                   <div className="flex items-baseline gap-4">
-                    <span className="text-caption-strong tabular track-quantum" style={{ fontFamily: 'var(--font-display)' }}>{String(i + 1).padStart(2, '0')}</span>
+                    <span className="text-caption-strong tabular adaptive-text" style={{ fontFamily: 'var(--font-display)' }}>{String(i + 1).padStart(2, '0')}</span>
                     <div>
                       <p className="text-body-strong adaptive-text">{t}</p>
                       <p className="text-caption mt-1 adaptive-muted">{d}</p>
@@ -195,7 +195,7 @@ function BenchmarkSection() {
   return (
     <section id="benchmark" className="py-[80px] scroll-mt-[96px]">
       <div className="mx-auto max-w-[980px] px-5">
-        <p className="text-caption-strong text-quantum tracking-[0.05em]" style={{ fontFamily: 'var(--font-display)' }}>
+        <p className="text-caption-strong adaptive-muted tracking-[0.05em]" style={{ fontFamily: 'var(--font-display)' }}>
           Benchmarks
         </p>
         <h2 className="text-display-lg adaptive-text mt-3 max-w-[26ch]">Quantum wins sometimes. We say when it doesn't.</h2>

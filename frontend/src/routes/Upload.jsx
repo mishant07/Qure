@@ -120,13 +120,13 @@ export default function UploadPage() {
         {/* Header */}
         <header className="mb-8">
           <div className="flex items-center gap-2 mb-3">
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-glass px-3 py-1 text-fine-print text-quantum">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-glass px-3 py-1 text-fine-print adaptive-muted">
               <Upload className="size-3" aria-hidden="true" />
               Upload Lab Report
             </span>
           </div>
-          <h1 className="text-display-lg">Upload your report.</h1>
-          <p className="text-body mt-2 text-muted max-w-[600px]">
+          <h1 className="text-display-lg adaptive-text">Upload your report.</h1>
+          <p className="text-body mt-2 adaptive-muted max-w-[600px]">
             We'll extract candidate clinical values, let you review and edit them, then run the screening.
             Nothing is sent to the models until you confirm.
           </p>
@@ -149,7 +149,7 @@ export default function UploadPage() {
               >
                 {i < stepIdx ? '✓' : i + 1}
               </span>
-              <span className={`text-caption ${i === stepIdx ? 'text-ink' : 'text-muted'}`}>{s.label}</span>
+              <span className={`text-caption ${i === stepIdx ? 'adaptive-text' : 'adaptive-muted'}`}>{s.label}</span>
               {i < STEPS.length - 1 && <ArrowRight className="size-3 text-muted" aria-hidden="true" />}
             </li>
           ))}
@@ -158,7 +158,7 @@ export default function UploadPage() {
         {/* Step: select pathway */}
         {step === 'select' && (
           <div className="glass-panel p-6">
-            <h2 className="text-body-strong text-ink mb-4">Which pathway does this report cover?</h2>
+            <h2 className="text-body-strong adaptive-text mb-4">Which pathway does this report cover?</h2>
             <div className="grid gap-3 sm:grid-cols-2">
               {[
                 { id: 'musa_heart', name: 'Heart Disease', desc: 'UCI Cleveland 13-feature screening' },
@@ -171,8 +171,8 @@ export default function UploadPage() {
                   onClick={() => selectPathway(p.id)}
                   className="text-left rounded-lg border border-hairline hover:border-quantum/40 hover:bg-quantum/5 p-4 transition-colors"
                 >
-                  <h3 className="text-body-strong text-ink">{p.name}</h3>
-                  <p className="text-caption text-muted mt-1">{p.desc}</p>
+                  <h3 className="text-body-strong adaptive-text">{p.name}</h3>
+                  <p className="text-caption adaptive-muted mt-1">{p.desc}</p>
                 </button>
               ))}
             </div>
@@ -182,8 +182,8 @@ export default function UploadPage() {
         {/* Step: upload */}
         {step === 'upload' && (
           <div className="glass-panel p-6">
-            <h2 className="text-body-strong text-ink mb-1">Upload lab report — {PATHWAY_LABELS[disease]}</h2>
-            <p className="text-caption text-muted mb-5">PDF or text file. Maximum 5 MB.</p>
+            <h2 className="text-body-strong adaptive-text mb-1">Upload lab report — {PATHWAY_LABELS[disease]}</h2>
+            <p className="text-caption adaptive-muted mb-5">PDF or text file. Maximum 5 MB.</p>
 
             <div
               className="rounded-lg border-2 border-dashed border-hairline p-8 text-center cursor-pointer hover:border-quantum/40 transition-colors"
@@ -214,8 +214,8 @@ export default function UploadPage() {
               <FileText className="mx-auto size-10 text-quantum mb-3" aria-hidden="true" />
               {file ? (
                 <div>
-                  <p className="text-body-strong text-ink">{file.name}</p>
-                  <p className="text-caption text-muted mt-1">
+                  <p className="text-body-strong adaptive-text">{file.name}</p>
+                  <p className="text-caption adaptive-muted mt-1">
                     {(file.size / 1024).toFixed(1)} KB · {file.type || 'unknown type'}
                   </p>
                   <button
@@ -228,8 +228,8 @@ export default function UploadPage() {
                 </div>
               ) : (
                 <div>
-                  <p className="text-body-strong text-ink">Drag a file here, or click to choose</p>
-                  <p className="text-caption text-muted mt-1">PDF or plain text</p>
+                  <p className="text-body-strong adaptive-text">Drag a file here, or click to choose</p>
+                  <p className="text-caption adaptive-muted mt-1">PDF or plain text</p>
                 </div>
               )}
             </div>
@@ -261,21 +261,21 @@ export default function UploadPage() {
         {step === 'review' && review && (
           <div className="space-y-6">
             <div className="glass-panel p-6">
-              <h2 className="text-body-strong text-ink mb-1">Review extracted values</h2>
-              <p className="text-caption text-muted mb-4">
+              <h2 className="text-body-strong adaptive-text mb-1">Review extracted values</h2>
+              <p className="text-caption adaptive-muted mb-4">
                 {review.note}
               </p>
               <div className="grid gap-3 sm:grid-cols-3 text-caption mb-4">
                 <div className="rounded-lg border border-hairline p-3">
-                  <p className="text-muted">Extracted</p>
-                  <p className="text-display-md text-quantum tabular">{review.extracted_count}/{review.rows.length}</p>
+                  <p className="adaptive-muted">Extracted</p>
+                  <p className="text-display-md adaptive-text tabular">{review.extracted_count}/{review.rows.length}</p>
                 </div>
                 <div className="rounded-lg border border-hairline p-3">
-                  <p className="text-muted">Missing</p>
+                  <p className="adaptive-muted">Missing</p>
                   <p className="text-display-md text-warn tabular">{review.missing_count}</p>
                 </div>
                 <div className="rounded-lg border border-hairline p-3">
-                  <p className="text-muted">Uncertain</p>
+                  <p className="adaptive-muted">Uncertain</p>
                   <p className="text-display-md text-caution tabular">{review.uncertain_count}</p>
                 </div>
               </div>
@@ -293,9 +293,9 @@ export default function UploadPage() {
                     }`}
                   >
                     <div>
-                      <p className="text-caption-strong text-ink tabular">{row.field}</p>
+                      <p className="text-caption-strong adaptive-text tabular">{row.field}</p>
                       {row.source_text && (
-                        <p className="text-fine-print text-muted mt-0.5 truncate" title={row.source_text}>
+                        <p className="text-fine-print adaptive-muted mt-0.5 truncate" title={row.source_text}>
                           <Eye className="inline size-3 mr-0.5" aria-hidden="true" />
                           "{row.source_text}"
                         </p>
@@ -308,7 +308,7 @@ export default function UploadPage() {
                       placeholder="enter value"
                       className={row.missing ? 'border-warn' : row.uncertain ? 'border-caution' : ''}
                     />
-                    <div className="text-fine-print text-muted">
+                    <div className="text-fine-print adaptive-muted">
                       {row.missing ? (
                         <span className="text-warn flex items-center gap-1">
                           <AlertCircle className="size-3" aria-hidden="true" /> Missing — please enter
@@ -318,7 +318,7 @@ export default function UploadPage() {
                           <AlertCircle className="size-3" aria-hidden="true" /> Verify
                         </span>
                       ) : (
-                        <span className="text-quantum flex items-center gap-1">
+                        <span className="adaptive-text flex items-center gap-1">
                           <Check className="size-3" aria-hidden="true" /> Extracted
                         </span>
                       )}
@@ -364,17 +364,17 @@ export default function UploadPage() {
                 <div className="mx-auto size-12 rounded-full bg-quantum/15 flex items-center justify-center mb-3 animate-pulse">
                   <FileText className="size-6 text-quantum" aria-hidden="true" />
                 </div>
-                <p className="text-body-strong text-ink">Running screening…</p>
-                <p className="text-caption text-muted mt-1">
+                <p className="text-body-strong adaptive-text">Running screening…</p>
+                <p className="text-caption adaptive-muted mt-1">
                   Validating inputs · preprocessing · classical ML · quantum ML · comparison
                 </p>
               </div>
             ) : result ? (
               <div className="glass-panel p-6 sm:p-8">
-                <p className="text-caption-strong text-quantum tracking-[0.05em] mb-2" style={{ fontFamily: 'var(--font-display)' }}>
+                <p className="text-caption-strong adaptive-muted tracking-[0.05em] mb-2" style={{ fontFamily: 'var(--font-display)' }}>
                   Screening complete — {PATHWAY_LABELS[disease]}
                 </p>
-                <h2 className="text-display-lg text-ink">
+                <h2 className="text-display-lg adaptive-text">
                   {result.risk === 'HIGH' ? 'Higher-risk pattern detected' : result.risk === 'MODERATE' ? 'Moderate-risk pattern detected' : 'Lower-risk pattern'}
                 </h2>
                 <div className="mt-6 grid gap-4 sm:grid-cols-2">
@@ -386,11 +386,11 @@ export default function UploadPage() {
                     <p className="text-fine-print adaptive-muted mt-0.5">{result.ml_model}</p>
                   </div>
                   <div className="rounded-lg border border-quantum/30 bg-quantum/10 p-4">
-                    <p className="text-caption-strong track-quantum">Quantum ML</p>
-                    <p className="text-display-md tabular-display mt-1 text-quantum">
+                    <p className="text-caption-strong adaptive-text">Quantum ML</p>
+                    <p className="text-display-md tabular-display mt-1 adaptive-text">
                       {((result.qml_probability ?? 0) * 100).toFixed(1)}%
                     </p>
-                    <p className="text-fine-print text-muted mt-0.5">{result.qml_model}</p>
+                    <p className="text-fine-print adaptive-muted mt-0.5">{result.qml_model}</p>
                   </div>
                 </div>
                 <div className="mt-6 flex flex-wrap items-center justify-between gap-3">

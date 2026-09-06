@@ -15,9 +15,12 @@ a{color:inherit}
 #root{position:relative;z-index:1}
 
 /* === Glass panels — substrate, not ornament === */
-.glass{background:rgba(255,255,255,0.04);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.06);border-radius:18px;box-shadow:0 8px 32px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,255,255,0.04)}
-.glass-strong{background:rgba(255,255,255,0.07);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,0.1);border-radius:18px;box-shadow:0 8px 32px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.06)}
-.glass-dark{background:rgba(3,3,7,0.7);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.05);border-radius:18px;box-shadow:0 8px 32px rgba(0,0,0,0.5),inset 0 1px 0 rgba(255,255,255,0.03)}
+/* NOTE: no backdrop-filter here — it creates a backdrop root that isolates
+   mix-blend-mode (difference) text from the fixed background video, so panel
+   text couldn't adapt. The translucent tint + shadow keep depth instead. */
+.glass{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:18px;box-shadow:0 8px 32px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,255,255,0.04)}
+.glass-strong{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:18px;box-shadow:0 8px 32px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.06)}
+.glass-dark{background:rgba(3,3,7,0.7);border:1px solid rgba(255,255,255,0.05);border-radius:18px;box-shadow:0 8px 32px rgba(0,0,0,0.5),inset 0 1px 0 rgba(255,255,255,0.03)}
 
 /* === Selection & focus — quantum teal ring === */
 ::selection{background:rgba(0,212,170,0.3);color:#030307}

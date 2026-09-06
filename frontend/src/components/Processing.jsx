@@ -18,7 +18,7 @@ export default function Processing({ currentStep = 'validate', completed = new S
 
   return (
     <div className="glass-panel p-6">
-      <p className="text-caption-strong text-quantum tracking-[0.05em] mb-4" style={{ fontFamily: 'var(--font-display)' }}>
+      <p className="text-caption-strong adaptive-muted tracking-[0.05em] mb-4" style={{ fontFamily: 'var(--font-display)' }}>
         Processing pipeline
       </p>
       <ol className="space-y-3">
@@ -33,7 +33,7 @@ export default function Processing({ currentStep = 'validate', completed = new S
                     ? 'bg-quantum text-void'
                     : isCurrent
                     ? 'bg-classical text-quantum'
-                    : 'bg-glass border border-hairline text-muted'
+                    : 'bg-glass border border-hairline adaptive-muted'
                 }`}
                 style={{ fontFamily: 'var(--font-display)' }}
                 aria-hidden="true"
@@ -42,13 +42,13 @@ export default function Processing({ currentStep = 'validate', completed = new S
               </span>
               <span
                 className={`text-caption ${
-                  isDone ? 'text-ink' : isCurrent ? 'text-ink' : 'text-muted'
+                  isDone ? 'adaptive-text' : isCurrent ? 'adaptive-text' : 'adaptive-muted'
                 }`}
               >
                 {s.label}
               </span>
               {isCurrent && (
-                <span className="text-fine-print text-quantum ml-auto">running…</span>
+                <span className="text-fine-print adaptive-text ml-auto">running…</span>
               )}
             </li>
           )

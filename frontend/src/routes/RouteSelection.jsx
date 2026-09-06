@@ -75,13 +75,13 @@ export default function RouteSelection() {
         {/* Header */}
         <header className="mb-8">
           <div className="flex items-center gap-2 mb-3">
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-glass px-3 py-1 text-fine-print text-quantum">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-glass px-3 py-1 text-fine-print adaptive-muted">
               Step 2 of 3
             </span>
-            <span className="text-fine-print text-muted">Screening pathway</span>
+            <span className="text-fine-print adaptive-muted">Screening pathway</span>
           </div>
           <h1 className="text-display-lg">Recommended pathways</h1>
-          <p className="text-body mt-2 text-muted max-w-[680px]">
+          <p className="text-body mt-2 adaptive-muted max-w-[680px]">
             {result.rationale}
           </p>
         </header>
@@ -89,7 +89,7 @@ export default function RouteSelection() {
         {/* Recommended (highlighted) */}
         {recommended.size > 0 && (
           <section className="mb-8">
-            <p className="text-caption-strong text-quantum tracking-[0.05em] mb-4" style={{ fontFamily: 'var(--font-display)' }}>
+            <p className="text-caption-strong adaptive-muted tracking-[0.05em] mb-4" style={{ fontFamily: 'var(--font-display)' }}>
               Strongly recommended
             </p>
             <div className="grid gap-4 sm:grid-cols-2">
@@ -114,14 +114,14 @@ export default function RouteSelection() {
                       </div>
                       <div className="flex-1">
                         <div className="flex items-center gap-2">
-                          <h3 className="text-body-strong text-ink">{p.name}</h3>
+                          <h3 className="text-body-strong adaptive-text">{p.name}</h3>
                           {p.family === 'musa' && (
-                            <span className="rounded-pill bg-glass border border-hairline px-2 py-0.5 text-fine-print text-muted">
+                            <span className="rounded-pill bg-glass border border-hairline px-2 py-0.5 text-fine-print adaptive-muted">
                               Musa module
                             </span>
                           )}
                         </div>
-                        <p className="text-caption text-muted mt-1">{p.desc}</p>
+                        <p className="text-caption adaptive-muted mt-1">{p.desc}</p>
                       </div>
                       {selected.has(id) && (
                         <div className="size-6 rounded-full bg-quantum grid place-items-center shrink-0">
@@ -138,7 +138,7 @@ export default function RouteSelection() {
 
         {/* All pathways (greyed) */}
         <section className="mb-8">
-          <p className="text-caption-strong text-muted tracking-[0.05em] mb-4" style={{ fontFamily: 'var(--font-display)' }}>
+          <p className="text-caption-strong adaptive-muted tracking-[0.05em] mb-4" style={{ fontFamily: 'var(--font-display)' }}>
             All available pathways
           </p>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -159,8 +159,8 @@ export default function RouteSelection() {
                   <div className="flex items-start gap-3">
                     <Icon className={`size-5 mt-0.5 ${selected.has(p.id) ? 'text-quantum' : 'text-muted'}`} aria-hidden="true" />
                     <div className="flex-1">
-                      <h4 className="text-caption-strong text-ink">{p.name}</h4>
-                      <p className="text-fine-print text-muted mt-0.5">{p.desc}</p>
+                      <h4 className="text-caption-strong adaptive-text">{p.name}</h4>
+                      <p className="text-fine-print adaptive-muted mt-0.5">{p.desc}</p>
                     </div>
                     {isRec && (
                       <span className="rounded-pill bg-quantum/15 text-quantum text-fine-print px-2 py-0.5">recommended</span>

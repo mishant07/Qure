@@ -52,10 +52,10 @@ export default function ResultsDashboard({ result, disease, datasetLabel }) {
     <div className="space-y-6">
       {/* Main results card — SIH style */}
       <div className="glass-panel p-6 sm:p-8">
-        <p className="text-caption-strong text-quantum tracking-[0.12em] uppercase" style={{ fontFamily: 'var(--font-display)' }}>
+        <p className="text-caption-strong adaptive-muted tracking-[0.12em] uppercase" style={{ fontFamily: 'var(--font-display)' }}>
           {title} screening
         </p>
-        <h2 className="text-display-lg text-ink mt-2">
+        <h2 className="text-display-lg adaptive-text mt-2">
           <span className={cn('inline-block rounded-pill px-3 py-1 text-caption-strong mr-3 align-middle', RISK_STYLE[risk] ?? 'risk-low')}>
             {risk.toLowerCase()} risk
           </span>
@@ -79,9 +79,9 @@ export default function ResultsDashboard({ result, disease, datasetLabel }) {
           <div className="rounded-lg border border-quantum/30 bg-quantum/10 p-5">
             <div className="flex items-center gap-2 mb-1">
               <span className="size-4 rounded-full bg-quantum" aria-hidden="true" />
-              <p className="text-caption-strong track-quantum">Quantum ML</p>
+              <p className="text-caption-strong adaptive-text">Quantum ML</p>
             </div>
-            <p className="text-display-md tabular-display text-quantum">
+            <p className="text-display-md tabular-display adaptive-text">
               {((result.qml_probability ?? 0) * 100).toFixed(1)}%
             </p>
             <p className="text-fine-print adaptive-muted mt-1">
@@ -101,7 +101,7 @@ export default function ResultsDashboard({ result, disease, datasetLabel }) {
             {agree ? <Check className="size-4" /> : <X className="size-4" />}
             {agree ? 'Models agree' : 'Models disagree — review the explanation below'}
           </span>
-          <span className="text-fine-print text-muted">
+          <span className="text-fine-print adaptive-muted">
             demo offset applied to quantum track
           </span>
         </div>
@@ -129,7 +129,7 @@ export default function ResultsDashboard({ result, disease, datasetLabel }) {
           </div>
         )}
 
-        <p className="text-micro-legal mt-6 border-t border-hairline pt-4 text-quantum">
+        <p className="text-micro-legal mt-6 border-t border-hairline pt-4 adaptive-muted">
           Screening aid only — not a medical diagnosis. Do not label a model score as the patient's
           actual probability of disease unless the pipeline has been properly calibrated and that
           interpretation is justified.
@@ -153,25 +153,25 @@ export default function ResultsDashboard({ result, disease, datasetLabel }) {
       {/* RAG explanation card — trusted evidence */}
       {explanation && (
         <div className="glass-panel p-6">
-          <h3 className="text-body-strong text-ink flex items-center gap-2">
+          <h3 className="text-body-strong adaptive-text flex items-center gap-2">
             <BookOpen className="size-4 text-quantum" aria-hidden="true" />
             What this result means
           </h3>
-          <p className="text-body text-muted mt-3 max-w-[60ch]">
+          <p className="text-body adaptive-muted mt-3 max-w-[60ch]">
             {explanation.summary}
           </p>
 
           {explanation.evidence?.length > 0 && (
             <div className="mt-5">
-              <h4 className="text-caption-strong text-quantum tracking-[0.05em] mb-3" style={{ fontFamily: 'var(--font-display)' }}>
+              <h4 className="text-caption-strong adaptive-muted tracking-[0.05em] mb-3" style={{ fontFamily: 'var(--font-display)' }}>
                 Trusted evidence
               </h4>
               <ul className="space-y-3">
                 {explanation.evidence.map((e, i) => (
                   <li key={i} className="rounded-lg border border-hairline p-4">
-                    <p className="text-body-strong text-ink">{e.title}</p>
-                    <p className="text-caption text-muted mt-1">{e.summary}</p>
-                    <p className="text-fine-print text-muted mt-2">
+                    <p className="text-body-strong adaptive-text">{e.title}</p>
+                    <p className="text-caption adaptive-muted mt-1">{e.summary}</p>
+                    <p className="text-fine-print adaptive-muted mt-2">
                       Source: {e.source}{' '}
                       {e.url && (
                         <a
@@ -192,13 +192,13 @@ export default function ResultsDashboard({ result, disease, datasetLabel }) {
 
           {explanation.next_steps?.length > 0 && (
             <div className="mt-5">
-              <h4 className="text-caption-strong text-quantum tracking-[0.05em] mb-3" style={{ fontFamily: 'var(--font-display)' }}>
+              <h4 className="text-caption-strong adaptive-muted tracking-[0.05em] mb-3" style={{ fontFamily: 'var(--font-display)' }}>
                 Next-step guidance
               </h4>
               <ul className="space-y-2">
                 {explanation.next_steps.map((s, i) => (
-                  <li key={i} className="flex items-baseline gap-2 text-caption text-muted">
-                    <span className="text-quantum shrink-0">→</span>
+                  <li key={i} className="flex items-baseline gap-2 text-caption adaptive-muted">
+                    <span className="adaptive-text shrink-0">→</span>
                     <span>{s}</span>
                   </li>
                 ))}

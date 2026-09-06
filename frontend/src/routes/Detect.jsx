@@ -78,18 +78,18 @@ export default function Detect() {
         <header className="mb-8 max-w-[900px]">
           <div className="flex items-center justify-between gap-4 mb-4 flex-wrap">
             <div className="flex items-center gap-3">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-glass px-3 py-1 text-fine-print text-quantum">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-glass px-3 py-1 text-fine-print adaptive-muted">
                 <Zap className="size-3" aria-hidden="true" />
                 Live inference
               </span>
             </div>
           </div>
           <div className="flex items-center gap-4 flex-wrap">
-            <h1 className="text-display-lg">Run a vector.</h1>
+            <h1 className="text-display-lg adaptive-text">Run a vector.</h1>
             <span className="flex size-6 items-center justify-center rounded-full bg-classical text-quantum text-fine-print tabular" aria-hidden="true" style={{ fontFamily: 'var(--font-display)' }}>01</span>
             <h2 className="text-tagline adaptive-text">Classical Track</h2>
             <span className="flex size-6 items-center justify-center rounded-full bg-quantum text-void text-fine-print tabular" aria-hidden="true" style={{ fontFamily: 'var(--font-display)' }}>02</span>
-            <h2 className="text-tagline track-quantum">Quantum Track</h2>
+            <h2 className="text-tagline adaptive-text">Quantum Track</h2>
           </div>
           <p className="text-body mt-2 adaptive-muted max-w-[600px]">
             Enter clinical measurements. Get two verdicts — classical and quantum — side by side, honestly labeled.
@@ -133,7 +133,7 @@ export default function Detect() {
                   <div className="mx-auto size-10 rounded-full bg-quantum/15 flex items-center justify-center mb-3 animate-pulse">
                     <Zap className="size-5 text-quantum" aria-hidden="true" />
                   </div>
-                  <p className="text-caption text-muted">
+                  <p className="text-caption adaptive-muted">
                     Models running on the same validated input. Honest comparison once they return.
                   </p>
                 </div>
@@ -161,7 +161,7 @@ export default function Detect() {
                       <div className="mx-auto mb-3 size-10 rounded-full bg-glass flex items-center justify-center">
                         <Zap className="size-5 text-muted" aria-hidden="true" />
                       </div>
-                      <p className="text-caption text-muted">
+                      <p className="text-caption adaptive-muted">
                         Your screening appears here. Nothing is stored, nothing leaves the page until you run.
                       </p>
                     </div>

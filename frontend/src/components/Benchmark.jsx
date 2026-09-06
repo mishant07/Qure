@@ -62,7 +62,7 @@ export default function Benchmark() {
       {/* Scoreboard — stat cards with paradigm colors */}
       <div className="mb-8 grid gap-4 sm:grid-cols-3">
         <div className="glass-panel p-5 text-center">
-          <p className="text-display-md font-medium tabular-display track-quantum">{quantumWins}/3</p>
+          <p className="text-display-md font-medium tabular-display adaptive-text">{quantumWins}/3</p>
           <p className="text-caption mt-1 adaptive-muted">modules where the VQC leads on F1</p>
         </div>
         <div className="glass-panel p-5 text-center">
@@ -70,7 +70,7 @@ export default function Benchmark() {
           <p className="text-caption mt-1 adaptive-muted">largest F1 gap favouring the classical model</p>
         </div>
         <div className="glass-panel p-5 text-center">
-          <p className="text-display-md font-medium tabular-display track-quantum">4</p>
+          <p className="text-display-md font-medium tabular-display adaptive-text">4</p>
           <p className="text-caption mt-1 adaptive-muted">qubits per VQC — exact simulation, no sampling noise</p>
         </div>
       </div>
@@ -114,7 +114,7 @@ export default function Benchmark() {
             <tr className="bg-glass text-caption-strong">
               <th scope="col" className="px-4 py-3 font-medium adaptive-muted tabular" style={{ fontFamily: 'var(--font-display)' }}>Dataset</th>
               <th scope="col" className="px-4 py-3 font-medium adaptive-muted tabular">Classical F1</th>
-              <th scope="col" className="px-4 py-3 font-medium tabular text-quantum">VQC F1</th>
+              <th scope="col" className="px-4 py-3 font-medium adaptive-muted tabular">VQC F1</th>
               <th scope="col" className="px-4 py-3 font-medium adaptive-muted tabular">Honest Verdict</th>
             </tr>
           </thead>
@@ -123,7 +123,7 @@ export default function Benchmark() {
               <tr key={r.name} className={cn('border-t border-hairline', i % 2 ? 'bg-glass' : 'bg-transparent')}>
                 <th scope="row" className="px-4 py-3 font-medium adaptive-text tabular" style={{ fontFamily: 'var(--font-display)' }}>{r.name}</th>
                 <td className="px-4 py-3 adaptive-text tabular">{(r.classical * 100).toFixed(1)}%</td>
-                <td className="px-4 py-3 text-quantum tabular">{(r.quantum * 100).toFixed(1)}%</td>
+                <td className="px-4 py-3 adaptive-text tabular">{(r.quantum * 100).toFixed(1)}%</td>
                 <td className="px-4 py-3">
                   <span className={cn(
                     'inline-flex items-center gap-1.5 rounded-pill px-2.5 py-1 text-fine-print tabular',

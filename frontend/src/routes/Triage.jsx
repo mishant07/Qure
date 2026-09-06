@@ -39,7 +39,7 @@ export default function Triage() {
       <div className="min-h-screen grid place-items-center">
         <div className="text-center">
           <ClipboardList className="mx-auto size-8 text-quantum mb-3" aria-hidden="true" />
-          <p className="text-caption text-muted">Loading screening questions…</p>
+          <p className="text-caption adaptive-muted">Loading screening questions…</p>
         </div>
       </div>
     )
@@ -101,14 +101,14 @@ export default function Triage() {
         {/* Header */}
         <header className="mb-8">
           <div className="flex items-center gap-2 mb-3">
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-glass px-3 py-1 text-fine-print text-quantum">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-glass px-3 py-1 text-fine-print adaptive-muted">
               <ClipboardList className="size-3" aria-hidden="true" />
               Step 1 of 3
             </span>
-            <span className="text-fine-print text-muted">Screening questionnaire</span>
+            <span className="text-fine-print adaptive-muted">Screening questionnaire</span>
           </div>
           <h1 className="text-display-lg">Five short questions.</h1>
-          <p className="text-body mt-2 text-muted max-w-[560px]">
+          <p className="text-body mt-2 adaptive-muted max-w-[560px]">
             These route you to relevant screening pathways. They do not diagnose.
             This is a screening aid, not a clinical assessment.
           </p>
@@ -116,7 +116,7 @@ export default function Triage() {
 
         {/* Progress bar */}
         <div className="mb-8">
-          <div className="flex items-center justify-between text-fine-print text-muted mb-2">
+          <div className="flex items-center justify-between text-fine-print adaptive-muted mb-2">
             <span>Question {step + 1} of {total}</span>
             <span className="tabular">{progressPct}%</span>
           </div>
@@ -130,13 +130,13 @@ export default function Triage() {
 
         {/* Question card */}
         <div className="glass-panel p-6 sm:p-8">
-          <p className="text-caption-strong text-quantum tracking-[0.05em] mb-3" style={{ fontFamily: 'var(--font-display)' }}>
+          <p className="text-caption-strong adaptive-muted tracking-[0.05em] mb-3" style={{ fontFamily: 'var(--font-display)' }}>
             Question {step + 1}
           </p>
-          <h2 className="text-display-md text-ink mb-6">
+          <h2 className="text-display-md adaptive-text mb-6">
             {current.question}
           </h2>
-          <p className="text-caption text-muted mb-6 max-w-[600px]">
+          <p className="text-caption adaptive-muted mb-6 max-w-[600px]">
             <em>Why we ask:</em> {current.rationale}
           </p>
 
@@ -148,7 +148,7 @@ export default function Triage() {
               className={`min-h-[60px] rounded-lg border px-4 py-3 text-body-strong transition-colors ${
                 answers[current.id] === 'yes'
                   ? 'bg-quantum/15 border-quantum text-quantum'
-                  : 'border-hairline text-ink hover:bg-glass'
+                  : 'border-hairline adaptive-text hover:bg-glass'
               }`}
             >
               Yes
@@ -159,7 +159,7 @@ export default function Triage() {
               className={`min-h-[60px] rounded-lg border px-4 py-3 text-body-strong transition-colors ${
                 answers[current.id] === 'no'
                   ? 'bg-classical/20 border-classical/60 adaptive-text'
-                  : 'border-hairline text-ink hover:bg-glass'
+                  : 'border-hairline adaptive-text hover:bg-glass'
               }`}
             >
               No
