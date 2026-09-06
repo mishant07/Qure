@@ -9,8 +9,8 @@ import { Button } from '../components/ui/button'
 function ProjectStats() {
   const stats = [
     { icon: Activity, val: '3', label: 'Clinical Modules' },
-    { icon: Atom, val: '4', label: 'Qubit VQC' },
-    { icon: Brain, val: '98.4%', label: 'Best Classical F1' },
+    { icon: Atom, val: '4–8', label: 'Qubit VQC' },
+    { icon: Brain, val: '98.5%', label: 'Best Classical F1' },
     { icon: ArrowRight, val: '~2s', label: 'Inference' },
   ]
   return (
@@ -69,8 +69,8 @@ function VideoHero() {
           className="mx-auto max-w-[min(600px,92%)] text-body adaptive-muted"
           style={{ fontSize: 'clamp(1rem, 1.4vw, 1.125rem)' }}
         >
-          Classical ML meets 4-qubit variational quantum circuits on three clinical
-          screening modules. Same test set. Honest benchmarks. No medical advice.
+          Classical ML meets variational quantum circuits (up to 8 qubits) on three
+          clinical screening modules. Same test set. Honest benchmarks. No medical advice.
         </p>
 
         {/* Two clear entry actions per SIH guide: Start Questionnaire + Upload Lab Report */}
@@ -113,8 +113,8 @@ function SihHero() {
         The same patient. <span>Two verdicts.</span>
       </h2>
       <p className="text-lead-airy adaptive-muted mx-auto mt-4 max-w-[52ch]">
-        A hybrid quantum pipeline runs alongside the best classical model on three clinical
-        screening modules — and tells you honestly which one to believe.
+        A 4-qubit variational quantum circuit runs alongside the best classical model on
+        three clinical screening modules — and tells you honestly which one to believe.
       </p>
       <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
         <Button asChild size="lg" className="bg-quantum text-void hover:bg-quantum-dim">
@@ -182,8 +182,8 @@ function HowItWorks() {
             </div>
             <ol className="space-y-5">
               {[
-                ['Compress', 'PCA folds the clinical panel into 4 numbers per module.'],
-                ['Encode', 'Four qubits rotate into the data\'s geometry.'],
+                ['Compress', 'PCA folds each clinical panel down — the 8-qubit diabetes VQC keeps 91.3% of variance.'],
+                ['Encode', 'Up to eight qubits rotate into the data\'s geometry.'],
                 ['Run', 'A variational circuit votes on every vector — honestly scored.'],
               ].map(([t, d], i) => (
                 <li key={t} className="border-t border-hairline py-4 first:border-t-0 first:pt-0">

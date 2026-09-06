@@ -70,7 +70,7 @@ export default function Benchmark() {
           <p className="text-caption mt-1 adaptive-muted">largest F1 gap favouring the classical model</p>
         </div>
         <div className="glass-panel p-5 text-center">
-          <p className="text-display-md font-medium tabular-display adaptive-text">4</p>
+          <p className="text-display-md font-medium tabular-display adaptive-text">4–8</p>
           <p className="text-caption mt-1 adaptive-muted">qubits per VQC — exact simulation, no sampling noise</p>
         </div>
       </div>
@@ -95,7 +95,7 @@ export default function Benchmark() {
                   <Tooltip content={<TooltipBox />} cursor={{ fill: 'rgba(0,212,170,0.08)' }} />
                   <Legend iconType="circle" iconSize={8} wrapperClassName="text-caption adaptive-muted" />
                   <Bar dataKey="classical" name="Classical" fill="#1D1D1F" radius={[4, 4, 0, 0]} maxBarSize={28} />
-                  <Bar dataKey="quantum" name="4-qubit VQC" fill="#00D4AA" radius={[4, 4, 0, 0]} maxBarSize={28} />
+                  <Bar dataKey="quantum" name="VQC" fill="#00D4AA" radius={[4, 4, 0, 0]} maxBarSize={28} />
                 </BarChart>
               </ResponsiveContainer>
             </div>

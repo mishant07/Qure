@@ -75,6 +75,10 @@ MUSA_META = {
     "musa_diabetes": ("DIABETES", "metrics.json"),
 }
 
+# VQC size whose result we headline per module — the best published run in each
+# module's metrics JSON (diabetes peaks at 8 qubits, heart/HCV at 4).
+QML_QUBITS = {"musa_diabetes": 8, "musa_heart": 4, "musa_hcv": 4}
+
 
 @router.get("/benchmark")
 def benchmark():
@@ -93,9 +97,13 @@ def benchmark():
         perf = j.get("models_performance", {})
         best_ml = j.get("best_classical_ml")
         ml_entry = perf.get(best_ml, {})
-        q_entry = perf.get("QML (4 Qubits)", {})
-        f1 = ml_entry.get("F1-Score", ml_entry.get("Macro F1"))
-        q_f1 = q_entry.get("F1-Score", q_entry.get("Macro F1"))
+        qubits = QML_QUBITS.get(key, 4)
+        q_entry = perf.get(f"QML ({qubits} Qubits)", perf.get("QML (4 Qubits)", {}))
+        # Headline metric is Macro F1 (class-balanced average, matches the team's
+        # published comparison table); fall back to F1-Score where only the
+        # positive-class value was published.
+        f1 = ml_entry.get("Macro F1", ml_entry.get("F1-Score"))
+        q_f1 = q_entry.get("Macro F1", q_entry.get("F1-Score"))
         out[key] = {
             "family": "musa",
             "module": module,
@@ -109,7 +117,7 @@ def benchmark():
                 "accuracy": q_entry.get("Accuracy"),
                 "f1": q_f1,
                 "roc_auc": q_entry.get("ROC-AUC"),
-                "qubits": 4,
+                "qubits": qubits,
             },
         }
     if not out:
