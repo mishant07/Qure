@@ -75,13 +75,16 @@ a{color:inherit}
 .adaptive-text{color:#fff;mix-blend-mode:difference}
 .adaptive-muted{color:#DDDDDD;mix-blend-mode:difference}
 
-/* === Adaptive chart text — recharts === */
-/* An SVG root is an isolated group per the compositing spec: text painted inside
-   a chart can never difference-blend against the page video on its own. Blend the
-   chart WRAPPER instead — its white text/glyphs then invert with the live backdrop. */
-.adaptive-chart{mix-blend-mode:difference;color:#fff}
-.adaptive-chart text{fill:#fff}
-.adaptive-chart .recharts-legend-item-text{color:#fff !important}
+/* === Adaptive chart text — TEXT-ONLY blending === */
+/* SVG roots are isolated groups (compositing spec): text inside a chart SVG can't
+   difference-blend against the page video. So chart text is rendered as HTML
+   (portal overlay for axis ticks) and blended per-element; bars/grid stay normal. */
+.chart-layer{position:relative}
+.chart-text-overlay{position:absolute;inset:0;pointer-events:none}
+.chart-tick{position:absolute;color:#fff;mix-blend-mode:difference;font-size:12px;line-height:1;white-space:nowrap}
+/* recharts v2 hardcodes .recharts-legend-wrapper (wrapperClassName is dropped),
+   so the adaptive override targets the wrapper class directly */
+.recharts-legend-wrapper .recharts-legend-item-text{color:#fff !important;mix-blend-mode:difference}
 
 /* === Utility: risk chips === */
 .risk-high{background:rgba(255,107,53,0.15);color:#FF6B35;border:1px solid rgba(255,107,53,0.3)}

@@ -1,5 +1,6 @@
 // Benchmark — Honest Scoreboard, Paradigm Colors (3 active Musa modules)
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { createPortal } from 'react-dom'
 import {
   Bar,
   BarChart,
@@ -20,8 +21,36 @@ const DATASETS = [
 ]
 
 const GRID = 'rgba(255,255,255,0.04)'
-/* Axis/tick text renders white and inherits adaptive blending via .adaptive-chart */
-const AXIS = { fontSize: 12, fill: '#fff' }
+/* HTML axis ticks — SVG text can't blend across the SVG boundary (isolated group),
+   so ticks render as difference-blended HTML spans in a portal overlay.
+   NOTE: recharts v2 invokes custom ticks as plain functions (not components), so
+   hooks live in <AxisTick> — the outer fn just returns its element. */
+function makeAxisTick(layerId, vertical) {
+  function AxisTick({ x, y, payload, index, tickFormatter }) {
+    const [host, setHost] = useState(() => document.getElementById(layerId))
+    useEffect(() => {
+      if (!host) setHost(document.getElementById(layerId))
+    }, [host, layerId])
+    const label = tickFormatter ? tickFormatter(payload.value, index) : String(payload.value)
+    if (!host) return null
+    return createPortal(
+      <span
+        className="chart-tick tabular"
+        style={
+          vertical
+            ? { left: x, top: y, transform: 'translate(-100%, -50%)' }
+            : { left: x, top: y, transform: 'translate(-50%, 0)' }
+        }
+      >
+        {label}
+      </span>,
+      host
+    )
+  }
+  return function Tick(props) {
+    return <AxisTick {...props} />
+  }
+}
 
 function TooltipBox({ active, payload, label }) {
   if (!active || !payload?.length) return null
@@ -81,25 +110,30 @@ export default function Benchmark() {
         {['f1', 'roc_auc'].map((metric) => (
           <figure key={metric}>
             <div className="glass-panel p-4">
-              {/* SVG text can't blend across the SVG boundary — blend the wrapper */}
-              <div className="adaptive-chart">
+              {/* Chart TEXT adapts via the HTML overlay (.chart-text-overlay);
+                  bars/grid/axis lines stay as-is — only text is difference-blended. */}
+              <div className="chart-layer" id={`chart-layer-${metric}`}>
+                <div className="chart-text-overlay" id={`chart-layer-${metric}-overlay`} />
                 <ResponsiveContainer width="100%" height={280}>
                   <BarChart data={rows} barGap={4} margin={{ top: 8, right: 8, left: -12, bottom: 0 }}>
                     <CartesianGrid stroke={GRID} vertical={false} />
-                    <XAxis dataKey="name" tick={AXIS} tickLine={false} axisLine={{ stroke: GRID }} />
+                    <XAxis
+                      dataKey="name"
+                      tick={makeAxisTick(`chart-layer-${metric}-overlay`, false)}
+                      tickLine={false}
+                      axisLine={{ stroke: GRID }}
+                    />
                     <YAxis
                       domain={[0.5, 1]}
                       ticks={[0.5, 0.6, 0.7, 0.8, 0.9, 1]}
-                      tick={AXIS}
+                      tick={makeAxisTick(`chart-layer-${metric}-overlay`, true)}
                       tickLine={false}
                       axisLine={false}
                       tickFormatter={(v) => `${(v * 100).toFixed(0)}%`}
                     />
                     <Tooltip content={<TooltipBox />} cursor={{ fill: 'rgba(201,74,106,0.08)' }} />
-                    <Legend iconType="circle" iconSize={8} wrapperClassName="text-caption" />
-                    {/* Bar fills blend too (difference): white classical bar inverts with
-                        the video — bright over dark zones, ink-dark over bright ones. */}
-                    <Bar dataKey="classical" name="Classical" fill="#fff" radius={[4, 4, 0, 0]} maxBarSize={28} />
+                    <Legend iconType="circle" iconSize={8} />
+                    <Bar dataKey="classical" name="Classical" fill="#1D1D1F" radius={[4, 4, 0, 0]} maxBarSize={28} />
                     <Bar dataKey="quantum" name="VQC" fill="#C94A6A" radius={[4, 4, 0, 0]} maxBarSize={28} />
                   </BarChart>
                 </ResponsiveContainer>
