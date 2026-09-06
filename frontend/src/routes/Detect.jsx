@@ -8,7 +8,7 @@ import PredictForm from '../components/PredictForm'
 import ResultsDashboard from '../components/ResultsDashboard'
 import Processing from '../components/Processing'
 import ErrorState from '../components/ErrorState'
-import { FormSkeleton, ResultSkeleton } from '../components/LoadingSkeletons'
+import { FormSkeleton } from '../components/LoadingSkeletons'
 import { predict, predictDisease } from '../services/api'
 import { FIELD_META, DATASETS } from '../data/fields'
 
