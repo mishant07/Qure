@@ -74,7 +74,7 @@ export default function Report() {
         <div className="glass-panel p-6 text-center max-w-md">
           <p className="text-body-strong text-warn">Could not generate report</p>
           <p className="text-caption adaptive-muted mt-2">{error}</p>
-          <Button onClick={() => navigate('/detect')} className="mt-4 bg-quantum text-void hover:bg-quantum-dim">
+          <Button onClick={() => navigate('/detect')} className="mt-4 bg-quantum text-ink hover:bg-quantum-dim">
             Back to Detect
           </Button>
         </div>
@@ -108,7 +108,7 @@ export default function Report() {
             <Button variant="outline" onClick={downloadMarkdown} className="border-hairline text-ink hover:bg-glass">
               <Download className="size-4" /> Markdown
             </Button>
-            <Button onClick={downloadJSON} className="bg-quantum text-void hover:bg-quantum-dim">
+            <Button onClick={downloadJSON} className="bg-quantum text-ink hover:bg-quantum-dim">
               <Download className="size-4" /> JSON
             </Button>
           </div>

@@ -187,7 +187,7 @@ function PredictForm({ datasets, meta, values, setValues, onReset, onSubmit, ini
 
       {/* Sticky action bar — Quantum track primary */}
       <div className="sticky bottom-0 mt-6 border-t border-hairline bg-void/80 py-4 backdrop-blur-xl">
-        <Button type="submit" size="lg" disabled={!complete} className="w-full sm:w-auto bg-quantum text-void hover:bg-quantum-dim disabled:bg-quantum/30 disabled:text-void/50">
+        <Button type="submit" size="lg" disabled={!complete} className="w-full sm:w-auto bg-quantum text-ink hover:bg-quantum-dim disabled:bg-quantum/30 disabled:text-ink/50">
           Run a vector
         </Button>
         {!complete && (

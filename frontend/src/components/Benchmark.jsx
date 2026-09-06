@@ -92,10 +92,10 @@ export default function Benchmark() {
                     axisLine={false}
                     tickFormatter={(v) => `${(v * 100).toFixed(0)}%`}
                   />
-                  <Tooltip content={<TooltipBox />} cursor={{ fill: 'rgba(0,212,170,0.08)' }} />
+                  <Tooltip content={<TooltipBox />} cursor={{ fill: 'rgba(201,74,106,0.08)' }} />
                   <Legend iconType="circle" iconSize={8} wrapperClassName="text-caption adaptive-muted" />
                   <Bar dataKey="classical" name="Classical" fill="#1D1D1F" radius={[4, 4, 0, 0]} maxBarSize={28} />
-                  <Bar dataKey="quantum" name="VQC" fill="#00D4AA" radius={[4, 4, 0, 0]} maxBarSize={28} />
+                  <Bar dataKey="quantum" name="VQC" fill="#C94A6A" radius={[4, 4, 0, 0]} maxBarSize={28} />
                 </BarChart>
               </ResponsiveContainer>
             </div>

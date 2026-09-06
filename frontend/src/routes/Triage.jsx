@@ -207,7 +207,7 @@ export default function Triage() {
           <Button
             onClick={next}
             disabled={!answers[current.id] || submitting}
-            className="bg-quantum text-void hover:bg-quantum-dim disabled:opacity-30"
+            className="bg-quantum text-ink hover:bg-quantum-dim disabled:opacity-30"
           >
             {step < total - 1 ? (
               <>Next <ArrowRight className="size-4" /></>

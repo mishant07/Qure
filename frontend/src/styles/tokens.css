@@ -22,9 +22,9 @@ a{color:inherit}
 .glass-strong{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:18px;box-shadow:0 8px 32px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.06)}
 .glass-dark{background:rgba(3,3,7,0.7);border:1px solid rgba(255,255,255,0.05);border-radius:18px;box-shadow:0 8px 32px rgba(0,0,0,0.5),inset 0 1px 0 rgba(255,255,255,0.03)}
 
-/* === Selection & focus — quantum teal ring === */
-::selection{background:rgba(0,212,170,0.3);color:#030307}
-:focus-visible{outline:2px solid #00D4AA;outline-offset:2px;border-radius:2px}
+/* === Selection & focus — burgundy ring === */
+::selection{background:rgba(201,74,106,0.3);color:#030307}
+:focus-visible{outline:2px solid #E37B95;outline-offset:2px;border-radius:2px}
 
 /* === Animations — one interference reveal === */
 @keyframes interference-in{
@@ -58,14 +58,14 @@ a{color:inherit}
 
 /* === Utility: paradigm colors === */
 .track-classical{color:#1D1D1F}
-.track-quantum{color:#00D4AA}
+.track-quantum{color:#C94A6A}
 .bg-classical{background:#1D1D1F}
-.bg-quantum{background:#00D4AA}
-.bg-quantum-dim{background:#00A388}
+.bg-quantum{background:#C94A6A}
+.bg-quantum-dim{background:#A63B55}
 .border-classical{border-color:#1D1D1F}
-.border-quantum{border-color:#00D4AA}
+.border-quantum{border-color:#C94A6A}
 .text-classical{color:#1D1D1F}
-.text-quantum{color:#00D4AA}
+.text-quantum{color:#C94A6A}
 .text-muted{color:#8E8E9A}
 .text-ink{color:#F5F5F7}
 
@@ -84,4 +84,4 @@ a{color:inherit}
 /* Classical badge is a neutral ink chip: its TEXT mix-blends (difference) against
    the live background so it inverts to black on the light zones / white on dark. */
 .winner-classical{background:rgba(245,245,247,0.14);color:#fff;mix-blend-mode:difference;border:1px solid rgba(245,245,247,0.3)}
-.winner-quantum{background:rgba(0,212,170,0.15);color:#00D4AA;border:1px solid rgba(0,212,170,0.3)}
+.winner-quantum{background:rgba(201,74,106,0.18);color:#E37B95;border:1px solid rgba(201,74,106,0.35)}

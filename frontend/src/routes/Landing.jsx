@@ -75,7 +75,7 @@ function VideoHero() {
 
         {/* Two clear entry actions per SIH guide: Start Questionnaire + Upload Lab Report */}
         <div className="flex flex-wrap items-center justify-center gap-3 mt-2">
-          <Button asChild size="lg" className="bg-quantum text-void hover:bg-quantum-dim">
+          <Button asChild size="lg" className="bg-quantum text-ink hover:bg-quantum-dim">
             <Link to="/triage" className="gap-2">
               <ClipboardList className="size-4" /> Start Questionnaire
             </Link>
@@ -117,7 +117,7 @@ function SihHero() {
         three clinical screening modules — and tells you honestly which one to believe.
       </p>
       <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-        <Button asChild size="lg" className="bg-quantum text-void hover:bg-quantum-dim">
+        <Button asChild size="lg" className="bg-quantum text-ink hover:bg-quantum-dim">
           <Link to="/triage">Start questionnaire</Link>
         </Button>
         <Button asChild variant="outline" size="lg" className="border-hairline adaptive-text hover:bg-glass">
@@ -177,7 +177,7 @@ function HowItWorks() {
           {/* Quantum track */}
           <div className="glass-panel p-6">
             <div className="mb-6 flex items-center gap-2">
-              <span className="flex size-8 items-center justify-center rounded-full bg-quantum text-void text-caption-strong tabular" aria-hidden="true" style={{ fontFamily: 'var(--font-display)' }}>02</span>
+              <span className="flex size-8 items-center justify-center rounded-full bg-quantum text-ink text-caption-strong tabular" aria-hidden="true" style={{ fontFamily: 'var(--font-display)' }}>02</span>
               <h3 className="text-tagline adaptive-text">Quantum Track</h3>
             </div>
             <ol className="space-y-5">

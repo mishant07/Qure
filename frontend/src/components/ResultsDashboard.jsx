@@ -143,7 +143,7 @@ export default function ResultsDashboard({ result, disease, datasetLabel }) {
               sessionStorage.setItem('last-result', JSON.stringify({ disease, inputs: result?.inputs ?? {}, result }))
               navigate('/report')
             }}
-            className="inline-flex items-center gap-2 rounded-pill bg-quantum text-void px-5 py-2.5 text-caption-strong hover:bg-quantum-dim transition-colors"
+            className="inline-flex items-center gap-2 rounded-pill bg-quantum text-ink px-5 py-2.5 text-caption-strong hover:bg-quantum-dim transition-colors"
           >
             <FileText className="size-4" /> Generate screening report
           </button>

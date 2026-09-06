@@ -139,7 +139,7 @@ export default function UploadPage() {
               <span
                 className={`flex size-7 items-center justify-center rounded-full text-caption-strong tabular ${
                   i < stepIdx
-                    ? 'bg-quantum text-void'
+                    ? 'bg-quantum text-ink'
                     : i === stepIdx
                     ? 'bg-classical text-quantum'
                     : 'bg-glass border border-hairline text-muted'
@@ -249,7 +249,7 @@ export default function UploadPage() {
               <Button
                 onClick={doUpload}
                 disabled={!file || loading}
-                className="bg-quantum text-void hover:bg-quantum-dim disabled:opacity-30"
+                className="bg-quantum text-ink hover:bg-quantum-dim disabled:opacity-30"
               >
                 {loading ? 'Extracting…' : <>Extract values <ArrowRight className="size-4" /></>}
               </Button>
@@ -348,7 +348,7 @@ export default function UploadPage() {
               <Button
                 onClick={doConfirm}
                 disabled={loading || predicting}
-                className="bg-quantum text-void hover:bg-quantum-dim disabled:opacity-30"
+                className="bg-quantum text-ink hover:bg-quantum-dim disabled:opacity-30"
               >
                 {loading || predicting ? 'Screening…' : <>Confirm & run screening <ArrowRight className="size-4" /></>}
               </Button>
@@ -411,7 +411,7 @@ export default function UploadPage() {
                     </Button>
                     <Button
                       onClick={() => navigate('/report')}
-                      className="bg-quantum text-void hover:bg-quantum-dim"
+                      className="bg-quantum text-ink hover:bg-quantum-dim"
                     >
                       Generate report <ArrowRight className="size-4" />
                     </Button>

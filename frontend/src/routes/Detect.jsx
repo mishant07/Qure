@@ -88,7 +88,7 @@ export default function Detect() {
             <h1 className="text-display-lg adaptive-text">Run a vector.</h1>
             <span className="flex size-6 items-center justify-center rounded-full bg-classical text-quantum text-fine-print tabular" aria-hidden="true" style={{ fontFamily: 'var(--font-display)' }}>01</span>
             <h2 className="text-tagline adaptive-text">Classical Track</h2>
-            <span className="flex size-6 items-center justify-center rounded-full bg-quantum text-void text-fine-print tabular" aria-hidden="true" style={{ fontFamily: 'var(--font-display)' }}>02</span>
+            <span className="flex size-6 items-center justify-center rounded-full bg-quantum text-ink text-fine-print tabular" aria-hidden="true" style={{ fontFamily: 'var(--font-display)' }}>02</span>
             <h2 className="text-tagline adaptive-text">Quantum Track</h2>
           </div>
           <p className="text-body mt-2 adaptive-muted max-w-[600px]">

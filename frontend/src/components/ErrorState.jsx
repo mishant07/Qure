@@ -13,7 +13,7 @@ export default function ErrorState({ title = "That didn't load", hint, onRetry, 
         {hint ?? 'Something went wrong on our side — not your input. Your data never left this page.'}
       </p>
       {onRetry && (
-        <Button onClick={onRetry} className="mt-6 bg-quantum text-void hover:bg-quantum-dim">
+        <Button onClick={onRetry} className="mt-6 bg-quantum text-ink hover:bg-quantum-dim">
           {retryLabel}
         </Button>
       )}

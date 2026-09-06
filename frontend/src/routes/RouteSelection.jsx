@@ -109,7 +109,7 @@ export default function RouteSelection() {
                     }`}
                   >
                     <div className="flex items-start gap-3">
-                      <div className={`grid size-10 place-items-center rounded-full ${selected.has(id) ? 'bg-quantum text-void' : 'bg-classical text-quantum'}`}>
+                      <div className={`grid size-10 place-items-center rounded-full ${selected.has(id) ? 'bg-quantum text-ink' : 'bg-classical text-quantum'}`}>
                         <Icon className="size-5" aria-hidden="true" />
                       </div>
                       <div className="flex-1">
@@ -125,7 +125,7 @@ export default function RouteSelection() {
                       </div>
                       {selected.has(id) && (
                         <div className="size-6 rounded-full bg-quantum grid place-items-center shrink-0">
-                          <span className="text-void text-caption-strong">✓</span>
+                          <span className="text-ink text-caption-strong">✓</span>
                         </div>
                       )}
                     </div>
@@ -184,7 +184,7 @@ export default function RouteSelection() {
           <Button
             onClick={continueToDetect}
             disabled={selected.size === 0}
-            className="bg-quantum text-void hover:bg-quantum-dim disabled:opacity-30"
+            className="bg-quantum text-ink hover:bg-quantum-dim disabled:opacity-30"
           >
             Continue to screening <ArrowRight className="size-4" />
           </Button>

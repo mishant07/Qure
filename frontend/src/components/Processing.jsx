@@ -30,7 +30,7 @@ export default function Processing({ currentStep = 'validate', completed = new S
               <span
                 className={`flex size-7 items-center justify-center rounded-full text-caption-strong tabular shrink-0 ${
                   isDone
-                    ? 'bg-quantum text-void'
+                    ? 'bg-quantum text-ink'
                     : isCurrent
                     ? 'bg-classical text-quantum'
                     : 'bg-glass border border-hairline adaptive-muted'
