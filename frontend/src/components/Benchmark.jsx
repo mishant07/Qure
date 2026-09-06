@@ -20,7 +20,8 @@ const DATASETS = [
 ]
 
 const GRID = 'rgba(255,255,255,0.04)'
-const AXIS = { fontSize: 12, fill: '#7a7a7a' }
+/* Axis/tick text renders white and inherits adaptive blending via .adaptive-chart */
+const AXIS = { fontSize: 12, fill: '#fff' }
 
 function TooltipBox({ active, payload, label }) {
   if (!active || !payload?.length) return null
@@ -80,24 +81,29 @@ export default function Benchmark() {
         {['f1', 'roc_auc'].map((metric) => (
           <figure key={metric}>
             <div className="glass-panel p-4">
-              <ResponsiveContainer width="100%" height={280}>
-                <BarChart data={rows} barGap={4} margin={{ top: 8, right: 8, left: -12, bottom: 0 }}>
-                  <CartesianGrid stroke={GRID} vertical={false} />
-                  <XAxis dataKey="name" tick={AXIS} tickLine={false} axisLine={{ stroke: GRID }} />
-                  <YAxis
-                    domain={[0.5, 1]}
-                    ticks={[0.5, 0.6, 0.7, 0.8, 0.9, 1]}
-                    tick={AXIS}
-                    tickLine={false}
-                    axisLine={false}
-                    tickFormatter={(v) => `${(v * 100).toFixed(0)}%`}
-                  />
-                  <Tooltip content={<TooltipBox />} cursor={{ fill: 'rgba(201,74,106,0.08)' }} />
-                  <Legend iconType="circle" iconSize={8} wrapperClassName="text-caption adaptive-muted" />
-                  <Bar dataKey="classical" name="Classical" fill="#1D1D1F" radius={[4, 4, 0, 0]} maxBarSize={28} />
-                  <Bar dataKey="quantum" name="VQC" fill="#C94A6A" radius={[4, 4, 0, 0]} maxBarSize={28} />
-                </BarChart>
-              </ResponsiveContainer>
+              {/* SVG text can't blend across the SVG boundary — blend the wrapper */}
+              <div className="adaptive-chart">
+                <ResponsiveContainer width="100%" height={280}>
+                  <BarChart data={rows} barGap={4} margin={{ top: 8, right: 8, left: -12, bottom: 0 }}>
+                    <CartesianGrid stroke={GRID} vertical={false} />
+                    <XAxis dataKey="name" tick={AXIS} tickLine={false} axisLine={{ stroke: GRID }} />
+                    <YAxis
+                      domain={[0.5, 1]}
+                      ticks={[0.5, 0.6, 0.7, 0.8, 0.9, 1]}
+                      tick={AXIS}
+                      tickLine={false}
+                      axisLine={false}
+                      tickFormatter={(v) => `${(v * 100).toFixed(0)}%`}
+                    />
+                    <Tooltip content={<TooltipBox />} cursor={{ fill: 'rgba(201,74,106,0.08)' }} />
+                    <Legend iconType="circle" iconSize={8} wrapperClassName="text-caption" />
+                    {/* Bar fills blend too (difference): white classical bar inverts with
+                        the video — bright over dark zones, ink-dark over bright ones. */}
+                    <Bar dataKey="classical" name="Classical" fill="#fff" radius={[4, 4, 0, 0]} maxBarSize={28} />
+                    <Bar dataKey="quantum" name="VQC" fill="#C94A6A" radius={[4, 4, 0, 0]} maxBarSize={28} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
             </div>
             <figcaption className="text-caption mt-3 adaptive-muted">
               {metric === 'f1' ? 'F1 score (positive class)' : 'ROC-AUC'} — higher is better.

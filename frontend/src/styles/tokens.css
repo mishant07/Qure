@@ -75,6 +75,14 @@ a{color:inherit}
 .adaptive-text{color:#fff;mix-blend-mode:difference}
 .adaptive-muted{color:#DDDDDD;mix-blend-mode:difference}
 
+/* === Adaptive chart text — recharts === */
+/* An SVG root is an isolated group per the compositing spec: text painted inside
+   a chart can never difference-blend against the page video on its own. Blend the
+   chart WRAPPER instead — its white text/glyphs then invert with the live backdrop. */
+.adaptive-chart{mix-blend-mode:difference;color:#fff}
+.adaptive-chart text{fill:#fff}
+.adaptive-chart .recharts-legend-item-text{color:#fff !important}
+
 /* === Utility: risk chips === */
 .risk-high{background:rgba(255,107,53,0.15);color:#FF6B35;border:1px solid rgba(255,107,53,0.3)}
 .risk-moderate{background:rgba(255,184,0,0.15);color:#FFB800;border:1px solid rgba(255,184,0,0.3)}
