@@ -31,7 +31,7 @@ from backend.services import ocr as ocr_svc
 from backend.services import explainability as explain_svc
 from backend.services import report as report_svc
 from backend.services.musa_service import predict_musa
-
+from backend.services import qattrib as qattrib_svc
 
 router = APIRouter()
 
@@ -165,6 +165,29 @@ class AllPredictRequest(BaseModel):
     heart: dict | None = None
     diabetes: dict | None = None
     hcv: dict | None = None
+
+
+class AttributionRequest(BaseModel):
+    """POST /api/quantum-attribution body — same shape as /predict."""
+
+    dataset: str
+    features: dict
+
+
+@router.post("/api/quantum-attribution")
+def api_quantum_attribution(req: AttributionRequest):
+    """XQAI map for one screening record. Read-only replay of the frozen VQC —
+    never alters the prediction. Musa modules only."""
+    if req.dataset not in ALL_IDS:
+        raise HTTPException(400, f"dataset must be one of {ALL_IDS}")
+    try:
+        return qattrib_svc.attribute(req.dataset, req.features or {})
+    except ValueError as e:
+        raise HTTPException(422, str(e))
+    except FileNotFoundError as e:
+        raise HTTPException(500, f"Model artifacts missing: {e}")
+    except Exception as e:
+        raise HTTPException(500, f"Attribution failed: {type(e).__name__}: {e}")
 
 
 @router.post("/api/predict/all")

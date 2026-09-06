@@ -68,3 +68,15 @@ class MusaVQCRuntime:
     def predict(self, X):
         return self.predict_proba(X).argmax(axis=1)
 
+    @torch.no_grad()
+    def expectations(self, X):
+        """Per-wire <Z> expectations BEFORE the classical readout head.
+
+        X: (n, n_qubits) numpy -> (n, n_qubits) numpy. Additive introspection
+        for the XQAI attribution panel; used by inference nowhere.
+        """
+        res = self.model.circuit(
+            torch.as_tensor(X, dtype=torch.float32), self.model.weights
+        )
+        return torch.stack(res, dim=1).numpy()
+

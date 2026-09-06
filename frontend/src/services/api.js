@@ -113,6 +113,16 @@ export async function generateReport(disease, inputs, result) {
   }
 }
 
+/** POST /api/quantum-attribution {dataset, features} → XQAI ablation map (throws Error with message). */
+export async function quantumAttribution(dataset, features) {
+  try {
+    const { data } = await client.post('/api/quantum-attribution', { dataset, features })
+    return data
+  } catch (err) {
+    throw new Error(extractError(err))
+  }
+}
+
 /** GET /benchmark → per-dataset metrics */
 export async function benchmark() {
   try {

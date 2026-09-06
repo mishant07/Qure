@@ -103,7 +103,7 @@ export default function Triage() {
             </span>
             <span className="text-fine-print adaptive-muted">Screening questionnaire</span>
           </div>
-          <h1 className="text-display-lg">Five short questions.</h1>
+          <h1 className="text-display-lg adaptive-text">Five short questions.</h1>
           <p className="text-body mt-2 adaptive-muted max-w-[560px]">
             These route you to relevant screening pathways. They do not diagnose.
             This is a screening aid, not a clinical assessment.

@@ -75,6 +75,14 @@ Body: `{features: {...}}` or a bare feature object.
 `{"heart": {...}, "diabetes": {...}, "hcv": {...}}` → runs each supplied
 module; per-key results or `{error, status}` entries.
 
+## POST /api/quantum-attribution
+XQAI ablation map for one screening record: `{dataset, features}` (same shape
+as `/predict`) → `{qml_prediction, qml_confidence, qubit_readout: [z0..z3],
+attributions: [{feature, label, weight_pct, direction}], method: "ablation",
+note}`. Read-only replay of the frozen VQC — never alters the prediction.
+Weights sum to 100; `direction` is `supports`/`opposes`/`neutral` relative to
+the quantum verdict. Musa modules only; 400/422/500 semantics as `/predict`.
+
 ## GET /triage/questions · POST /api/triage
 Five rule-based questions; "yes" answers map to the active pathways
 (`musa_heart` / `musa_diabetes` / `musa_hcv`) with rationale + recommended list.

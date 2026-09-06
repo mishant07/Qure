@@ -24,5 +24,7 @@ mlruns/
 frontend/dist/
 .impeccable/
 
+# RAG knowledge-base build artifact (rebuilt via backend/scripts/build_kb_index.py)
+data/kb/.index/
 # Tool workspace state
 frontend/.october/

@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react'
 import { Link, navigate } from '../router'
 import { cn } from '../lib/utils'
 import { explainResult } from '../services/api'
+import QuantumAttribution from './QuantumAttribution'
 
 const RISK_STYLE = {
   HIGH: 'risk-high',
@@ -163,9 +164,20 @@ export default function ResultsDashboard({ result, disease, datasetLabel }) {
 
           {explanation.evidence?.length > 0 && (
             <div className="mt-5">
-              <h4 className="text-caption-strong adaptive-muted tracking-[0.05em] mb-3" style={{ fontFamily: 'var(--font-display)' }}>
-                Trusted evidence
-              </h4>
+              <div className="flex items-center gap-2 mb-3">
+                <h4 className="text-caption-strong adaptive-muted tracking-[0.05em]" style={{ fontFamily: 'var(--font-display)' }}>
+                  Trusted evidence
+                </h4>
+                {explanation.rag?.used ? (
+                  <span className="rounded-pill bg-quantum/15 border border-quantum/30 px-2.5 py-0.5 text-fine-print text-quantum">
+                    Retrieved evidence
+                  </span>
+                ) : explanation.rag ? (
+                  <span className="rounded-pill border border-hairline px-2.5 py-0.5 text-fine-print adaptive-muted">
+                    Curated summary
+                  </span>
+                ) : null}
+              </div>
               <ul className="space-y-3">
                 {explanation.evidence.map((e, i) => (
                   <li key={i} className="rounded-lg border border-hairline p-4">
@@ -206,6 +218,11 @@ export default function ResultsDashboard({ result, disease, datasetLabel }) {
             </div>
           )}
         </div>
+      )}
+
+      {/* XQAI quantum attribution — needs the echoed inputs (see Detect.jsx) */}
+      {result.inputs && Object.keys(result.inputs).length > 0 && (
+        <QuantumAttribution dataset={disease} features={result.inputs} />
       )}
     </div>
   )

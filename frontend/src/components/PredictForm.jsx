@@ -32,6 +32,10 @@ function FieldRow({ f, value, onChange, invalid }) {
           onChange={(e) => onChange(f.k, f.raw ? e.target.value : Number(e.target.value))}
           className="flex h-10 w-full rounded-sm border-0 bg-void/60 px-3 py-2 text-sm text-ink ring-1 ring-hairline transition-[box-shadow,background-color] duration-200 hover:ring-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-quantum focus-visible:ring-offset-0 focus-visible:ring-offset-void disabled:cursor-not-allowed disabled:opacity-40 aria-[invalid=true]:ring-2 aria-[invalid=true]:ring-warn"
         >
+          {/* Placeholder so the blank state is explicit: without it the browser
+              displays the first option while state is still '' — picking it then
+              fires no change event and the field never counts as filled. */}
+          <option value="" disabled>Select…</option>
           {f.opts.map((o) => (
             <option key={o.value} value={o.value}>{o.label}</option>
           ))}
@@ -185,13 +189,15 @@ function PredictForm({ datasets, meta, values, setValues, onReset, onSubmit, ini
         </Accordion>
       )}
 
-      {/* Sticky action bar — Quantum track primary */}
-      <div className="sticky bottom-0 mt-6 border-t border-hairline bg-void/80 py-4 backdrop-blur-xl">
+      {/* Sticky action bar — Quantum track primary. Rounded + inset to match the
+          panel's radius-lg aesthetic; no backdrop-blur (it would isolate the
+          adaptive-muted hint below from the page video — see Detect.jsx note). */}
+      <div className="sticky bottom-4 mt-6 rounded-lg border border-hairline bg-void/80 px-4 py-4">
         <Button type="submit" size="lg" disabled={!complete} className="w-full sm:w-auto bg-quantum text-ink hover:bg-quantum-dim disabled:bg-quantum/30 disabled:text-ink/50">
           Run a vector
         </Button>
         {!complete && (
-          <span className="text-caption mt-2 inline-block adaptive-muted sm:mt-0">
+          <span className="text-caption mt-3 inline-block adaptive-muted sm:mt-0 sm:ml-3">
             {missingCount} value{missingCount > 1 ? 's' : ''} still needed
           </span>
         )}

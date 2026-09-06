@@ -38,19 +38,35 @@ export default function Detect() {
       }, ms))
 
     try {
-      await advance('validate', 120)
-      await advance('preprocess', 180)
-      await advance('classical', 250)
+      // Fire inference immediately so it overlaps the showcase timeline below.
+      // The timeline itself always runs ~5.2s for demo readability (SIH judges
+      // should see each pipeline stage); local inference resolves well within it.
       // Use the disease-specific endpoints (all resolve to the Musa modules)
       const ROUTE_FOR = { musa_heart: 'heart', musa_diabetes: 'diabetes', musa_hcv: 'hcv' }
       const diseaseRoute = ROUTE_FOR[dataset]
-      const data = diseaseRoute
-        ? await predictDisease(diseaseRoute, features)
-        : await predict(dataset, features)
-      await advance('quantum', 200)
-      await advance('compare', 100)
+      const inference = diseaseRoute
+        ? predictDisease(diseaseRoute, features)
+        : predict(dataset, features)
+      // Mark handled now — the real result/error surfaces at `await` below.
+      // Without this, a fast 4xx would log unhandledrejection during the showcase.
+      inference.catch(() => {})
+      await advance('validate', 1000)
+      await advance('preprocess', 1500)
+      await advance('classical', 1700)
+      const data = await inference
+      await advance('quantum', 2200)
+      await advance('compare', 1400)
+      // Let the final "Generating summary" tick land visibly before the panel
+      // swaps to the result — otherwise step 6 never shows its check.
+      await advance('summary', 900)
+      // advance() queues the tick together with the unmount below, so React
+      // would batch them and the check would never paint: yield one beat first.
+      await new Promise((r) => setTimeout(r, 800))
       setMeta({ dataset, label })
-      setResult(data)
+      // Echo the submitted features into the result: ResultsDashboard persists
+      // `result.inputs` to sessionStorage for /report, and the /predict payload
+      // carries no inputs of its own (without this, "Inputs used" is empty).
+      setResult({ ...data, inputs: features })
       setCompletedSteps((prev) => new Set([...prev, 'summary']))
       requestAnimationFrame(() => {
         document.getElementById('result')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -70,6 +86,21 @@ export default function Detect() {
     () => new URLSearchParams(window.location.search).get('disease'),
     []
   )
+
+  // Respect the pathway selection from /route: only the diseases the user
+  // kept selected appear as form tabs. Falls back to all datasets on direct
+  // visits (no selection stored) or if the stored selection is empty/stale.
+  const visibleDatasets = useMemo(() => {
+    try {
+      const raw = sessionStorage.getItem('selected-pathways')
+      if (!raw) return DATASETS
+      const ids = new Set(JSON.parse(raw))
+      const filtered = DATASETS.filter((d) => ids.has(d.id))
+      return filtered.length > 0 ? filtered : DATASETS
+    } catch {
+      return DATASETS
+    }
+  }, [])
 
   return (
     <div className="min-h-screen">
@@ -110,7 +141,7 @@ export default function Detect() {
               </p>
               {FIELD_META ? (
                 <PredictForm
-                  datasets={DATASETS}
+                  datasets={visibleDatasets}
                   meta={FIELD_META}
                   values={values}
                   setValues={setValues}
@@ -124,8 +155,13 @@ export default function Detect() {
             </div>
           </div>
 
-          {/* Quantum Track — Result + Processing + Explanation */}
-          <aside className="lg:sticky lg:top-[100px] space-y-6">
+          {/* Quantum Track — Result + Processing + Explanation.
+              NOTE: no position:sticky here — a stuck sticky ancestor isolates
+              mix-blend-mode:difference from the page video (same class of bug
+              as backdrop-filter / forwards-fill animations), freezing the
+              whole result column to its unblended color. Submit scrolls to
+              #result instead (see onSubmit). */}
+          <aside className="space-y-6">
             {pending ? (
               <>
                 <Processing currentStep={processingStep} completed={completedSteps} />

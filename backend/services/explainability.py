@@ -212,12 +212,34 @@ def explain_disease_result(
     contributors_text = [CONTRIBUTOR_LABELS.get(c, c) for c in (contributors or [])]
     evidence = EVIDENCE.get(disease_key, [])
 
+    # Extractive RAG layer (additive, post-prediction only): tries the curated
+    # data/kb/* knowledge base and falls back to the static evidence above on
+    # ANY failure — including RAG_ENABLED=0, unknown disease, or empty KB.
+    # Retrieval can never alter the prediction; it only supplies cited prose.
+    rag_meta = {"used": False, "mode": "curated"}
+    retrieved_guidance = ""
+    try:
+        from backend.services import rag_service as _rag
+
+        hit = _rag.retrieve(disease_key, contributors or [], risk)
+        if hit:
+            evidence = hit["evidence"]
+            rag_meta = hit["rag"]
+            if hit["summary_sentences"]:
+                retrieved_guidance = (
+                    " Related clinical guidance notes: "
+                    + " ".join(hit["summary_sentences"])
+                )
+    except Exception:
+        pass
+
     risk_lower = (risk or "").lower()
     if risk_lower == "high":
         summary = (
             f"The screening models flag a higher-risk pattern. "
             f"The most influential clinical features in this estimate are: "
-            f"{', '.join(contributors_text[:3]) if contributors_text else 'no specific features highlighted'}. "
+            f"{', '.join(contributors_text[:3]) if contributors_text else 'no specific features highlighted'}."
+            f"{retrieved_guidance} "
             f"This is a screening aid, not a diagnosis — please consult a clinician."
         )
         next_steps = [
@@ -229,7 +251,8 @@ def explain_disease_result(
         summary = (
             f"The screening models flag a moderate-risk pattern. "
             f"The most influential features are: "
-            f"{', '.join(contributors_text[:3]) if contributors_text else 'no specific features highlighted'}. "
+            f"{', '.join(contributors_text[:3]) if contributors_text else 'no specific features highlighted'}."
+            f"{retrieved_guidance} "
             f"Consider a follow-up clinical visit to confirm."
         )
         next_steps = [
@@ -240,7 +263,8 @@ def explain_disease_result(
         summary = (
             f"The screening models do not flag a high-risk pattern for this input. "
             f"The highlighted features ({', '.join(contributors_text[:3]) if contributors_text else '—'}) "
-            f"are within commonly observed ranges. Continue regular health check-ups."
+            f"are within commonly observed ranges.{retrieved_guidance} "
+            f"Continue regular health check-ups."
         )
         next_steps = [
             "Continue routine health monitoring as recommended by your clinician.",
@@ -252,4 +276,5 @@ def explain_disease_result(
         "evidence": evidence,
         "next_steps": next_steps,
         "model_version": model_version,
+        "rag": rag_meta,
     }

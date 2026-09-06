@@ -38,7 +38,7 @@ export default function Processing({ currentStep = 'validate', completed = new S
                 style={{ fontFamily: 'var(--font-display)' }}
                 aria-hidden="true"
               >
-                {isDone ? <Check className="size-4" /> : isCurrent ? <Loader2 className="size-4 animate-spin" /> : i + 1}
+                {isDone ? <Check className="size-4" /> : <Loader2 className="size-4 animate-spin" />}
               </span>
               <span
                 className={`text-caption ${

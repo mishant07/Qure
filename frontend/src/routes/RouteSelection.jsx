@@ -52,6 +52,8 @@ export default function RouteSelection() {
   if (!result) return null
 
   const recommended = new Set(result.recommended || [])
+  // Pathways triage did not flag — shown under the reassuring "no signals" framing.
+  const others = ALL_PATHWAYS.filter((p) => !recommended.has(p.id))
   const toggle = (id) => {
     setSelected((prev) => {
       const next = new Set(prev)
@@ -80,7 +82,7 @@ export default function RouteSelection() {
             </span>
             <span className="text-fine-print adaptive-muted">Screening pathway</span>
           </div>
-          <h1 className="text-display-lg">Recommended pathways</h1>
+          <h1 className="text-display-lg adaptive-text">Recommended pathways</h1>
           <p className="text-body mt-2 adaptive-muted max-w-[680px]">
             {result.rationale}
           </p>
@@ -136,15 +138,22 @@ export default function RouteSelection() {
           </section>
         )}
 
-        {/* All pathways (greyed) */}
+        {/* Pathways triage did NOT flag — reassuring, still selectable.
+            NOTE: this grid intentionally excludes recommended ids, so the
+            "very low likelihood" framing below stays honest. */}
         <section className="mb-8">
-          <p className="text-caption-strong adaptive-muted tracking-[0.05em] mb-4" style={{ fontFamily: 'var(--font-display)' }}>
-            All available pathways
+          <p className="text-caption-strong adaptive-muted tracking-[0.05em] mb-1" style={{ fontFamily: 'var(--font-display)' }}>
+            No concerning signals
           </p>
+          <p className="text-caption adaptive-muted mb-4 max-w-[680px]">
+            Your answers show no indicators for these conditions — very low likelihood
+            of being prone to them. This is a triage impression, not a diagnosis.
+            You can still select any pathway to include it in screening.
+          </p>
+          {others.length > 0 ? (
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {ALL_PATHWAYS.map((p) => {
+            {others.map((p) => {
               const Icon = p.icon
-              const isRec = recommended.has(p.id)
               return (
                 <button
                   key={p.id}
@@ -162,14 +171,16 @@ export default function RouteSelection() {
                       <h4 className="text-caption-strong adaptive-text">{p.name}</h4>
                       <p className="text-fine-print adaptive-muted mt-0.5">{p.desc}</p>
                     </div>
-                    {isRec && (
-                      <span className="rounded-pill bg-quantum/15 text-quantum text-fine-print px-2 py-0.5">recommended</span>
-                    )}
                   </div>
                 </button>
               )
             })}
           </div>
+          ) : (
+            <p className="text-caption adaptive-muted">
+              All available pathways were recommended above based on your answers.
+            </p>
+          )}
         </section>
 
         {/* Continue */}
