@@ -174,7 +174,7 @@ export default function Triage() {
                   key={t}
                   className="rounded-pill bg-quantum/10 border border-quantum/30 px-3 py-1 text-fine-print text-quantum"
                 >
-                  + {t.replace('_', ' ')}
+                  + {t.replace('musa_', '').replace('_', ' ')}
                 </span>
               ))}
             </div>

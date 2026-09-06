@@ -117,7 +117,7 @@ export default function RouteSelection() {
                           <h3 className="text-body-strong adaptive-text">{p.name}</h3>
                           {p.family === 'musa' && (
                             <span className="rounded-pill bg-glass border border-hairline px-2 py-0.5 text-fine-print adaptive-muted">
-                              Musa module
+                              Screening module
                             </span>
                           )}
                         </div>
