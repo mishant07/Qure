@@ -1,9 +1,7 @@
-/* Shared design tokens + reset — imported by main.jsx */
-
-/* === Reset === */
+/* === Shared reset === */
 *,*::before,*::after{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
-body{margin:0}
+body{margin:0;background:#030307;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 img,svg,video{display:block;max-width:100%}
 input,button,textarea,select{font:inherit}
 button{cursor:pointer}
@@ -11,54 +9,68 @@ button:disabled{opacity:.5;cursor:not-allowed}
 a{color:inherit}
 :root{scroll-behavior:smooth}
 
-/* === Shared tokens (landing + dashboard) === */
-:root{
-  /* Landing palette */
-  --bg:#000000;
-  --text:#ffffff;
-  --muted:#8e8e8e;
-  --nav-text:#2e2e2e;
-  --pill-dark:#28282a;
-  --sign-in-text:#c8c8c8;
-  --nav-shadow:0 4px 14px rgba(0,0,0,.16);
-  --trust-bg:#28282a;
-  --trust-border:rgba(255,255,255,.4);
-  --trust-text:#c4c2c3;
-  --font-sans:"Inter","Segoe UI",system-ui,sans-serif;
-  --font-display:"BubbledotICG-FinePos","Geist Pixel Circle",monospace;
+/* === Video background — fixed behind all UI === */
+.bg{position:fixed;inset:0;background:#030307;overflow:hidden;z-index:0;pointer-events:none}
+.bg-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;z-index:0}
+#root{position:relative;z-index:1}
 
-  /* Collider palette (dashboard) */
-  --vacuum:#06090F;
-  --vacuum-2:#0A0F1A;
-  --steel-1:#0F1E2F;
-  --steel-2:#14283E;
-  --steel-3:#1A324F;
-  --steel-4:#2A4A6B;
-  --steel-5:#3A5A7A;
-  --yellow:#FFCC00;
-  --yellow-2:#FFE066;
-  --cyan:#00D4FF;
-  --cyan-2:#7BE9FF;
-  --red:#FF3B30;
-  --red-2:#FF6B61;
-  --ink:#E8EAF0;
-  --ink-dim:#9AA4B8;
-  --ink-faint:#6B7A90;
-  --line:#1E334D;
-  --line-2:#243A55;
-  --success:#1ED760;
+/* === Glass panels — substrate, not ornament === */
+.glass{background:rgba(255,255,255,0.04);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.06);border-radius:18px;box-shadow:0 8px 32px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,255,255,0.04)}
+.glass-strong{background:rgba(255,255,255,0.07);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,0.1);border-radius:18px;box-shadow:0 8px 32px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.06)}
+.glass-dark{background:rgba(3,3,7,0.7);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.05);border-radius:18px;box-shadow:0 8px 32px rgba(0,0,0,0.5),inset 0 1px 0 rgba(255,255,255,0.03)}
+
+/* === Selection & focus — quantum teal ring === */
+::selection{background:rgba(0,212,170,0.3);color:#030307}
+:focus-visible{outline:2px solid #00D4AA;outline-offset:2px;border-radius:2px}
+
+/* === Animations — one interference reveal === */
+@keyframes interference-in{
+  from{opacity:0;transform:translateX(-60px) skewX(-8deg);filter:blur(8px)}
+  60%{opacity:1;transform:translateX(8px) skewX(1deg);filter:blur(0)}
+  to{opacity:1;transform:none;filter:none}
 }
+@keyframes interference-in-reverse{
+  from{opacity:0;transform:translateX(60px) skewX(8deg);filter:blur(8px)}
+  60%{opacity:1;transform:translateX(-8px) skewX(-1deg);filter:blur(0)}
+  to{opacity:1;transform:none;filter:none}
+}
+@keyframes result-reveal{
+  from{opacity:0;transform:translateY(16px);filter:blur(4px)}
+  to{opacity:1;transform:none;filter:none}
+}
+@keyframes slideDown{from{opacity:0;transform:translateY(-18px)}to{opacity:1;transform:none}}
+@keyframes reveal{from{opacity:0;transform:translateY(22px) scale(0.98);filter:blur(6px)}55%{opacity:1;transform:scale(0.995);filter:blur(0)}to{opacity:var(--reveal-end,1);transform:none;filter:none}}
+@keyframes accordion-down{from{height:0}to{height:var(--radix-accordion-content-height)}}
+@keyframes accordion-up{from{height:var(--radix-accordion-content-height)}to{height:0}}
 
-/* === Shared type helpers === */
-.tabular{font-family:"JetBrains Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums}
-.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-
-/* === Shared browser-surface theming === */
-::selection{background:var(--yellow);color:var(--vacuum)}
-:focus-visible{outline:2px solid var(--yellow);outline-offset:2px;border-radius:2px}
-
-/* === Reduced motion (global floor) === */
-@media (prefers-reduced-motion: reduce){
+/* === Reduced motion === */
+@media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  *,*::before,*::after{animation-duration:.001s !important;animation-iteration-count:1 !important;transition-duration:.001s !important}
+  *,*::before,*::after{
+    animation-duration:.001s!important;
+    animation-iteration-count:1!important;
+    transition-duration:.001s!important
+  }
 }
+
+/* === Utility: paradigm colors === */
+.track-classical{color:#1D1D1F}
+.track-quantum{color:#00D4AA}
+.bg-classical{background:#1D1D1F}
+.bg-quantum{background:#00D4AA}
+.bg-quantum-dim{background:#00A388}
+.border-classical{border-color:#1D1D1F}
+.border-quantum{border-color:#00D4AA}
+.text-classical{color:#1D1D1F}
+.text-quantum{color:#00D4AA}
+.text-muted{color:#8E8E9A}
+.text-ink{color:#F5F5F7}
+
+/* === Utility: risk chips === */
+.risk-high{background:rgba(255,107,53,0.15);color:#FF6B35;border:1px solid rgba(255,107,53,0.3)}
+.risk-moderate{background:rgba(255,184,0,0.15);color:#FFB800;border:1px solid rgba(255,184,0,0.3)}
+.risk-low{background:rgba(30,215,96,0.15);color:#1ED760;border:1px solid rgba(30,215,96,0.3)}
+
+/* === Utility: winner badges === */
+.winner-classical{background:rgba(29,29,31,0.15);color:#1D1D1F;border:1px solid rgba(29,29,31,0.3)}
+.winner-quantum{background:rgba(0,212,170,0.15);color:#00D4AA;border:1px solid rgba(0,212,170,0.3)}

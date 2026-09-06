@@ -1,9 +1,9 @@
 // Sticky scroll story — "The Journey of One Patient Vector".
-// Images sit BEHIND the text: every act's caption lives in a fixed full-screen
-// layer, and scroll progress (rAF, single listener) crossfades both layers —
-// act captions fade in/out in place while the image bed crossfades + drifts
-// scale, then the whole story fades to void at its end. Only opacity/transform
-// are animated (GPU-composited, zero layout cost).
+// Keynote plate composition: a framed image card sits centered on void,
+// big act headlines sit ABOVE it, and each frame WIPES in over the
+// previous one (left→right clip reveal) while settling scale 0.94→1.02.
+// One rAF scroll listener drives everything; only opacity/transform/
+// clip-path are touched. Stage fades to void over the final 10% of scroll.
 // Reduced-motion fallback per DESIGN.md: static frame grid with captions.
 import { useMemo } from 'react'
 import { FRAMES, STORY_ACTS } from '../data/story-frames'
@@ -13,8 +13,10 @@ const N = FRAMES.length
 const clamp01 = (v) => Math.min(1, Math.max(0, v))
 const smoothstep = (t) => t * t * (3 - 2 * t)
 
-// [fadeInStart, fullyIn, startLeaving, gone] — continuous frame positions 0..N
-const WINDOW = (i) => [i - 0.35, i + 0.35, i + N - 1.35, i + N - 0.35]
+// Wipe window: frame j reveals over [j-1, j-1+0.7] in continuous frame
+// position (0..N-1). Frame 0 is the base layer — always revealed.
+const wipeAt = (j, pos) => (j === 0 ? 1 : smoothstep(clamp01((pos - (j - 1)) / 0.7)))
+const settleAt = (j, pos) => smoothstep(clamp01((pos - (j - 1)) / 1.3)) // scale 0.94 → 1.02
 
 function StoryStage() {
   const [ref, raw] = useScrollProgress()
@@ -23,67 +25,67 @@ function StoryStage() {
 
   return (
     <div ref={ref} className="relative h-[320vh]" aria-label="Scroll story: the journey of one patient vector">
-      {/* fixed stage: images BEHIND text, text on top, both scroll-faded */}
       <div className="sticky top-0 h-screen overflow-hidden" style={{ opacity: 1 - end }} aria-hidden={end > 0.5}>
-        {/* ——— image bed (behind) ——— */}
-        <div className="absolute inset-0 bg-void">
+        {/* ——— act headline, ABOVE the plate ——— */}
+        <div className="absolute inset-x-0 top-[6vh] z-10 px-6 text-center sm:top-[7vh]">
+          {STORY_ACTS.map((act, i) => {
+            const first = FRAMES.findIndex((f) => f.act.id === act.id)
+            const last = FRAMES.findLastIndex((f) => f.act.id === act.id)
+            const inT = smoothstep(clamp01((pos - first + 1.2) / 0.7))
+            const outT = i === STORY_ACTS.length - 1 ? 0 : smoothstep(clamp01((pos - (last + 0.35)) / 0.7))
+            const opacity = inT * (1 - outT)
+            const rise = 22 * (1 - inT) - 16 * outT
+            return (
+              <div
+                key={act.id}
+                className="absolute inset-x-0 top-0 px-6 will-change-[opacity,transform]"
+                style={{ opacity, transform: `translateY(${rise}px)` }}
+                aria-hidden={opacity < 0.15}
+              >
+                <p className="text-fine-print uppercase tracking-[0.18em] text-white/55">
+                  Act {act.id} — {act.label}
+                </p>
+                <h2 className="text-display-md mx-auto mt-2 max-w-[24ch] font-semibold text-white">{act.text}</h2>
+              </div>
+            )
+          })}
+        </div>
+
+        {/* ——— the plate: framed card, frames wipe in over each other ——— */}
+        <div
+          className="absolute inset-x-[4vw] bottom-[8vh] top-[24vh] overflow-hidden rounded-[18px] bg-void ring-1 ring-white/10 will-change-[transform] sm:inset-x-[9vw] sm:top-[22vh]"
+          style={{
+            boxShadow: 'var(--shadow-product)',
+            // one gentle plate entrance as the story arrives, slight shrink into the end-fade
+            transform: `scale(${(0.97 + 0.03 * clamp01(pos / 1.5)) * (1 - 0.05 * end)})`,
+          }}
+        >
           {FRAMES.map((f, i) => {
-            const [a, b, c, d] = WINDOW(i)
-            // asymmetric window: slow warm-up, steady hold, gentle exit (already smoothstepped)
-            const t = pos <= i + 0.5 ? smoothstep(clamp01((pos - a) / (b - a))) : 1 - smoothstep(clamp01((pos - c) / (d - c)))
-            const opacity = t
-            const scale = 1.06 - 0.05 * t // slow Ken Burns settle as the frame arrives
+            const wipe = wipeAt(i, pos)
+            const scale = 0.94 + 0.08 * settleAt(i, pos)
             return (
               <img
                 key={f.n}
                 src={f.src}
-                alt={t > 0.5 ? f.alt : ''}
-                className="absolute inset-0 h-full w-full object-cover will-change-[opacity,transform]"
-                style={{ opacity, transform: `scale(${scale})` }}
+                alt={wipe > 0.5 ? f.alt : ''}
+                className="absolute inset-0 h-full w-full object-cover will-change-[clip-path,transform]"
+                style={{ clipPath: `inset(0 ${(1 - wipe) * 100}% 0 0)`, transform: `scale(${scale})` }}
                 loading={i < 3 ? 'eager' : 'lazy'}
                 decoding="async"
                 draggable="false"
               />
             )
           })}
-          {/* legibility veil — text always reads over the imagery */}
-          <div className="absolute inset-0 bg-black/55" />
-          <div className="pointer-events-none absolute inset-x-0 top-0 h-[40vh] bg-gradient-to-b from-void via-void/40 to-transparent" />
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[55vh] bg-gradient-to-t from-void via-void/55 to-transparent" />
         </div>
 
-        {/* ——— text (front): every act mounted, scroll decides who is visible ——— */}
-        <div className="absolute inset-0">
-          {STORY_ACTS.map((act, i) => {
-            const first = FRAMES.findIndex((f) => f.act.id === act.id)
-            const [a, b] = WINDOW(first)
-            // fade out as the act's 3rd frame arrives (last act holds until the end-fade)
-            const c = i === STORY_ACTS.length - 1 ? Infinity : first + 1.65
-            const inT = smoothstep(clamp01((pos - a) / (b - a)))
-            const outT = i === STORY_ACTS.length - 1 ? 0 : smoothstep(clamp01((pos - c) / 0.7))
-            const opacity = inT * (1 - outT)
-            const rise = 26 * (1 - inT) - 18 * outT
-            return (
-              <div
-                key={act.id}
-                className="absolute inset-x-0 bottom-[10vh] px-6 text-center will-change-[opacity,transform]"
-                style={{ opacity, transform: `translateY(${rise}px)` }}
-                aria-hidden={opacity < 0.15}
-              >
-                <p className="text-fine-print uppercase tracking-[0.14em] text-body-muted">
-                  Act {act.id} — {act.label}
-                </p>
-                <p className="text-lead-airy mx-auto mt-3 max-w-[28ch] font-light text-white sm:max-w-[36ch]">
-                  {act.text}
-                </p>
-              </div>
-            )
-          })}
-          <div className="absolute inset-x-0 bottom-4 text-center">
-            <p className="text-fine-print text-white/50" aria-hidden="true">
-              {String(Math.min(N, Math.floor(pos) + 1)).padStart(2, '0')} / {N}
-            </p>
+        {/* ——— progress: counter + hairline ——— */}
+        <div className="absolute inset-x-0 bottom-[2.5vh] px-[9vw]">
+          <div className="h-px w-full bg-white/15">
+            <div className="h-px origin-left bg-white/70 will-change-transform" style={{ transform: `scaleX(${raw})` }} />
           </div>
+          <p className="text-fine-print mt-2 text-center text-white/50" aria-hidden="true">
+            {String(Math.min(N, Math.floor(pos) + 1)).padStart(2, '0')} / {N}
+          </p>
         </div>
       </div>
     </div>

@@ -10,17 +10,17 @@ export const STORY_ACTS = [
   {
     id: 2,
     label: "Compression",
-    text: "Thirteen signals become eight.",
+    text: "The clinical panel folds into four signals.",
   },
   {
     id: 3,
     label: "Encoding",
-    text: "Eight numbers become eight qubits.",
+    text: "Four numbers become four qubits.",
   },
   {
     id: 4,
     label: "Computation",
-    text: "The circuit runs. 512 shots.",
+    text: "The circuit runs — exact simulation.",
   },
   {
     id: 5,

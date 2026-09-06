@@ -23,3 +23,6 @@ mlruns/
 *.log
 frontend/dist/
 .impeccable/
+
+# Tool workspace state
+frontend/.october/

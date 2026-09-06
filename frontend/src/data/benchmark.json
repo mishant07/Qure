@@ -1,302 +1,50 @@
 {
-  "heart": {
-    "classical_all": {
-      "logistic_regression": {
-        "accuracy": 0.8688524590163934,
-        "precision": 0.8125,
-        "recall": 0.9285714285714286,
-        "f1": 0.8666666666666667,
-        "roc_auc": 0.9372294372294372,
-        "confusion": [
-          [
-            27,
-            6
-          ],
-          [
-            2,
-            26
-          ]
-        ]
-      }
-    },
+  "musa_heart": {
+    "label": "Heart",
+    "source": "backend/models/musa/HEART/heart_metrics.json",
     "classical_best": {
-      "model": "logistic_regression",
-      "accuracy": 0.8688524590163934,
-      "precision": 0.8125,
-      "recall": 0.9285714285714286,
-      "f1": 0.8666666666666667,
-      "roc_auc": 0.9372294372294372,
-      "confusion": [
-        [
-          27,
-          6
-        ],
-        [
-          2,
-          26
-        ]
-      ]
+      "model": "HistGradientBoosting",
+      "accuracy": 0.9180327868852459,
+      "f1": 0.9152542372881356,
+      "roc_auc": 0.961038961038961
     },
     "vqc": {
-      "accuracy": 0.9016393442622951,
-      "precision": 0.8666666666666667,
-      "recall": 0.9285714285714286,
-      "f1": 0.896551724137931,
-      "roc_auc": 0.945887445887446,
-      "confusion": [
-        [
-          29,
-          4
-        ],
-        [
-          2,
-          26
-        ]
-      ],
-      "train_time_s": 51.908921003341675,
-      "qubits": 8,
-      "shots": 512,
-      "circuit_depth": 32
+      "accuracy": 0.7704918032786885,
+      "f1": 0.7586206896551724,
+      "roc_auc": 0.8333333333333334,
+      "qubits": 4
     }
   },
-  "diabetes": {
-    "classical_all": {
-      "logistic_regression": {
-        "accuracy": 0.7077922077922078,
-        "precision": 0.5737704918032787,
-        "recall": 0.6481481481481481,
-        "f1": 0.6086956521739131,
-        "roc_auc": 0.8112962962962964,
-        "confusion": [
-          [
-            74,
-            26
-          ],
-          [
-            19,
-            35
-          ]
-        ]
-      }
-    },
+  "musa_hcv": {
+    "label": "Hepatitis C",
+    "source": "backend/models/musa/HCV/hcv_metrics.json",
     "classical_best": {
-      "model": "logistic_regression",
-      "accuracy": 0.7077922077922078,
-      "precision": 0.5737704918032787,
-      "recall": 0.6481481481481481,
-      "f1": 0.6086956521739131,
-      "roc_auc": 0.8112962962962964,
-      "confusion": [
-        [
-          74,
-          26
-        ],
-        [
-          19,
-          35
-        ]
-      ]
+      "model": "XGBoost",
+      "accuracy": 0.983739837398374,
+      "f1": 0.9285714285714286,
+      "roc_auc": 0.9962962962962963
     },
     "vqc": {
-      "accuracy": 0.7012987012987013,
-      "precision": 0.58,
-      "recall": 0.5370370370370371,
-      "f1": 0.5576923076923077,
-      "roc_auc": 0.7314814814814814,
-      "confusion": [
-        [
-          79,
-          21
-        ],
-        [
-          25,
-          29
-        ]
-      ],
-      "train_time_s": 86.4703676700592,
-      "qubits": 8,
-      "shots": 512,
-      "circuit_depth": 32
+      "accuracy": 0.9186991869918699,
+      "f1": 0.6153846153846154,
+      "roc_auc": 0.9290123456790123,
+      "qubits": 4
     }
   },
-  "breast_cancer": {
-    "classical_all": {
-      "logistic_regression": {
-        "accuracy": 0.9824561403508771,
-        "precision": 0.9761904761904762,
-        "recall": 0.9761904761904762,
-        "f1": 0.9761904761904762,
-        "roc_auc": 0.9976851851851851,
-        "confusion": [
-          [
-            71,
-            1
-          ],
-          [
-            1,
-            41
-          ]
-        ]
-      }
-    },
+  "musa_diabetes": {
+    "label": "Diabetes (3-class)",
+    "source": "backend/models/musa/DIABETES/metrics.json",
     "classical_best": {
-      "model": "logistic_regression",
-      "accuracy": 0.9824561403508771,
-      "precision": 0.9761904761904762,
-      "recall": 0.9761904761904762,
-      "f1": 0.9761904761904762,
-      "roc_auc": 0.9976851851851851,
-      "confusion": [
-        [
-          71,
-          1
-        ],
-        [
-          1,
-          41
-        ]
-      ]
+      "model": "Random Forest",
+      "accuracy": 0.9811320754716981,
+      "f1": 0.9849170437405732,
+      "roc_auc": null
     },
     "vqc": {
-      "accuracy": 0.8421052631578947,
-      "precision": 0.8,
-      "recall": 0.7619047619047619,
-      "f1": 0.7804878048780488,
-      "roc_auc": 0.9381613756613756,
-      "confusion": [
-        [
-          64,
-          8
-        ],
-        [
-          10,
-          32
-        ]
-      ],
-      "train_time_s": 44.672077894210815,
-      "qubits": 8,
-      "shots": 512,
-      "circuit_depth": 32
-    }
-  },
-  "liver": {
-    "classical_all": {
-      "logistic_regression": {
-        "accuracy": 0.7264957264957265,
-        "precision": 0.9322033898305084,
-        "recall": 0.6626506024096386,
-        "f1": 0.7746478873239436,
-        "roc_auc": 0.8327427356484762,
-        "confusion": [
-          [
-            30,
-            4
-          ],
-          [
-            28,
-            55
-          ]
-        ]
-      }
-    },
-    "classical_best": {
-      "model": "logistic_regression",
-      "accuracy": 0.7264957264957265,
-      "precision": 0.9322033898305084,
-      "recall": 0.6626506024096386,
-      "f1": 0.7746478873239436,
-      "roc_auc": 0.8327427356484762,
-      "confusion": [
-        [
-          30,
-          4
-        ],
-        [
-          28,
-          55
-        ]
-      ]
-    },
-    "vqc": {
-      "accuracy": 0.6837606837606838,
-      "precision": 0.7053571428571429,
-      "recall": 0.9518072289156626,
-      "f1": 0.8102564102564103,
-      "roc_auc": 0.42097802976612336,
-      "confusion": [
-        [
-          1,
-          33
-        ],
-        [
-          4,
-          79
-        ]
-      ],
-      "train_time_s": 46.44304299354553,
-      "qubits": 8,
-      "shots": 512,
-      "circuit_depth": 32
-    }
-  },
-  "parkinsons": {
-    "classical_all": {
-      "logistic_regression": {
-        "accuracy": 0.7692307692307693,
-        "precision": 0.9545454545454546,
-        "recall": 0.7241379310344828,
-        "f1": 0.8235294117647058,
-        "roc_auc": 0.9310344827586208,
-        "confusion": [
-          [
-            9,
-            1
-          ],
-          [
-            8,
-            21
-          ]
-        ]
-      }
-    },
-    "classical_best": {
-      "model": "logistic_regression",
-      "accuracy": 0.7692307692307693,
-      "precision": 0.9545454545454546,
-      "recall": 0.7241379310344828,
-      "f1": 0.8235294117647058,
-      "roc_auc": 0.9310344827586208,
-      "confusion": [
-        [
-          9,
-          1
-        ],
-        [
-          8,
-          21
-        ]
-      ]
-    },
-    "vqc": {
-      "accuracy": 0.717948717948718,
-      "precision": 0.7368421052631579,
-      "recall": 0.9655172413793104,
-      "f1": 0.835820895522388,
-      "roc_auc": 0.5103448275862069,
-      "confusion": [
-        [
-          0,
-          10
-        ],
-        [
-          1,
-          28
-        ]
-      ],
-      "train_time_s": 36.67675852775574,
-      "qubits": 8,
-      "shots": 512,
-      "circuit_depth": 32
+      "accuracy": 0.7358490566037735,
+      "f1": 0.5268498942917548,
+      "roc_auc": null,
+      "qubits": 4
     }
   }
 }

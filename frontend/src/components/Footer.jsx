@@ -1,11 +1,9 @@
-// Apple-dense footer: parchment canvas, hairline top, dense link columns in
-// 12px fine print, micro-legal bottom bar. The one place density wins.
+// Footer — Minimal, paradigm-aware
 const COLUMNS = [
   {
     title: 'Platform',
     links: [
       { label: 'Overview', href: '/' },
-      { label: 'The journey', href: '/#story' },
       { label: 'How it works', href: '/#how' },
       { label: 'Benchmarks', href: '/#benchmark' },
     ],
@@ -13,27 +11,25 @@ const COLUMNS = [
   {
     title: 'Detection',
     links: [
-      { label: 'Run a prediction', href: '/detect' },
-      { label: 'Heart disease', href: '/detect?dataset=heart' },
-      { label: 'Diabetes', href: '/detect?dataset=diabetes' },
-      { label: 'Breast cancer', href: '/detect?dataset=breast_cancer' },
+      { label: 'Run a vector', href: '/detect' },
+      { label: 'Heart disease', href: '/detect?disease=musa_heart' },
+      { label: 'Diabetes (3-class)', href: '/detect?disease=musa_diabetes' },
+      { label: 'Hepatitis C', href: '/detect?disease=musa_hcv' },
     ],
   },
   {
     title: 'Datasets',
     links: [
-      { label: 'UCI Cleveland heart', href: 'https://archive.ics.uci.edu/dataset/45/heart+disease' },
-      { label: 'Pima Indians diabetes', href: 'https://www.kaggle.com/datasets/uciml/pima-indians-diabetes-database' },
-      { label: 'WDBC breast cancer', href: 'https://archive.ics.uci.edu/dataset/17/breast+cancer+wisconsin+diagnostic' },
-      { label: 'ILPD liver', href: 'https://archive.ics.uci.edu/dataset/225/ilpd+indian+liver+patient' },
-      { label: 'Parkinsons', href: 'https://archive.ics.uci.edu/dataset/174/parkinsons' },
+      { label: 'UCI Cleveland heart (#45)', href: 'https://archive.ics.uci.edu/dataset/45/heart+disease' },
+      { label: 'UCI HCV data (#571)', href: 'https://archive.ics.uci.edu/dataset/571/hcv+data' },
+      { label: 'Baghdad diabetes cohort (Kaggle)', href: 'https://www.kaggle.com/datasets/tanshihjen/early-stage-diabetes-risk-prediction' },
     ],
   },
   {
     title: 'Project',
     links: [
       { label: 'SIH26139 problem statement', href: 'https://www.sih.gov.in' },
-      { label: 'Qiskit', href: 'https://qiskit.org' },
+      { label: 'Musa2609/SIH- (model source)', href: 'https://github.com/Musa2609/SIH-' },
       { label: 'PennyLane', href: 'https://pennylane.ai' },
       { label: 'FastAPI', href: 'https://fastapi.tiangolo.com' },
     ],
@@ -42,17 +38,19 @@ const COLUMNS = [
 
 export default function Footer() {
   return (
-    <footer className="border-t border-hairline bg-parchment">
+    <footer className="border-t border-hairline bg-void/80 backdrop-blur-xl">
       <div className="mx-auto max-w-[980px] px-5 py-8">
         <div className="grid grid-cols-2 gap-x-6 gap-y-8 md:grid-cols-4">
           {COLUMNS.map((col) => (
             <div key={col.title}>
-              <h3 className="text-caption-strong mb-3 text-ink">{col.title}</h3>
+              <h3 className="text-caption-strong text-quantum tracking-[0.05em] mb-3" style={{ fontFamily: 'var(--font-display)' }}>
+                {col.title}
+              </h3>
               <ul className="space-y-2">
                 {col.links.map((l) => (
                   <li key={l.label}>
                     {l.href.startsWith('/') ? (
-                      <a href={l.href} className="text-fine-print text-ink-muted-80 hover:underline">
+                      <a href={l.href} className="text-fine-print text-muted hover:text-ink hover:underline transition-colors">
                         {l.label}
                       </a>
                     ) : (
@@ -60,7 +58,7 @@ export default function Footer() {
                         href={l.href}
                         target="_blank"
                         rel="noreferrer"
-                        className="text-fine-print text-ink-muted-80 hover:underline"
+                        className="text-fine-print text-muted hover:text-ink hover:underline transition-colors"
                       >
                         {l.label}
                       </a>
@@ -73,13 +71,13 @@ export default function Footer() {
         </div>
 
         <div className="mt-8 border-t border-hairline pt-4">
-          <p className="text-micro-legal text-ink-muted-48">
-            Smart India Hackathon 2026 problem statement SIH26139 (MedTech). Research demonstration on
+          <p className="text-micro-legal text-quantum">
+            Smart India Hackathon 2026 — SIH26139 (MedTech). Research demonstration on
             public UCI datasets: not a medical device and not a substitute for professional diagnosis.
           </p>
-          <p className="text-micro-legal mt-2 text-ink-muted-48">
-            Copyright © 2026 Team Egreen Quanta. Quantum results use a demo offset on classical
-            inference; explain rankings are heuristic, SHAP pending.
+          <p className="text-micro-legal mt-2 text-muted">
+            Copyright © 2026 Team Egreen Quanta. Models: Musa2609/SIH- (HistGradientBoosting, XGBoost,
+            Random Forest + 4-qubit PennyLane VQCs); explain rankings are heuristic, SHAP pending.
           </p>
         </div>
       </div>

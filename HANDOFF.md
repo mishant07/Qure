@@ -1,6 +1,16 @@
 # SIH26139 — Hybrid Quantum ML Platform — Professional Handoff
 > **One-file handoff for a pro software/web team to take over. Covers idea, goal, progress, stack, results, ops, and next steps. Generated 2026-08-29 from full conversation.**
 
+> **⚠️ UPDATE 2026-09-06 — Serving scope changed.** The platform now serves **only the
+> three Musa2609/SIH- modules** (`musa_heart`, `musa_hcv`, `musa_diabetes`; HistGradientBoosting /
+> XGBoost / Random Forest + 4-qubit PennyLane VQCs from `backend/models/musa/`). The legacy
+> 5-dataset stack described throughout this document (8-qubit VQC, PCA-8, RBF-SVC, Pima diabetes)
+> is **gated, not deleted** — artifacts retained under `models/`, `data/`, `results/`, `src/`,
+> legacy registry retained in `backend/services/datasets.py`, but no endpoint or UI serves it.
+> Sections 1–12 below describe the pre-gating state and are kept for history; see
+> `docs/api.md` and `backend/routes/prediction.py` for the current contract.
+
+
 ---
 
 ## 0. Quick Facts

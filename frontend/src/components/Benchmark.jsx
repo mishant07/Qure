@@ -1,6 +1,4 @@
-// Benchmark showcase — recharts horizontal grouped bars, one chart per metric.
-// Honest scoreboard: winner is computed from the data, not asserted in copy.
-// Derived from benchmark.json (five UCI datasets, classical vs 8-qubit VQC).
+// Benchmark — Honest Scoreboard, Paradigm Colors (3 active Musa modules)
 import { useMemo } from 'react'
 import {
   Bar,
@@ -12,29 +10,26 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
-import { Brain, Cpu } from 'lucide-react'
 import benchmark from '../data/benchmark.json'
 import { cn } from '../lib/utils'
 
 const DATASETS = [
-  { key: 'heart', label: 'Heart' },
-  { key: 'diabetes', label: 'Diabetes' },
-  { key: 'breast_cancer', label: 'Breast cancer' },
-  { key: 'liver', label: 'Liver' },
-  { key: 'parkinsons', label: "Parkinson's" },
+  { key: 'musa_heart', label: 'Heart' },
+  { key: 'musa_hcv', label: 'Hepatitis C' },
+  { key: 'musa_diabetes', label: 'Diabetes (3-class)' },
 ]
 
-const GRID = 'rgba(0,0,0,0.06)'
+const GRID = 'rgba(255,255,255,0.04)'
 const AXIS = { fontSize: 12, fill: '#7a7a7a' }
 
 function TooltipBox({ active, payload, label }) {
   if (!active || !payload?.length) return null
   return (
-    <div className="rounded-md bg-void/90 px-3 py-2 text-white shadow-sm backdrop-blur">
-      <p className="text-caption-strong">{label}</p>
+    <div className="rounded-md bg-void/90 px-3 py-2 text-ink shadow-sm backdrop-blur border border-hairline">
+      <p className="text-caption-strong text-quantum">{label}</p>
       {payload.map((p) => (
         <p key={p.dataKey} className="text-caption mt-0.5">
-          {p.name}: <span className="font-semibold">{(p.value * 100).toFixed(1)}%</span>
+          {p.name}: <span className="font-medium tabular">{(p.value * 100).toFixed(1)}%</span>
         </p>
       ))}
     </div>
@@ -59,37 +54,34 @@ export default function Benchmark() {
     []
   )
   const quantumWins = rows.filter((r) => r.winner === 'quantum').length
+  const gaps = rows.map((r) => r.classical - r.quantum)
+  const worstGap = Math.max(...gaps)
 
   return (
     <div>
-      {/* scoreboard — computed from data, per DESIGN.md honesty rule */}
-      <div className="mb-10 grid gap-4 sm:grid-cols-3">
-        <div className="rounded-lg bg-tile-1 p-6 text-white">
-          <p className="text-display-md font-semibold">{quantumWins}/5</p>
-          <p className="text-caption mt-1 text-body-muted">
-            datasets where the 8-qubit VQC leads on F1
-          </p>
+      {/* Scoreboard — stat cards with paradigm colors */}
+      <div className="mb-8 grid gap-4 sm:grid-cols-3">
+        <div className="glass-panel p-5 text-center">
+          <p className="text-display-md font-medium tabular-display track-quantum">{quantumWins}/3</p>
+          <p className="text-caption mt-1 text-muted">modules where the VQC leads on F1</p>
         </div>
-        <div className="rounded-lg bg-tile-2 p-6 text-white">
-          <p className="text-display-md font-semibold">±0.02</p>
-          <p className="text-caption mt-1 text-body-muted">
-            typical F1 gap between the two paradigms
-          </p>
+        <div className="glass-panel p-5 text-center">
+          <p className="text-display-md font-medium tabular-display text-ink">{(worstGap * 100).toFixed(0)} pts</p>
+          <p className="text-caption mt-1 text-muted">largest F1 gap favouring the classical model</p>
         </div>
-        <div className="rounded-lg bg-tile-3 p-6 text-white">
-          <p className="text-display-md font-semibold">512</p>
-          <p className="text-caption mt-1 text-body-muted">
-            quantum shots behind every VQC number
-          </p>
+        <div className="glass-panel p-5 text-center">
+          <p className="text-display-md font-medium tabular-display track-quantum">4</p>
+          <p className="text-caption mt-1 text-muted">qubits per VQC — exact simulation, no sampling noise</p>
         </div>
       </div>
-      {/* charts + honesty table */}
-      <div className="grid gap-10 lg:grid-cols-2">
+
+      {/* Charts — paradigm colors */}
+      <div className="grid gap-8 lg:grid-cols-2">
         {['f1', 'roc_auc'].map((metric) => (
           <figure key={metric}>
-            <div className="rounded-lg bg-white p-4 ring-1 ring-divider-soft">
+            <div className="glass-panel p-4">
               <ResponsiveContainer width="100%" height={280}>
-                <BarChart data={rows} barGap={4} margin={{ top: 8, right: 8, left: -18, bottom: 0 }}>
+                <BarChart data={rows} barGap={4} margin={{ top: 8, right: 8, left: -12, bottom: 0 }}>
                   <CartesianGrid stroke={GRID} vertical={false} />
                   <XAxis dataKey="name" tick={AXIS} tickLine={false} axisLine={{ stroke: GRID }} />
                   <YAxis
@@ -100,44 +92,43 @@ export default function Benchmark() {
                     axisLine={false}
                     tickFormatter={(v) => `${(v * 100).toFixed(0)}%`}
                   />
-                  <Tooltip content={<TooltipBox />} cursor={{ fill: 'rgba(0,102,204,0.04)' }} />
-                  <Legend iconType="circle" iconSize={8} wrapperClassName="text-caption" />
-                  <Bar dataKey="classical" name="Classical best" fill="#1d1d1f" radius={[4, 4, 0, 0]} maxBarSize={28} />
-                  <Bar dataKey="quantum" name="8-qubit VQC" fill="#0066cc" radius={[4, 4, 0, 0]} maxBarSize={28} />
+                  <Tooltip content={<TooltipBox />} cursor={{ fill: 'rgba(0,212,170,0.08)' }} />
+                  <Legend iconType="circle" iconSize={8} wrapperClassName="text-caption text-muted" />
+                  <Bar dataKey="classical" name="Classical" fill="#1D1D1F" radius={[4, 4, 0, 0]} maxBarSize={28} />
+                  <Bar dataKey="quantum" name="4-qubit VQC" fill="#00D4AA" radius={[4, 4, 0, 0]} maxBarSize={28} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
-            <figcaption className="text-caption mt-3 text-ink-muted-48">
+            <figcaption className="text-caption mt-3 text-muted">
               {metric === 'f1' ? 'F1 score (positive class)' : 'ROC-AUC'} — higher is better.
             </figcaption>
           </figure>
         ))}
       </div>
 
-      {/* per-dataset honesty table */}
-      <div className="mt-10 overflow-hidden rounded-lg ring-1 ring-divider-soft">
+      {/* Per-dataset honesty table — winner badge uses paradigm color */}
+      <div className="mt-8 overflow-hidden rounded-lg border border-hairline">
         <table className="w-full text-left">
           <caption className="sr-only">Winner per dataset, computed from benchmark data</caption>
           <thead>
-            <tr className="bg-pearl text-caption-strong text-ink-muted-80">
-              <th scope="col" className="px-4 py-3 font-semibold">Dataset</th>
-              <th scope="col" className="px-4 py-3 font-semibold">Classical F1</th>
-              <th scope="col" className="px-4 py-3 font-semibold">VQC F1</th>
-              <th scope="col" className="px-4 py-3 font-semibold">Honest verdict</th>
+            <tr className="bg-glass text-caption-strong text-muted">
+              <th scope="col" className="px-4 py-3 font-medium tabular" style={{ fontFamily: 'var(--font-display)' }}>Dataset</th>
+              <th scope="col" className="px-4 py-3 font-medium tabular">Classical F1</th>
+              <th scope="col" className="px-4 py-3 font-medium tabular text-quantum">VQC F1</th>
+              <th scope="col" className="px-4 py-3 font-medium tabular">Honest Verdict</th>
             </tr>
           </thead>
           <tbody className="text-caption">
             {rows.map((r, i) => (
-              <tr key={r.name} className={cn('border-t border-divider-soft', i % 2 ? 'bg-pearl/50' : 'bg-white')}>
-                <th scope="row" className="px-4 py-3 font-semibold text-ink">{r.name}</th>
-                <td className="px-4 py-3 text-ink-muted-80">{(r.classical * 100).toFixed(1)}%</td>
-                <td className="px-4 py-3 text-ink-muted-80">{(r.quantum * 100).toFixed(1)}%</td>
+              <tr key={r.name} className={cn('border-t border-hairline', i % 2 ? 'bg-glass' : 'bg-transparent')}>
+                <th scope="row" className="px-4 py-3 font-medium text-ink tabular" style={{ fontFamily: 'var(--font-display)' }}>{r.name}</th>
+                <td className="px-4 py-3 text-classical tabular">{(r.classical * 100).toFixed(1)}%</td>
+                <td className="px-4 py-3 text-quantum tabular">{(r.quantum * 100).toFixed(1)}%</td>
                 <td className="px-4 py-3">
                   <span className={cn(
-                    'inline-flex items-center gap-1.5 rounded-pill px-2.5 py-1',
-                    r.winner === 'quantum' ? 'bg-primary/10 text-primary' : 'bg-black/5 text-ink-muted-80'
+                    'inline-flex items-center gap-1.5 rounded-pill px-2.5 py-1 text-fine-print tabular',
+                    r.winner === 'quantum' ? 'winner-quantum' : 'winner-classical'
                   )}>
-                    {r.winner === 'quantum' ? <Cpu className="size-3.5" aria-hidden="true" /> : <Brain className="size-3.5" aria-hidden="true" />}
                     {r.winner === 'quantum' ? 'Quantum leads' : 'Classical leads'}
                   </span>
                 </td>

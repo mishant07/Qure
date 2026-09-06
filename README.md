@@ -1,6 +1,15 @@
 # Hybrid Quantum ML Platform for Early Disease Detection — SIH26139
 **PS:** SIH26139 Egreen Quanta (MedTech) | **Team:** you (lead), Musa, Ashutosh, Anmol (heavy), Abdul, Mishti | **Deadline:** 20 Sept 2026  
-**Dual Demo Default:** `UCI Heart Disease (Cleveland, 303×13)` + `Pima Diabetes (768×8)` → proves scalability to cancer/neuro per PS.
+
+> **Serving scope (Sept 2026):** the platform serves **only the three Musa2609/SIH- modules** —
+> `musa_heart` (UCI Cleveland, HistGradientBoosting 91.80% + 4-qubit VQC 77.05%),
+> `musa_hcv` (UCI HCV, XGBoost 98.37% + 4-qubit VQC 91.87%) and `musa_diabetes`
+> (Baghdad cohort 3-class, Random Forest 98.11% + 4-qubit VQC 73.58%).
+> The repo's own legacy 5-dataset stack (heart/diabetes/breast_cancer/liver/parkinsons,
+> 8-qubit VQC, PCA-8) is **gated, not deleted**: artifacts stay under `models/`, `data/`,
+> `results/` and `src/`, the legacy registry remains in `backend/services/datasets.py`
+> for provenance/retraining, but no API endpoint or UI surface serves it.
+> Endpoints: `docs/api.md` · Model provenance: `backend/models/musa/`.
 
 > Merged solo-proof plan: `docs/architecture.md` (from `/home/ace/SIH26139_MERGED_CHECKLIST.md`) + team hygiene `Downloads/SIH26139...md:1225-1242`.
 
@@ -24,6 +33,12 @@ hybrid-qml-disease-detection/
 Legacy scaffold preserved at `~/Projects/SIH26139/` (same logic, old paths). This repo is the **new canonical** matching your requested architecture.
 
 ## Quick Start
+
+> The steps below reproduce the **legacy (gated) pipeline** — kept for artifact
+> provenance. The **served** models are Musa2609/SIH-'s staged artifacts in
+> `backend/models/musa/` (training code in their repo; inference via
+> `backend/services/musa_service.py` + `musa_vqc.py`). Verify them with
+> `.venv/bin/python backend/scripts/validate_models.py`.
 
 ```bash
 # 1. Env — use python 3.12 (qiskit/pennylane need ≤3.12, your system is 3.14)

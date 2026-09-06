@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* Inter variable, self-hosted (offline demo safety) — per DESIGN.md font-substitute note */
+/* === Font faces === */
 @font-face {
   font-family: "Inter";
   src: url("/fonts/InterVariable.woff2") format("woff2");
@@ -9,47 +9,68 @@
   font-display: swap;
 }
 
-/* DESIGN.md (Apple) token map — 1:1 from colors/typography/rounded/spacing */
+@font-face {
+  font-family: "Geist Pixel Circle";
+  src: url("/fonts/GeistPixel-Circle.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+
+/* === Rebuild design tokens — Interference Palette === */
 @theme {
-  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+  --font-sans: "Inter", "Segoe UI", system-ui, sans-serif;
+  --font-display: "Geist Pixel Circle", "JetBrains Mono", monospace;
 
-  /* colors */
-  --color-primary: #0066cc;
-  --color-primary-focus: #0071e3;
-  --color-primary-on-dark: #2997ff;
-  --color-ink: #1d1d1f;
-  --color-body: #1d1d1f;
-  --color-body-on-dark: #ffffff;
-  --color-body-muted: #cccccc;
-  --color-ink-muted-80: #333333;
-  --color-ink-muted-48: #7a7a7a;
-  --color-divider-soft: #f0f0f0;
-  --color-hairline: #e0e0e0;
-  --color-canvas: #ffffff;
-  --color-parchment: #f5f5f7;
-  --color-pearl: #fafafc;
-  --color-tile-1: #272729;
-  --color-tile-2: #2a2a2c;
-  --color-tile-3: #252527;
-  --color-void: #000000;
-  --color-chip: #d2d2d7;
+  /* Colors — Interference Palette */
+  --color-void: #030307;
+  --color-ink: #F5F5F7;
+  --color-muted: #8E8E9A;
 
-  /* radius */
+  /* Paradigm tracks */
+  --color-classical: #1D1D1F;
+  --color-classical-muted: #2A2A2E;
+  --color-quantum: #00D4AA;
+  --color-quantum-dim: #00A388;
+  --color-quantum-glow: rgba(0,212,170,0.35);
+
+  /* Risk */
+  --color-warn: #FF6B35;
+  --color-caution: #FFB800;
+  --color-safe: #1ED760;
+
+  /* Glass — substrate, not ornament */
+  --color-glass: rgba(255,255,255,0.04);
+  --color-glass-strong: rgba(255,255,255,0.07);
+  --color-glass-dark: rgba(3,3,7,0.7);
+
+  /* Borders */
+  --color-hairline: rgba(255,255,255,0.06);
+  --color-ring: rgba(0,212,170,0.35);
+
+  /* Radius */
   --radius-xs: 5px;
   --radius-sm: 8px;
   --radius-md: 11px;
   --radius-lg: 18px;
   --radius-pill: 9999px;
 
-  /* spacing — 8px base + section */
-  --spacing-xs2: 4px;
+  /* Spacing — 8px base unit */
+  --spacing-unit: 8px;
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+  --spacing-3xl: 64px;
   --spacing-section: 80px;
 
-  /* the single signature drop-shadow (product imagery only) */
-  --shadow-product: 3px 5px 30px 0 rgba(0, 0, 0, 0.22);
+  /* Shadows — minimal, purposeful */
+  --shadow-panel: 0 8px 32px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.04);
+  --shadow-strong: 0 12px 40px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06);
 }
 
-/* typography ladder — DESIGN.md with Inter substitutes (tracking −0.01em, body lh 1.44) */
+/* === Typography ladder === */
 @layer base {
   html {
     scroll-behavior: smooth;
@@ -57,109 +78,169 @@
     text-rendering: optimizeLegibility;
   }
   body {
-    @apply bg-canvas text-body font-sans;
-    font-size: 17px;
-    line-height: 1.44;
-    letter-spacing: -0.012em;
+    @apply bg-void text-ink font-sans;
+    font-size: 1rem;
+    line-height: 1.6;
+    letter-spacing: -0.01em;
+    font-weight: 300;
   }
   ::selection {
-    background: rgba(0, 102, 204, 0.18);
+    background: rgba(0, 212, 170, 0.3);
+    color: #030307;
   }
 }
 
 @layer utilities {
+  /* Display — Geist Pixel Circle, computational voice */
   .text-hero-display {
-    font-size: clamp(2.125rem, 5vw, 3.5rem);
-    font-weight: 600;
-    line-height: 1.07;
-    letter-spacing: -0.022em;
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 7vw, 5.5rem);
+    font-weight: 400;
+    line-height: 1.02;
+    letter-spacing: -0.03em;
   }
   .text-display-lg {
-    font-size: clamp(1.875rem, 3.4vw, 2.5rem);
-    font-weight: 600;
-    line-height: 1.1;
-    letter-spacing: -0.011em;
+    font-family: var(--font-display);
+    font-size: clamp(1.875rem, 3.5vw, 2.75rem);
+    font-weight: 400;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
   }
   .text-display-md {
-    font-size: clamp(1.5rem, 2.6vw, 2.125rem);
-    font-weight: 600;
-    line-height: 1.18;
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 2.5vw, 2.125rem);
+    font-weight: 400;
+    line-height: 1.15;
     letter-spacing: -0.015em;
   }
+
+  /* Lead — Inter Light, airy */
   .text-lead {
-    font-size: clamp(1.25rem, 2vw, 1.75rem);
-    font-weight: 400;
-    line-height: 1.32;
+    font-size: clamp(1.125rem, 1.8vw, 1.5rem);
+    font-weight: 300;
+    line-height: 1.55;
     letter-spacing: 0;
   }
   .text-lead-airy {
-    font-size: clamp(1.125rem, 1.8vw, 1.5rem);
+    font-size: clamp(1.125rem, 1.6vw, 1.375rem);
     font-weight: 300;
-    line-height: 1.47;
+    line-height: 1.6;
     letter-spacing: 0;
   }
+
+  /* UI Labels — Geist Pixel Circle, tabular */
   .text-tagline {
-    font-size: 1.3125rem;
-    font-weight: 600;
-    line-height: 1.19;
-    letter-spacing: 0.008em;
+    font-family: var(--font-display);
+    font-size: 1.125rem;
+    font-weight: 400;
+    line-height: 1.25;
+    letter-spacing: 0.05em;
+    text-transform: none;
   }
   .text-body-strong {
-    font-size: 1.0625rem;
-    font-weight: 600;
-    line-height: 1.24;
-    letter-spacing: -0.015em;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
   }
+
+  /* Body */
+  .text-body {
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.6;
+    letter-spacing: -0.01em;
+  }
+
+  /* Caption / Fine print */
   .text-caption {
     font-size: 0.875rem;
     font-weight: 400;
-    line-height: 1.43;
-    letter-spacing: -0.01em;
+    line-height: 1.45;
+    letter-spacing: -0.005em;
   }
   .text-caption-strong {
     font-size: 0.875rem;
-    font-weight: 600;
-    line-height: 1.29;
-    letter-spacing: -0.01em;
-  }
-  .text-nav-link {
-    font-size: 0.75rem;
-    font-weight: 400;
-    line-height: 1;
-    letter-spacing: -0.075px;
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: -0.005em;
   }
   .text-fine-print {
     font-size: 0.75rem;
     font-weight: 400;
-    line-height: 1.3;
-    letter-spacing: -0.06px;
+    line-height: 1.4;
+    letter-spacing: -0.003em;
   }
   .text-micro-legal {
     font-size: 0.625rem;
     font-weight: 400;
-    line-height: 1.3;
+    line-height: 1.4;
     letter-spacing: 0;
   }
+
+  /* Numbers — always tabular */
+  .tabular {
+    font-family: "Inter", ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum" 1, "lnum" 1;
+  }
+  .tabular-display {
+    font-family: var(--font-display);
+    font-variant-numeric: tabular-nums;
+  }
 }
 
-/* WCAG 2.2 — minimum 24px target size for all pointer targets */
+/* === WCAG 2.2 target sizes === */
 @layer base {
   a, button, [role="button"], [role="tab"], summary, input, select, textarea {
-    min-height: 24px;
-    min-width: 24px;
+    min-height: 40px;
+    min-width: 40px;
   }
 }
 
-/* prefers-reduced-motion: kill all animation + scroll-driven motion */
+/* === Reduced motion === */
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-  *,
-  *::before,
-  *::after {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* === Paradigm utilities === */
+@layer utilities {
+  .track-classical { color: var(--color-classical); }
+  .track-quantum { color: var(--color-quantum); }
+  .bg-classical { background-color: var(--color-classical); }
+  .bg-quantum { background-color: var(--color-quantum); }
+  .bg-quantum-dim { background-color: var(--color-quantum-dim); }
+  .text-classical { color: var(--color-classical); }
+  .text-quantum { color: var(--color-quantum); }
+  .text-muted { color: var(--color-muted); }
+  .text-ink { color: var(--color-ink); }
+
+  .risk-high { background: rgba(255,107,53,0.15); color: #FF6B35; border: 1px solid rgba(255,107,53,0.3); }
+  .risk-moderate { background: rgba(255,184,0,0.15); color: #FFB800; border: 1px solid rgba(255,184,0,0.3); }
+  .risk-low { background: rgba(30,215,96,0.15); color: #1ED760; border: 1px solid rgba(30,215,96,0.3); }
+
+  .winner-classical { background: rgba(29,29,31,0.15); color: #1D1D1F; border: 1px solid rgba(29,29,31,0.3); }
+  .winner-quantum { background: rgba(0,212,170,0.15); color: #00D4AA; border: 1px solid rgba(0,212,170,0.3); }
+
+  .glass-panel {
+    background: var(--color-glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-panel);
+  }
+  .glass-strong {
+    background: var(--color-glass-strong);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-strong);
   }
 }

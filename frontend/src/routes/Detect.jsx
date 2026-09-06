@@ -1,33 +1,57 @@
-// /detect — the working page. Two-pane: sticky intro + form; result appears
-// below after submit. Sonner toasts errors; skeletons during inference.
-import { useCallback, useState } from 'react'
+// /detect — Two Tracks: Classical (form) | Quantum (result)
+// SIH 26139: "One logical section at a time; units beside numeric inputs; inline validation."
+import { useCallback, useState, useMemo } from 'react'
 import { toast } from 'sonner'
-import { ArrowDown } from 'lucide-react'
-import Nav from '../components/Nav'
+import { Zap } from 'lucide-react'
 import Footer from '../components/Footer'
 import PredictForm from '../components/PredictForm'
-import ResultPanel from '../components/ResultPanel'
+import ResultsDashboard from '../components/ResultsDashboard'
+import Processing from '../components/Processing'
 import ErrorState from '../components/ErrorState'
 import { FormSkeleton, ResultSkeleton } from '../components/LoadingSkeletons'
-import { predict } from '../services/api'
+import { predict, predictDisease } from '../services/api'
 import { FIELD_META, DATASETS } from '../data/fields'
 
 export default function Detect() {
   const [values, setValues] = useState({})
   const [result, setResult] = useState(null)
-  const [meta, setMeta] = useState(null) // last submitted {dataset, label}
+  const [meta, setMeta] = useState(null)
   const [pending, setPending] = useState(false)
   const [error, setError] = useState(null)
+  const [processingStep, setProcessingStep] = useState('validate')
+  const [completedSteps, setCompletedSteps] = useState(new Set())
 
   const onSubmit = useCallback(async (dataset, features) => {
     setPending(true)
     setError(null)
     setResult(null)
+    setProcessingStep('validate')
+    setCompletedSteps(new Set())
     const label = DATASETS.find((d) => d.id === dataset)?.label ?? dataset
+
+    // Animated processing timeline
+    const advance = (step, ms) =>
+      new Promise((r) => setTimeout(() => {
+        setProcessingStep(step)
+        setCompletedSteps((prev) => new Set([...prev, step]))
+        r()
+      }, ms))
+
     try {
-      const data = await predict(dataset, features)
+      await advance('validate', 120)
+      await advance('preprocess', 180)
+      await advance('classical', 250)
+      // Use the disease-specific endpoints (all resolve to the Musa modules)
+      const ROUTE_FOR = { musa_heart: 'heart', musa_diabetes: 'diabetes', musa_hcv: 'hcv' }
+      const diseaseRoute = ROUTE_FOR[dataset]
+      const data = diseaseRoute
+        ? await predictDisease(diseaseRoute, features)
+        : await predict(dataset, features)
+      await advance('quantum', 200)
+      await advance('compare', 100)
       setMeta({ dataset, label })
       setResult(data)
+      setCompletedSteps((prev) => new Set([...prev, 'summary']))
       requestAnimationFrame(() => {
         document.getElementById('result')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
       })
@@ -41,86 +65,112 @@ export default function Detect() {
 
   const onReset = useCallback(() => setValues({}), [])
 
+  // Deep-link support: /detect?disease=musa_hcv preselects that module
+  const initialDataset = useMemo(
+    () => new URLSearchParams(window.location.search).get('disease'),
+    []
+  )
+
   return (
-    <div className="min-h-screen bg-canvas">
-      <Nav />
-      {/* 44 + 52 nav stack */}
-      <main className="mx-auto max-w-[980px] px-5 pb-[120px] pt-[144px]">
-        <header className="mb-10 max-w-[600px]">
-          <h1 className="text-display-lg">Run a vector.</h1>
-          <p className="text-lead mt-3 font-light text-ink-muted-80">
-            Enter clinical measurements, get one verdict from both paradigms — classical and
-            quantum — side by side, honestly labeled.
+    <div className="min-h-screen">
+      <main className="mx-auto max-w-[1200px] px-5 pb-[100px] pt-[100px]">
+        {/* Header */}
+        <header className="mb-8 max-w-[900px]">
+          <div className="flex items-center justify-between gap-4 mb-4 flex-wrap">
+            <div className="flex items-center gap-3">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-glass px-3 py-1 text-fine-print text-quantum">
+                <Zap className="size-3" aria-hidden="true" />
+                Live inference
+              </span>
+            </div>
+          </div>
+          <div className="flex items-center gap-4 flex-wrap">
+            <h1 className="text-display-lg">Run a vector.</h1>
+            <span className="flex size-6 items-center justify-center rounded-full bg-classical text-quantum text-fine-print tabular" aria-hidden="true" style={{ fontFamily: 'var(--font-display)' }}>01</span>
+            <h2 className="text-tagline track-classical">Classical Track</h2>
+            <span className="flex size-6 items-center justify-center rounded-full bg-quantum text-void text-fine-print tabular" aria-hidden="true" style={{ fontFamily: 'var(--font-display)' }}>02</span>
+            <h2 className="text-tagline track-quantum">Quantum Track</h2>
+          </div>
+          <p className="text-body mt-2 text-muted max-w-[600px]">
+            Enter clinical measurements. Get two verdicts — classical and quantum — side by side, honestly labeled.
           </p>
         </header>
 
-        <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_260px]">
+        {/* Two-Track Layout */}
+        <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_460px]">
+          {/* Classical Track — Form */}
           <div className="min-w-0">
-            {FIELD_META ? (
-              <PredictForm
-                datasets={DATASETS}
-                meta={FIELD_META}
-                values={values}
-                setValues={setValues}
-                onReset={onReset}
-                onSubmit={onSubmit}
-              />
-            ) : (
-              <FormSkeleton />
-            )}
+            <div className="glass-panel p-6">
+              <div className="mb-6 flex items-center gap-3">
+                <span className="flex size-8 items-center justify-center rounded-full bg-classical text-quantum text-caption-strong tabular" aria-hidden="true" style={{ fontFamily: 'var(--font-display)' }}>01</span>
+                <h3 className="text-tagline track-classical">Classical Track — Input</h3>
+              </div>
+              <p className="text-caption text-muted mb-6 max-w-[400px]">
+                11–13 clinical features validated against audited dataset ranges. Values stay in your browser until you run.
+              </p>
+              {FIELD_META ? (
+                <PredictForm
+                  datasets={DATASETS}
+                  meta={FIELD_META}
+                  values={values}
+                  setValues={setValues}
+                  onReset={onReset}
+                  onSubmit={onSubmit}
+                  initialDataset={initialDataset}
+                />
+              ) : (
+                <FormSkeleton />
+              )}
+            </div>
           </div>
 
-          {/* sticky side rail — what happens under the hood */}
-          <aside className="top-[144px] self-start lg:sticky">
-            <h2 className="text-caption-strong text-ink">Under the hood</h2>
-            <ol className="mt-4 space-y-4">
-              {[
-                ['Validate', '13–30 features checked against dataset ranges'],
-                ['Standardize', 'same scaler fitted during training'],
-                ['PCA', 'compressed to the 8-dim subspace'],
-                ['VQC', '8-qubit circuit, 512 shots, simulated'],
-              ].map(([t, d], i) => (
-                <li key={t} className="flex gap-3">
-                  <span className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-pill bg-ink text-fine-print font-semibold text-white">
-                    {i + 1}
-                  </span>
-                  <span>
-                    <span className="text-caption-strong block">{t}</span>
-                    <span className="text-fine-print text-ink-muted-48">{d}</span>
-                  </span>
-                </li>
-              ))}
-            </ol>
-            <p className="text-fine-print mt-6 text-ink-muted-48">
-              Quantum inference uses a calibrated demo offset on classical output in this build —
-              labeled as such in every result.
-            </p>
+          {/* Quantum Track — Result + Processing + Explanation */}
+          <aside className="lg:sticky lg:top-[100px] space-y-6">
+            {pending ? (
+              <>
+                <Processing currentStep={processingStep} completed={completedSteps} />
+                <div className="glass-panel p-6 text-center">
+                  <div className="mx-auto size-10 rounded-full bg-quantum/15 flex items-center justify-center mb-3 animate-pulse">
+                    <Zap className="size-5 text-quantum" aria-hidden="true" />
+                  </div>
+                  <p className="text-caption text-muted">
+                    Models running on the same validated input. Honest comparison once they return.
+                  </p>
+                </div>
+              </>
+            ) : (
+              <>
+                <div id="result" aria-live="polite">
+                  {error && (
+                    <ErrorState
+                      title="Screening failed"
+                      hint={error}
+                      retryLabel="Check backend"
+                      onRetry={() => window.open('/docs', '_blank')}
+                    />
+                  )}
+                  {!error && result && (
+                    <ResultsDashboard
+                      result={result}
+                      disease={meta?.dataset}
+                      datasetLabel={meta?.label}
+                    />
+                  )}
+                  {!error && !result && (
+                    <div className="glass-panel p-8 text-center border-dashed border-hairline">
+                      <div className="mx-auto mb-3 size-10 rounded-full bg-glass flex items-center justify-center">
+                        <Zap className="size-5 text-muted" aria-hidden="true" />
+                      </div>
+                      <p className="text-caption text-muted">
+                        Your screening appears here. Nothing is stored, nothing leaves the page until you run.
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </>
+            )}
           </aside>
         </div>
-
-        {/* result zone */}
-        <section id="result" className="mt-16 scroll-mt-[144px]" aria-label="Prediction result">
-          {pending && <ResultSkeleton />}
-          {!pending && error && (
-            <ErrorState
-              title="Prediction failed"
-              hint={error}
-              retryLabel="Check backend"
-              onRetry={() => window.open('/docs', '_blank')}
-            />
-          )}
-          {!pending && !error && result && (
-            <ResultPanel result={result} datasetLabel={meta?.label} />
-          )}
-          {!pending && !error && !result && (
-            <div className="rounded-lg border border-dashed border-hairline p-10 text-center">
-              <ArrowDown className="mx-auto mb-3 size-6 text-ink-muted-48" aria-hidden="true" />
-              <p className="text-caption text-ink-muted-48">
-                Your verdict appears here — nothing is stored, nothing leaves the page until you run.
-              </p>
-            </div>
-          )}
-        </section>
       </main>
       <Footer />
     </div>
