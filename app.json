@@ -1,0 +1,9 @@
+{
+  "name": "sih",
+  "buildpacks": [],
+  "env": {
+    "FRONTEND_URL": { "value": "*" },
+    "RAG_ENABLED": { "value": "true" },
+    "RAG_TOP_K": { "value": "3" }
+  }
+}
