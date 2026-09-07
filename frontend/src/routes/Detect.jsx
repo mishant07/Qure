@@ -81,11 +81,13 @@ export default function Detect() {
 
   const onReset = useCallback(() => setValues({}), [])
 
-  // Deep-link support: /detect?disease=musa_hcv preselects that module
-  const initialDataset = useMemo(
-    () => new URLSearchParams(window.location.search).get('disease'),
-    []
-  )
+  // Deep-link support: /detect?disease=diabetes preselects that module.
+  // Accepts display names (heart/diabetes/hcv) or internal musa_* ids.
+  const initialDataset = useMemo(() => {
+    const raw = new URLSearchParams(window.location.search).get('disease')
+    const alias = { heart: 'musa_heart', diabetes: 'musa_diabetes', hcv: 'musa_hcv' }
+    return alias[raw] || raw
+  }, [])
 
   // Respect the pathway selection from /route: only the diseases the user
   // kept selected appear as form tabs. Falls back to all datasets on direct

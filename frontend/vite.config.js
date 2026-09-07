@@ -9,7 +9,10 @@ export default defineConfig({
       // backend endpoints used by src/services/api.js (same-origin in dev):
       // ^/api covers /api/predict/*, /api/triage, /api/upload-report,
       // /api/validate-report, /api/explain, /api/report
-      '^/(api|predict|benchmark|health|models|triage)': 'http://localhost:8000',
+      // NOTE: `triage/` has the trailing slash on purpose — the /triage *page*
+      // must fall through to dev index.html; only /triage/questions is an API
+      // call. (Bare `triage` used to swallow the page into the API proxy.)
+      '^/(api|predict|benchmark|health|models|triage/)': 'http://localhost:8000',
     },
   },
   build: {

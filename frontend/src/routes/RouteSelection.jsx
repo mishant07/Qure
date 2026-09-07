@@ -65,10 +65,12 @@ export default function RouteSelection() {
 
   function continueToDetect() {
     if (selected.size === 0) return
-    // For now, we send the user to the first selected pathway
+    // For now, we send the user to the first selected pathway.
+    // URL uses the display name (heart/diabetes/hcv); Detect maps it back.
+    const display = { musa_heart: 'heart', musa_diabetes: 'diabetes', musa_hcv: 'hcv' }
     const first = [...selected][0]
     sessionStorage.setItem('selected-pathways', JSON.stringify([...selected]))
-    navigate(`/detect?disease=${first}`)
+    navigate(`/detect?disease=${display[first] || first}`)
   }
 
   return (

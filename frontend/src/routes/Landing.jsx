@@ -113,8 +113,9 @@ function SihHero() {
         The same patient. <span>Two verdicts.</span>
       </h2>
       <p className="text-lead-airy adaptive-muted mx-auto mt-4 max-w-[52ch]">
-        A 4-qubit variational quantum circuit runs alongside the best classical model on
-        three clinical screening modules — and tells you honestly which one to believe.
+        Variational quantum circuits (4-qubit, 8-qubit best on diabetes) run alongside
+        the best classical model on three clinical screening modules — and tell you
+        honestly which one to believe.
       </p>
       <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
         <Button asChild size="lg" className="bg-quantum text-ink hover:bg-quantum-dim">
@@ -125,7 +126,7 @@ function SihHero() {
         </Button>
         <span className="flex items-center gap-1.5 rounded-full border border-hairline bg-glass px-3.5 py-1.5 text-caption adaptive-muted">
           <Atom className="size-3.5 text-quantum" aria-hidden="true" />
-          4 qubits · exact simulation · ~2s
+          4–8 qubits · exact simulation · ~2s
         </span>
       </div>
       <p className="text-fine-print adaptive-muted mx-auto mt-6 max-w-[48ch]">
