@@ -8,7 +8,7 @@
 //   6. Validate — Run range/sanity checks.
 //   7. Predict — Only after confirmation, call the prediction API.
 import { useState, useRef, useCallback } from 'react'
-import { FileText, Upload, AlertCircle, Check, ArrowRight, ChevronLeft, Eye } from 'lucide-react'
+import { FileText, Upload, AlertCircle, Check, ArrowRight, ChevronLeft, Eye, ChevronDown, ChevronUp, Cpu, FileSearch } from 'lucide-react'
 import { navigate } from '../router'
 import Footer from '../components/Footer'
 import { Button } from '../components/ui/button'
@@ -46,7 +46,9 @@ export default function UploadPage() {
   const [error, setError] = useState(null)
   const [result, setResult] = useState(null)
   const [predicting, setPredicting] = useState(false)
+  const [showRawText, setShowRawText] = useState(false)
   const fileRef = useRef(null)
+
 
   const reset = useCallback(() => {
     setStep('select')
@@ -234,6 +236,18 @@ export default function UploadPage() {
               )}
             </div>
 
+            {loading && (
+              <div className="mt-4 rounded-lg border border-quantum/30 bg-quantum/5 p-4 text-center animate-pulse">
+                <div className="flex items-center justify-center gap-2 text-caption-strong text-quantum mb-1">
+                  <Cpu className="size-4 animate-spin" />
+                  Running Multi-Stage PDF Extraction & OCR Pipeline...
+                </div>
+                <p className="text-fine-print adaptive-muted">
+                  Detecting page layouts · preprocessing image pages · running RapidOCR · mapping lab values
+                </p>
+              </div>
+            )}
+
             {error && (
               <p className="text-caption text-warn mt-3">{error}</p>
             )}
@@ -261,10 +275,45 @@ export default function UploadPage() {
         {step === 'review' && review && (
           <div className="space-y-6">
             <div className="glass-panel p-6">
-              <h2 className="text-body-strong adaptive-text mb-1">Review extracted values</h2>
+              <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+                <h2 className="text-body-strong adaptive-text">Review extracted values</h2>
+                <div className="flex items-center gap-2">
+                  {review.ocr_used ? (
+                    <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/15 border border-amber-500/30 px-2.5 py-0.5 text-fine-print font-medium text-amber-400">
+                      <Cpu className="size-3" /> OCR USED
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 px-2.5 py-0.5 text-fine-print font-medium text-emerald-400">
+                      <Check className="size-3" /> DIGITAL EXTRACTION
+                    </span>
+                  )}
+                  {review.page_count && (
+                    <span className="inline-flex items-center rounded-full bg-glass border border-hairline px-2.5 py-0.5 text-fine-print adaptive-muted">
+                      {review.page_count} page{review.page_count > 1 ? 's' : ''}
+                      {review.avg_confidence ? ` · ${Math.round(review.avg_confidence * 100)}% conf` : ''}
+                    </span>
+                  )}
+                </div>
+              </div>
+
               <p className="text-caption adaptive-muted mb-4">
                 {review.note}
               </p>
+
+              {/* Per-page details breakdown */}
+              {review.page_details && review.page_details.length > 0 && (
+                <div className="mb-4 flex flex-wrap gap-1.5 text-fine-print">
+                  {review.page_details.map((pd) => (
+                    <span
+                      key={pd.page}
+                      className="rounded border border-hairline bg-glass px-2 py-0.5 adaptive-muted"
+                    >
+                      Page {pd.page}: {pd.is_scanned ? `Scanned (OCR ${Math.round(pd.confidence * 100)}%)` : 'Digital Text'}
+                    </span>
+                  ))}
+                </div>
+              )}
+
               <div className="grid gap-3 sm:grid-cols-3 text-caption mb-4">
                 <div className="rounded-lg border border-hairline p-3">
                   <p className="adaptive-muted">Extracted</p>
@@ -279,6 +328,30 @@ export default function UploadPage() {
                   <p className="text-display-md text-caution tabular">{review.uncertain_count}</p>
                 </div>
               </div>
+
+              {/* Accordion: Raw Extracted Text Preview */}
+              {review.extracted_text && (
+                <div className="mb-5 rounded-lg border border-hairline bg-glass overflow-hidden">
+                  <button
+                    type="button"
+                    onClick={() => setShowRawText(!showRawText)}
+                    className="w-full flex items-center justify-between p-3 text-caption-strong adaptive-text hover:bg-hairline/30 transition-colors"
+                  >
+                    <span className="flex items-center gap-1.5">
+                      <FileSearch className="size-4 text-quantum" />
+                      Preview Extracted Document Text ({review.extracted_chars || 0} chars)
+                    </span>
+                    {showRawText ? <ChevronUp className="size-4" /> : <ChevronDown className="size-4" />}
+                  </button>
+                  {showRawText && (
+                    <div className="p-3 border-t border-hairline bg-ink/30 max-h-60 overflow-y-auto">
+                      <pre className="text-fine-print font-mono adaptive-muted whitespace-pre-wrap leading-relaxed select-text">
+                        {review.extracted_text}
+                      </pre>
+                    </div>
+                  )}
+                </div>
+              )}
 
               <div className="space-y-2">
                 {review.rows.map((row) => (
@@ -327,6 +400,7 @@ export default function UploadPage() {
                 ))}
               </div>
             </div>
+
 
             {error && (
               <ErrorState

@@ -228,23 +228,45 @@ async def api_upload_report(disease: str, file: UploadFile = File(...)):
         raise HTTPException(400, f"unknown disease '{disease}'")
     contents = await file.read()
     if not contents:
-        raise HTTPException(400, "empty file")
+        raise HTTPException(400, "Uploaded file is empty.")
     if len(contents) > MAX_UPLOAD_BYTES:  # backstop for chunked bodies
-        raise HTTPException(413, "file exceeds upload limit")
+        raise HTTPException(413, f"File size exceeds limit of {MAX_UPLOAD_BYTES // (1024*1024)} MB")
 
-    text = ocr_svc.extract_text_from_pdf(contents)
-    if not text.strip():
-        raise HTTPException(422, "could not extract any text from the uploaded file")
+    try:
+        extraction_res = ocr_svc.extract_text_from_pdf(contents)
+    except ocr_svc.EncryptedPDFError as e:
+        raise HTTPException(400, str(e))
+    except ocr_svc.EmptyPDFError as e:
+        raise HTTPException(400, str(e))
+    except ocr_svc.CorruptPDFError as e:
+        raise HTTPException(422, str(e))
+    except ocr_svc.PDFExtractionError as e:
+        raise HTTPException(422, f"PDF extraction failed: {str(e)}")
+    except Exception as e:
+        raise HTTPException(500, f"Unexpected error during PDF processing: {str(e)}")
+
+    extracted_text = extraction_res["extracted_text"]
+    if not extracted_text.strip():
+        raise HTTPException(422, "Could not extract any readable text or clinical values from the uploaded file.")
 
     field_keys = DS.feature_order(disease)
-    candidates = ocr_svc.extract_candidates(text, field_keys)
+    candidates = ocr_svc.extract_candidates(
+        extracted_text, field_keys, base_confidence=extraction_res.get("avg_confidence", 0.85)
+    )
     review = ocr_svc.build_review_table(candidates, field_keys)
+
     return {
         "disease": disease,
         "filename": file.filename,
-        "extracted_chars": len(text),
+        "extracted_chars": len(extracted_text),
+        "extracted_text": extracted_text,
+        "page_count": extraction_res["page_count"],
+        "ocr_used": extraction_res["ocr_used"],
+        "page_details": extraction_res["page_details"],
+        "avg_confidence": extraction_res["avg_confidence"],
         **review,
     }
+
 
 
 @router.post("/api/validate-report")
