@@ -33,18 +33,22 @@ export const FIELD_META = {
     { k: 'GGT', label: 'GGT', unit: 'U/L', min: 1, max: 1000, ex: 12.1, help: 'gamma-GT' },
     { k: 'PROT', label: 'PROT', unit: 'g/L', min: 30, max: 100, ex: 69.0, help: 'total protein' },
   ],
+  // musa_diabetes: the pipeline ships cohort z-scores ONLY (scaler is identity),
+  // so raw units cannot be mapped back — examples below are REAL medoid rows from
+  // the healthy (Class 0) test cohort, not arbitrary numbers. Each is a coherent
+  // whole-body profile: female adult, normal kidney/lipid panel, low-normal HbA1c.
   musa_diabetes: [
-    { k: 'Gender', label: 'GENDER', unit: 'z', min: -5, max: 5, ex: 0.5, help: 'cohort z-score · 0 ≈ average' },
-    { k: 'AGE', label: 'AGE', unit: 'z', min: -5, max: 5, ex: -0.4, help: 'cohort z-score · 0 ≈ average' },
-    { k: 'Urea', label: 'UREA', unit: 'z', min: -5, max: 5, ex: -0.2, help: 'cohort z-score · 0 ≈ average' },
-    { k: 'Cr', label: 'CR', unit: 'z', min: -5, max: 5, ex: -0.2, help: 'creatinine z-score · 0 ≈ average' },
-    { k: 'HbA1c', label: 'HBA1C', unit: 'z', min: -5, max: 5, ex: 1.5, help: 'cohort z-score · higher = worse glycemia' },
-    { k: 'Chol', label: 'CHOL', unit: 'z', min: -5, max: 5, ex: 0.2, help: 'cohort z-score · 0 ≈ average' },
-    { k: 'TG', label: 'TG', unit: 'z', min: -5, max: 5, ex: -0.5, help: 'triglycerides z-score' },
-    { k: 'HDL', label: 'HDL', unit: 'z', min: -5, max: 5, ex: 0.3, help: 'cohort z-score · 0 ≈ average' },
-    { k: 'LDL', label: 'LDL', unit: 'z', min: -5, max: 5, ex: 0.1, help: 'cohort z-score · 0 ≈ average' },
-    { k: 'VLDL', label: 'VLDL', unit: 'z', min: -5, max: 5, ex: -0.4, help: 'cohort z-score · 0 ≈ average' },
-    { k: 'BMI', label: 'BMI', unit: 'z', min: -5, max: 5, ex: -0.3, help: 'cohort z-score · 0 ≈ average' },
+    { k: 'Gender', label: 'GENDER', unit: 'z', min: -5, max: 5, ex: -1.06, help: 'cohort z-score · −1 ≈ female pole, +1 ≈ male' },
+    { k: 'AGE', label: 'AGE', unit: 'z', min: -5, max: 5, ex: -0.28, help: 'cohort z-score · relative to cohort median age' },
+    { k: 'Urea', label: 'UREA', unit: 'z', min: -5, max: 5, ex: -0.28, help: 'cohort z-score · 0 = cohort average' },
+    { k: 'Cr', label: 'CR', unit: 'z', min: -5, max: 5, ex: -0.31, help: 'creatinine z-score · 0 = cohort average' },
+    { k: 'HbA1c', label: 'HBA1C', unit: 'z', min: -5, max: 5, ex: -0.76, help: 'lower z = better glycemia (healthy-cohort level)' },
+    { k: 'Chol', label: 'CHOL', unit: 'z', min: -5, max: 5, ex: -0.15, help: 'cohort z-score · 0 = cohort average' },
+    { k: 'TG', label: 'TG', unit: 'z', min: -5, max: 5, ex: -0.57, help: 'triglycerides z-score · 0 = cohort average' },
+    { k: 'HDL', label: 'HDL', unit: 'z', min: -5, max: 5, ex: -0.20, help: 'cohort z-score · 0 = cohort average' },
+    { k: 'LDL', label: 'LDL', unit: 'z', min: -5, max: 5, ex: 0.49, help: 'cohort z-score · 0 = cohort average' },
+    { k: 'VLDL', label: 'VLDL', unit: 'z', min: -5, max: 5, ex: -0.25, help: 'cohort z-score · 0 = cohort average' },
+    { k: 'BMI', label: 'BMI', unit: 'z', min: -5, max: 5, ex: -0.91, help: 'cohort z-score · 0 = cohort average' },
   ],
 }
 

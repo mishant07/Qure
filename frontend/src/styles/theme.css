@@ -38,6 +38,11 @@
   --color-caution: #FFB800;
   --color-safe: #1ED760;
 
+  /* Clinical confidence gradient stops */
+  --color-clinical-start: #0EA5E9;
+  --color-clinical-mid: #06B6D4;
+  --color-clinical-end: #10B981;
+
   /* Glass — substrate, not ornament */
   --color-glass: rgba(255,255,255,0.04);
   --color-glass-strong: rgba(255,255,255,0.07);
@@ -230,6 +235,17 @@
 
   .winner-classical { background: rgba(255,255,255,0.14); color: #fff; mix-blend-mode: difference; border: 1px solid rgba(255,255,255,0.3); }
   .winner-quantum { background: rgba(201,74,106,0.18); color: #E37B95; border: 1px solid rgba(201,74,106,0.35); }
+
+  /* === Confidence Meter — Clinical gradients & glows === */
+  .bg-clinical-gradient {
+    background: linear-gradient(90deg, var(--color-clinical-start) 0%, var(--color-clinical-mid) 50%, var(--color-clinical-end) 100%);
+  }
+  .shadow-clinical-glow {
+    box-shadow: 0 0 16px var(--color-clinical-start), 0 0 32px var(--color-clinical-start), inset 0 1px 0 rgba(255,255,255,0.15);
+  }
+  .shadow-classical-glow {
+    box-shadow: 0 0 16px rgba(29, 29, 31, 0.5), 0 0 32px rgba(29, 29, 31, 0.25), inset 0 1px 0 rgba(255,255,255,0.1);
+  }
 
   .glass-panel {
     background: var(--color-glass);

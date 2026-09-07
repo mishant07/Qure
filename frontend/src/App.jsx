@@ -14,11 +14,11 @@ export default function App() {
   const route = useRoute()
   let page
   if (route === '/' || route === '') page = <Landing />
-  else if (route.startsWith('/detect')) page = <Detect />
-  else if (route.startsWith('/triage')) page = <Triage />
-  else if (route.startsWith('/route')) page = <RouteSelection />
-  else if (route.startsWith('/upload')) page = <UploadPage />
-  else if (route.startsWith('/report')) page = <Report />
+  else if (route === '/detect') page = <Detect />
+  else if (route === '/triage') page = <Triage />
+  else if (route === '/route') page = <RouteSelection />
+  else if (route === '/upload') page = <UploadPage />
+  else if (route === '/report') page = <Report />
   else page = <NotFound />
 
   return (

@@ -13,7 +13,18 @@ qiskit-aer>=0.14
 qiskit-machine-learning>=0.7
 pennylane>=0.35
 pennylane-lightning>=0.35
-torch>=2.1 --index-url https://download.pytorch.org/whl/cpu
+# ---------------------------------------------------------------------------
+# PyTorch (CPU-only) — must come FIRST so pip pulls the +cpu build from the
+# PyTorch index instead of the CUDA build on PyPI. The "--extra-index-url"
+# form is the only index option valid INSIDE a requirements file (pip), and
+# it keeps PyPI reachable for every other package below.
+# NOTE: plain `pip install -r requirements.txt` previously FAILED on this
+# file ("Expected --hash, found '--index-url'") because pip does not accept
+# a bare --index-url line mid-file — which is exactly how the local .venv
+# drifted (it could never be rebuilt from this file).
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch>=2.1
+# ---------------------------------------------------------------------------
 # Explainability
 shap>=0.44
 lime>=0.2
@@ -28,7 +39,9 @@ tqdm>=4.66
 matplotlib>=3.8
 seaborn>=0.13
 mlflow>=2.10
-# PDF Extraction & OCR
+# PDF Extraction & OCR (ocr.py imports PIL directly; pillow was previously
+# only satisfied transitively via matplotlib — pinned here explicitly)
+pillow>=10.0
 pymupdf>=1.28.0
 rapidocr-onnxruntime>=1.4.0
 opencv-python-headless>=4.8.0
