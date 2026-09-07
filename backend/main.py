@@ -6,7 +6,7 @@ Dev: the vite dev server proxies /predict,/benchmark,/health,/models to :8000
 Security posture (backend/security.py): CORS locked to FRONTEND_URL origins;
 API_KEY set -> locked mode (X-API-Key required, /docs off). Unset -> open demo.
 """
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 
@@ -49,6 +49,9 @@ if _DIST is not None:
 
     @app.get("/{path:path}")
     async def spa(path: str = "") -> FileResponse:
+        # API-ish paths are never SPA pages: JSON 404, not index.html.
+        if path.split("/")[0] in ("api", "docs", "redoc", "openapi.json"):
+            raise HTTPException(404, "not found")
         target = (_DIST / path) if path else None
         if target is not None:
             try:
