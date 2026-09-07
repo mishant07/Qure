@@ -1,25 +1,25 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Find python binary on Antideploy image
-PY=""
-for candidate in python3.13 python3.12 python3.11 python3.10 python3 python; do
-  if command -v "$candidate" &>/dev/null; then
-    PY="$candidate"
-    break
-  fi
-done
-for path in /usr/local/bin/python3 /usr/bin/python3 /usr/local/bin/python /usr/bin/python; do
-  if [ -z "$PY" ] && [ -x "$path" ]; then
-    PY="$path"
-    break
-  fi
-done
-if [ -z "$PY" ]; then
-  echo "ERROR: no python found" >&2
-  find / -name "python*" -type f 2>/dev/null | head -5
-  exit 1
+# Cloud Native Buildpacks put python in /layers/google.python.pip/
+BUILD_PYTHON="/layers/google.python.pip/bin/python3"
+if [ -x "$BUILD_PYTHON" ]; then
+  exec "$BUILD_PYTHON" -m uvicorn backend.main:app --host 0.0.0.0 --port "${PORT:-8000}"
 fi
-echo "Using python: $PY ($($PY --version 2>&1))"
 
-exec "$PY" -m uvicorn backend.main:app --host 0.0.0.0 --port "${PORT:-8000}"
+# Fallback: find python3 anywhere
+for candidate in python3.13 python3 python; do
+  if command -v "$candidate" &>/dev/null; then
+    exec "$candidate" -m uvicorn backend.main:app --host 0.0.0.0 --port "${PORT:-8000}"
+  fi
+done
+
+# Last resort: absolute paths
+for p in /usr/local/bin/python3 /usr/bin/python3; do
+  if [ -x "$p" ]; then
+    exec "$p" -m uvicorn backend.main:app --host 0.0.0.0 --port "${PORT:-8000}"
+  fi
+done
+
+echo "FATAL: no python3 found" >&2
+exit 1
