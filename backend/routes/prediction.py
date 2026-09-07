@@ -18,7 +18,7 @@
 import json
 import pathlib
 
-from fastapi import APIRouter, HTTPException, UploadFile, File
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
 from pydantic import BaseModel
 
 from backend.schemas.patient import (
@@ -32,9 +32,10 @@ from backend.services import explainability as explain_svc
 from backend.services import report as report_svc
 from backend.services.musa_service import predict_musa
 from backend.services import qattrib as qattrib_svc
+from backend.security import MAX_UPLOAD_BYTES, require_key
 
-router = APIRouter()
 
+router = APIRouter(dependencies=[Depends(require_key)])
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 # Active serving scope: ONLY the three Musa2609/SIH- modules. The legacy 5-dataset
 # artifacts remain on disk (and in LEGACY_REGISTRY for provenance/retraining) but are
@@ -228,6 +229,8 @@ async def api_upload_report(disease: str, file: UploadFile = File(...)):
     contents = await file.read()
     if not contents:
         raise HTTPException(400, "empty file")
+    if len(contents) > MAX_UPLOAD_BYTES:  # backstop for chunked bodies
+        raise HTTPException(413, "file exceeds upload limit")
 
     text = ocr_svc.extract_text_from_pdf(contents)
     if not text.strip():

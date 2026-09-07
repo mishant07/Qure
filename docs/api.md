@@ -104,5 +104,14 @@ and the structured screening summary. `model_version` is `vqc_4qubit`.
 Errors: 400 unknown dataset / legacy id rejected, 422 missing/non-numeric/out-of-range feature,
 500 artifacts missing or inference failure.
 
+## Security posture (backend/security.py)
+- CORS allows only `FRONTEND_URL` origins (comma-separated). No wildcard.
+- `API_KEY` unset = open demo mode (SIH judging). Set it = locked mode:
+  `X-API-Key` required on all routes except `/health`, `/docs` off.
+- Bodies capped at `MAX_UPLOAD_MB` (default 5, 413 beyond); per-IP rate limit
+  `RATE_LIMIT_PER_MIN` (default 120, 429 beyond, single-process memory).
+- Static headers on every response: nosniff, DENY framing, same-origin
+  referrer. VQC weights load with `weights_only=True`.
+
 Validation: `backend/scripts/validate_models.py` reproduces every model's published
 test metrics from the shipped artifacts. Frontend consumes via `frontend/src/services/api.js`.
