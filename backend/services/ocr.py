@@ -32,9 +32,11 @@ _OCR_ENGINE = None
 def get_ocr_engine():
     global _OCR_ENGINE
     if _OCR_ENGINE is None:
-        from rapidocr_onnxruntime import RapidOCR
-        # Initialize RapidOCR with print_verbose=False
-        _OCR_ENGINE = RapidOCR()
+        try:
+            from rapidocr_onnxruntime import RapidOCR
+            _OCR_ENGINE = RapidOCR()
+        except ImportError:
+            return None
     return _OCR_ENGINE
 
 
@@ -260,6 +262,8 @@ def preprocess_image_for_ocr(img: np.ndarray) -> np.ndarray:
 def run_ocr_on_page(img: np.ndarray) -> Tuple[str, float]:
     """Run RapidOCR on image array. Returns (text, confidence)."""
     ocr = get_ocr_engine()
+    if ocr is None:
+        return "", 0.0
     preprocessed = preprocess_image_for_ocr(img)
     
     # RapidOCR accepts numpy array (BGR or Gray)
