@@ -5,8 +5,8 @@ Runs the three Musa modules with THEIR staged artifacts (backend/models/musa/):
              QML: scaler -> PCA(4) -> 4-qubit VQC (.pt)
   HCV      : Sex m/f -> encoder dict -> imputer -> scaler -> XGBoost
              QML: scaler -> PCA(4) -> 4-qubit VQC (.pt)
-  DIABETES : 11 z-scored features -> scaler -> Random Forest (3-class)
-             QML: scaler -> PCA(4) -> 4-qubit VQC (.pt), 3 classes
+  DIABETES : raw clinical units (see diabetes_units.py) -> internal cohort z
+             -> Random Forest (3-class); QML: -> PCA(4) -> 4-qubit VQC (.pt)
 
 Preprocessing order mirrors the team's own inference scripts exactly.
 """
@@ -101,7 +101,16 @@ def _prepare_frame(key: str, features: dict) -> pd.DataFrame:
         else:
             df["Sex"] = float(sex)
     else:
-        df = df.astype(float)
+        if key == "musa_diabetes":
+            # Accept RAW clinical units (AGE yrs, Urea mmol/L, Cr µmol/L, HbA1c %,
+            # lipids mmol/L, BMI kg/m²) and convert to the cohort z-scores the RF/VQC
+            # pipeline expects. Constants derive from the public Rashid et al. (2020)
+            # Baghdad dataset (N=264) — see backend/services/diabetes_units.py.
+            from backend.services import diabetes_units as _du
+            zrow = _du.to_z(row)
+            df = pd.DataFrame([{k: zrow[k] for k in order}], columns=order)
+        else:
+            df = df.astype(float)
     return df
 
 
