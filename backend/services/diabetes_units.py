@@ -58,7 +58,12 @@ def to_z(raw: dict) -> dict:
     out = {}
     for k in KEYS:
         v = raw[k]
-        if k == "Gender":
-            v = GENDER_MAP.get(v, GENDER_MAP.get(str(v).strip(), float(v)))
+        if k == "Gender" and isinstance(v, str):
+            mapped = GENDER_MAP.get(v.strip()) or GENDER_MAP.get(v.strip().title())
+            if mapped is None:
+                raise ValueError(
+                    f"'Gender' must be one of Female/Male/F/M/0/1 — got {v!r}"
+                )
+            v = mapped
         out[k] = (float(v) - MEAN[k]) / STD[k]
     return out
