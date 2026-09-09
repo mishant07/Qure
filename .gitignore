@@ -22,6 +22,7 @@ mlruns/
 .DS_Store
 *.log
 frontend/dist/
+frontend/ui/
 .impeccable/
 
 # RAG knowledge-base build artifact (rebuilt via backend/scripts/build_kb_index.py)
